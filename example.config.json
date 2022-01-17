@@ -1,0 +1,8 @@
+{
+    "bot_prefix": "!",
+    "token": "YOUR KEY",
+    "application_id": "YOUR APP ID",
+    "owners": [
+        123456789
+    ]
+  }
