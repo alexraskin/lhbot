@@ -10,7 +10,7 @@ Cloudy live on Twitch - [Twitch](https://www.twitch.tv/lhcloudy27)
 
 Cloudy on Twitter - [Twitter](https://twitter.com/LhCloudy)
 
-Join Discord - [Discord](https://discord.com/invite/jd6CZSj8jb)
+Cloudy Discord - [Discord](https://discord.com/invite/jd6CZSj8jb)
 
 
 ### Install
