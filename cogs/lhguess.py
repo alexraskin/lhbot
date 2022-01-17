@@ -88,6 +88,19 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("💚")
 
+    @commands.command(name="lhshow")
+    async def show_all_guess(self, ctx):
+        """
+        show all guesses in the database
+        """
+        guess_list = []
+        async for _guess in collection.find():
+            guess_list.append(_helper(_guess)["guess"])
+        final_list = '\n'.join(guess_list)
+        embed = discord.Embed(color=0x42F56C)
+        embed.add_field(name="Showing all guesses in the database", value=sorted(final_list))
+        embed_message = await ctx.send(embed=embed)
+        await embed_message.add_reaction("👀")
 
 def setup(bot):
     bot.add_cog(LhGuess(bot))
