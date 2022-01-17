@@ -1,4 +1,3 @@
-from dis import disco
 import json
 import os
 import sys
@@ -9,6 +8,8 @@ from discord.ext import commands
 
 from database.db import client
 from database.utils.return_helper import _helper
+from utils.generate_pdf import PdfReport
+from utils.uploader import FileSharer
 
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
@@ -95,9 +96,22 @@ class LhGuess(commands.Cog, name="lhguess"):
         guess_list = []
         async for _guess in collection.find():
             guess_list.append(_helper(_guess)["guess"])
-        final_list = '\n'.join(guess_list)
+        final_list = "\n".join(guess_list)
         embed = discord.Embed(color=0x42F56C)
         embed.add_field(name="All guesses in the database:", value=sorted(final_list))
+        embed_message = await ctx.send(embed=embed)
+        await embed_message.add_reaction("👀")
+
+    @commands.command(name="lhreport")
+    async def run_lh_report(self, ctx):
+        guess_list = []
+        async for _guess in collection.find():
+            guess_list.append(_helper(_guess)["guess"])
+        report = PdfReport(filename=f"{ctx.message.author}-report.pdf", guesses=guess_list)
+        report.generate()
+        share = FileSharer(f"{report.filename}")
+        embed = discord.Embed(color=0x42F56C)
+        embed.add_field(name="LhGuess report is ready:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("👀")
 
