@@ -5,7 +5,6 @@ import sys
 
 import aiofiles
 import discord
-from bson.objectid import ObjectId
 from discord.ext import commands
 
 from database.db import client
