@@ -1,9 +1,11 @@
+from dis import disco
 import json
 import os
 import sys
 
 import aiofiles
 import discord
+from bson.objectid import ObjectId
 from discord.ext import commands
 
 from database.db import client
@@ -71,6 +73,20 @@ class LhGuess(commands.Cog, name="lhguess"):
                 )
                 embed_message = await ctx.send(embed=embed)
                 await embed_message.add_reaction("👍")
+
+    @commands.command(name="lhcount")
+    async def guess_count(self, ctx):
+        """
+        current amount of guesses in the database
+        """
+        guesses = []
+        async for _guess in collection.find():
+            guesses.append(_helper(_guess)["guess"])
+        embed = discord.Embed(color=0x42F56C)
+        embed.add_field(name="LhGuess Count", value=f"{len(guesses)} 🦍", inline=True)
+        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed_message = await ctx.send(embed=embed)
+        await embed_message.add_reaction("💚")
 
 
 def setup(bot):
