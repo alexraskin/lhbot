@@ -1,6 +1,7 @@
 import json
 import os
 import platform
+import random
 import sys
 
 import discord
@@ -19,38 +20,20 @@ class general(commands.Cog, name="general"):
 
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
-        embed = discord.Embed(
-            description="LhBot",
-            color=0x42F56C
-        )
-        embed.set_author(
-            name="Bot Information"
-        )
-        embed.add_field(
-            name="Owner:",
-            value="reinfrog#1738",
-            inline=True
-        )
-        embed.add_field(
-            name="Python Version:",
-            value=f"{platform.python_version()}",
-            inline=True
-        )
-        embed.add_field(
-            name="Prefix:",
-            value=f"{config['bot_prefix']}",
-            inline=False
-        )
-        embed.add(
-            name="URL:",
-            value="https://github.com/alexraskin/lhbot",
-            inline=True
-        )
-        embed.set_footer(
-            text=f"Requested by {ctx.message.author}"
-        )
+        embed = discord.Embed(description="LhBot", color=0x42F56C)
+        embed.set_author(name="Bot Information")
+        embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
+        embed.add_field(name="Prefix:",
+                        value=f"{config['bot_prefix']}",
+                        inline=True)
+        embed.add_field(name="Python Version:",
+                        value=f"{platform.python_version()}",
+                        inline=True)
+        embed.add_field(name="URL:",
+                        value="https://github.com/alexraskin/lhbot",
+                        inline=True)
+        embed.set_footer(text=f"Requested by {ctx.message.author}")
         await ctx.send(embed=embed)
-    
 
     @commands.command(name="ping")
     async def ping(self, ctx):
@@ -59,10 +42,11 @@ class general(commands.Cog, name="general"):
         """
         embed = discord.Embed(
             title="🏓 Pong!",
-            description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
-            color=0x42F56C
-        )
+            description=
+            f"The bot latency is {round(self.bot.latency * 1000)}ms.",
+            color=0x42F56C)
         await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(general(bot))
