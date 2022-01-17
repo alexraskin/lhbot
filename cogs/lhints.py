@@ -8,8 +8,11 @@ class LhHint(commands.Cog, name="lhhint"):
     def __init__(self, bot):
         self.bot = bot
         self.hints = [
-            "It is in English", "Made by 10 year old finnish lad", "Clever",
-            "Masaa can be bribed", "It's not long hammer"
+            "It is in English",
+            "Made by 10 year old finnish lad",
+            "Clever",
+            "Masaa can be bribed",
+            "It's not long hammer",
         ]
 
     @commands.command(name="lhhint")
