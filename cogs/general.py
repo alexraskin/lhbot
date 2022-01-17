@@ -1,7 +1,6 @@
 import json
 import os
 import platform
-import random
 import sys
 
 import discord
