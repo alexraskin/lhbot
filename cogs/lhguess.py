@@ -98,7 +98,7 @@ class LhGuess(commands.Cog, name="lhguess"):
             guess_list.append(_helper(_guess)["guess"])
         final_list = '\n'.join(guess_list)
         embed = discord.Embed(color=0x42F56C)
-        embed.add_field(name="Showing all guesses in the database", value=sorted(final_list))
+        embed.add_field(name="All guesses in the database:", value=sorted(final_list))
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("👀")
 
