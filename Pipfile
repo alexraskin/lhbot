@@ -10,6 +10,8 @@ pymongo = "*"
 dnspython = "*"
 aiohttp = "*"
 aiofiles = "*"
+filestack-python = "*"
+fpdf = "*"
 
 [dev-packages]
 pylint = "*"
