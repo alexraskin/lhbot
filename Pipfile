@@ -12,6 +12,7 @@ aiohttp = "*"
 aiofiles = "*"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.10"
