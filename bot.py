@@ -51,4 +51,21 @@ if __name__ == "__main__":
                 exception = f"{type(e).__name__}: {e}"
                 print(f"Failed to load extension {extension}\n{exception}")
 
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user or message.author.bot:
+        return
+    await bot.process_commands(message)
+
+
+@bot.event
+async def on_command_completion(ctx):
+    fullCommandName = ctx.command.qualified_name
+    split = fullCommandName.split(" ")
+    executedCommand = str(split[0])
+    print(
+        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")
+
+
 bot.run(config["token"])
