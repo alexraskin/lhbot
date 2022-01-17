@@ -11,7 +11,7 @@ from discord.ext.commands import Bot
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
-    with open("config.json") as file:
+    with open("config.json", encoding='utf-8') as file:
         config = json.load(file)
 
 intents = discord.Intents.default()
@@ -38,11 +38,10 @@ async def status_task():
     run a task to change the game presence
     """
     statuses = [
-      "Overwatch", "Overwatch 2",
-      f"{config['bot_prefix']}help",
-      f"{config['bot_prefix']}lhhint",
-      f"{config['bot_prefix']}info"
-      ]
+        "Overwatch", "Overwatch 2", "Diffing LhCloudy",
+        f"{config['bot_prefix']}help", f"{config['bot_prefix']}lhhint",
+        f"{config['bot_prefix']}info"
+    ]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
@@ -73,11 +72,15 @@ async def on_command_completion(ctx):
     """
     code in this event is executed every time a command has been *successfully* executed
     """
-    fullCommandName = ctx.command.qualified_name
-    split = fullCommandName.split(" ")
-    executedCommand = str(split[0])
+    full_command_name = ctx.command.qualified_name
+    split = full_command_name.split(" ")
+    executed_command = str(split[0])
     print(
-        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")
+        f"Executed {executed_command}\
+            command in {ctx.guild.name}\
+                (ID: {ctx.message.guild.id})\
+                    by {ctx.message.author} (ID: {ctx.message.author.id})"
+    )
 
 
 bot.run(config["token"])

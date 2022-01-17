@@ -33,7 +33,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         async with aiofiles.open('./cogs/banwords.txt') as banned_words:
             async for line in banned_words:
                 banned_list.append(line.strip("\n"))
-        if guess in banned_list:
+        if str(guess).lower() in banned_list:
                 embed = discord.Embed(
                     title="Guess not allowed",
                     color=0xe74c3c

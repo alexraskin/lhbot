@@ -1,7 +1,6 @@
 import json
 import os
 import platform
-import random
 import sys
 
 import discord
@@ -10,11 +9,14 @@ from discord.ext import commands
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
-    with open("config.json") as file:
+    with open("config.json", encoding='utf-8') as file:
         config = json.load(file)
 
 
-class general(commands.Cog, name="general"):
+class General(commands.Cog, name="general"):
+    """
+    general bot commands
+    """
     def __init__(self, bot):
         self.bot = bot
 
@@ -52,4 +54,4 @@ class general(commands.Cog, name="general"):
 
 
 def setup(bot):
-    bot.add_cog(general(bot))
+    bot.add_cog(General(bot))
