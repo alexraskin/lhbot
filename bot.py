@@ -14,7 +14,6 @@ else:
     with open("config.json") as file:
         config = json.load(file)
 
-
 intents = discord.Intents.default()
 
 bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
@@ -32,8 +31,12 @@ async def on_ready():
 
 @tasks.loop(minutes=1.0)
 async def status_task():
-    statuses = ["with you!", "Overwatch",
-                f"{config['bot_prefix']}help", "with humans!"]
+    statuses = [
+      "Overwatch", "Overwatch 2",
+      f"{config['bot_prefix']}help",
+      f"{config['bot_prefix']}lhhint",
+      f"{config['bot_prefix']}info"
+      ]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
@@ -47,6 +50,5 @@ if __name__ == "__main__":
             except Exception as e:
                 exception = f"{type(e).__name__}: {e}"
                 print(f"Failed to load extension {extension}\n{exception}")
-
 
 bot.run(config["token"])
