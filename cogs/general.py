@@ -20,6 +20,9 @@ class general(commands.Cog, name="general"):
 
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
+        """
+        information about the bot
+        """
         embed = discord.Embed(description="LhBot", color=0x42F56C)
         embed.set_author(name="Bot Information")
         embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
@@ -32,19 +35,19 @@ class general(commands.Cog, name="general"):
         embed.add_field(name="URL:",
                         value="https://github.com/alexraskin/lhbot",
                         inline=True)
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
         await ctx.send(embed=embed)
 
     @commands.command(name="ping")
     async def ping(self, ctx):
         """
-        Check if the bot is alive.
+        ping the bot
         """
         embed = discord.Embed(
             title="🏓 Pong!",
             description=
             f"The bot latency is {round(self.bot.latency * 1000)}ms.",
             color=0x42F56C)
+        embed.set_footer(text=f"Requested by {ctx.message.author}")
         await ctx.send(embed=embed)
 
 

@@ -13,10 +13,10 @@ class LhHint(commands.Cog, name="lhhint"):
         ]
 
     @commands.command(name="lhhint")
-    async def lh_hints(
-        self,
-        ctx,
-    ):
+    async def lh_hints(self, ctx):
+        """
+        random hint about the meaning of LH
+        """
         embed = discord.Embed(description="LhHints", color=0x42F56C)
         random_hint = random.choice(list(self.hints))
         embed.set_author(name="Random LH Hint")

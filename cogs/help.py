@@ -19,7 +19,7 @@ class Help(commands.Cog, name="help"):
     @commands.command(name="Help")
     async def help(self, context):
         """
-        List all commands
+        list all commands
         """
         prefix = config["bot_prefix"]
         if not isinstance(prefix, str):

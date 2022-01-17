@@ -31,6 +31,9 @@ async def on_ready():
 
 @tasks.loop(minutes=1.0)
 async def status_task():
+    """
+    run a task to change the game presence
+    """
     statuses = [
       "Overwatch", "Overwatch 2",
       f"{config['bot_prefix']}help",
@@ -54,6 +57,9 @@ if __name__ == "__main__":
 
 @bot.event
 async def on_message(message):
+    """
+    do not want the bot to reply to itself
+    """
     if message.author == bot.user or message.author.bot:
         return
     await bot.process_commands(message)
@@ -61,6 +67,9 @@ async def on_message(message):
 
 @bot.event
 async def on_command_completion(ctx):
+    """
+    code in this event is executed every time a command has been *successfully* executed
+    """
     fullCommandName = ctx.command.qualified_name
     split = fullCommandName.split(" ")
     executedCommand = str(split[0])
