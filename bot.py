@@ -21,6 +21,9 @@ bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
 
 @bot.event
 async def on_ready():
+    """
+    code in this event is executed on ready
+    """
     print(f"Logged in as {bot.user.name}")
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
