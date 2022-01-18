@@ -40,7 +40,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         !lhguess <your guess>
         """
         banned_list = []
-        async with aiofiles.open("./cogs/banwords.txt") as banned_words:
+        async with aiofiles.open("cogs/banwords.txt") as banned_words:
             async for line in banned_words:
                 banned_list.append(line.strip("\n"))
         if str(guess).lower() in banned_list:
