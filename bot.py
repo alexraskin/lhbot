@@ -35,7 +35,7 @@ async def on_ready():
     clean_dir.start()
 
 
-@tasks.loop(minutes=1.0)
+@tasks.loop(minutes=60)
 async def clean_dir():
     _clear_dir("./files")
 
