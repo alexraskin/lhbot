@@ -110,7 +110,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed = discord.Embed(title="LhGuess report is ready",color=0x42F56C)
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction("✨")
+        await embed_message.add_reaction("✔️")
 
     @commands.command(name="lhhint")
     async def lh_hints(self, ctx):
@@ -122,7 +122,8 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed.set_author(name="Random LH Hint")
         embed.add_field(name="Hint:", value=random_hint, inline=False)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
-        await ctx.send(embed=embed)
+        embed_message = await ctx.send(embed=embed)
+        embed_message.add_reaction("✨")
 
 def setup(bot):
     bot.add_cog(LhGuess(bot))
