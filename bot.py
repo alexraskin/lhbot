@@ -8,6 +8,8 @@ import discord
 from discord.ext import tasks
 from discord.ext.commands import Bot
 
+from utils.clear_dir import _clear_dir
+
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
@@ -30,6 +32,12 @@ async def on_ready():
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
     status_task.start()
+
+
+@tasks.loop(minutes=50)
+def clean_dir():
+    _clear_dir("./files")
+    return
 
 
 @tasks.loop(minutes=1.0)
