@@ -1,15 +1,15 @@
 import json
 import os
-import sys
 import random
+import sys
 
 import aiofiles
 import discord
 from discord.ext import commands
 
 from database.db import client
-from database.utils.return_helper import _helper
 from utils.generate_pdf import PdfReport
+from utils.return_helper import _helper
 from utils.uploader import FileSharer
 
 if not os.path.isfile("config.json"):
@@ -40,7 +40,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         !lhguess <your guess>
         """
         banned_list = []
-        async with aiofiles.open("cogs/banwords.txt") as banned_words:
+        async with aiofiles.open("./cogs/banwords.txt") as banned_words:
             async for line in banned_words:
                 banned_list.append(line.strip("\n"))
         if str(guess).lower() in banned_list:
