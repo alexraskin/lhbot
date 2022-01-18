@@ -32,12 +32,12 @@ async def on_ready():
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
     status_task.start()
+    clean_dir.start()
 
 
-@tasks.loop(minutes=50)
-def clean_dir():
+@tasks.loop(minutes=1.0)
+async def clean_dir():
     _clear_dir("./files")
-    return
 
 
 @tasks.loop(minutes=1.0)
