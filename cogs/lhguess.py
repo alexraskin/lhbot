@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import random
 
 import aiofiles
 import discord
@@ -25,6 +26,13 @@ collection = database.get_collection("lhbot_collection")
 class LhGuess(commands.Cog, name="lhguess"):
     def __init__(self, bot):
         self.bot = bot
+        self.hints = [
+            "It is in English",
+            "Made by 10 year old finnish lad",
+            "Clever",
+            "Masaa can be bribed",
+            "It's not long hammer",
+        ]
 
     @commands.command(name="lhguess")
     async def lh_guess(self, ctx, *, guess):
@@ -88,22 +96,11 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("💚")
 
-    @commands.command(name="lhshow")
-    async def show_all_guess(self, ctx):
-        """
-        show all guesses in the database
-        """
-        guess_list = []
-        async for _guess in collection.find():
-            guess_list.append(_helper(_guess)["guess"])
-        final_list = "\n".join(guess_list)
-        embed = discord.Embed(color=0x42F56C)
-        embed.add_field(name="All guesses in the database:", value=sorted(final_list))
-        embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction("👀")
-
     @commands.command(name="lhreport")
     async def run_lh_report(self, ctx):
+        """
+        generate LhGuess PDF report
+        """
         guess_list = []
         async for _guess in collection.find():
             guess_list.append(_helper(_guess)["guess"])
@@ -114,6 +111,18 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✨")
+
+    @commands.command(name="lhhint")
+    async def lh_hints(self, ctx):
+        """
+        random hint about the meaning of LH
+        """
+        embed = discord.Embed(description="LhHints", color=0x42F56C)
+        random_hint = random.choice(list(self.hints))
+        embed.set_author(name="Random LH Hint")
+        embed.add_field(name="Hint:", value=random_hint, inline=False)
+        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(LhGuess(bot))
