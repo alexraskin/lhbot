@@ -104,10 +104,12 @@ class LhGuess(commands.Cog, name="lhguess"):
         guess_list = []
         async for _guess in collection.find():
             guess_list.append(_helper(_guess)["guess"])
-        report = PdfReport(filename=f"{ctx.message.author}-report.pdf", guesses=guess_list)
+        report = PdfReport(
+            filename=f"{ctx.message.author}-report.pdf", guesses=guess_list
+        )
         report.generate()
         share = FileSharer(f"{report.filename}")
-        embed = discord.Embed(title="LhGuess report is ready",color=0x42F56C)
+        embed = discord.Embed(title="LhGuess report is ready", color=0x42F56C)
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✔️")
@@ -124,6 +126,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
         embed_message.add_reaction("✨")
+
 
 def setup(bot):
     bot.add_cog(LhGuess(bot))
