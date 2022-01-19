@@ -226,6 +226,50 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         url = "https://twitter.com/LhCloudy"
         message = await ctx.send(url)
         await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="tracer")
+    async def tracer(self, ctx):
+        url = "https://gyazo.com/444bd292aa15ca168bddb563aefc1191"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="volskaya")
+    async def volskaya(self, ctx):
+        url = "https://clips.twitch.tv/ColdSuccessfulFlyTheTarFu-Tg_R4sjZyjCMO5cY"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="wallbang")
+    async def wallbang(self, ctx):
+        url = "hhttps://www.twitch.tv/lhcloudy27/clip/RudeAbstruseHummingbirdPunchTrees-y7H3Pk3hrdoKarhP?filter=clips&range=7d&sort=time"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="widow")
+    async def widow(self, ctx):
+        url = "https://gyazo.com/4939b21f5db58b259314a5cf70390341"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="youtube")
+    async def youtube(self, ctx):
+        url = "SMÄSH THAT LIKE AND SUBSCRIBE BUTTON -> https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="zarya")
+    async def zarya(self, ctx):
+        url = "https://clips.twitch.tv/PeacefulAstuteClintTwitchRaid-iVjcGr7u5ZGr_6Sz"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="zarya2")
+    async def zarya_two(self, ctx):
+        url = "https://clips.twitch.tv/UninterestedWealthyDurian4Head-F-XGgZtBOwdvBAdU"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    
 
 def setup(bot):
     bot.add_cog(LhCloudy(bot))
