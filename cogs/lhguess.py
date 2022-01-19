@@ -90,8 +90,8 @@ class LhGuess(commands.Cog, name="lhguess"):
         guesses = []
         async for _guess in collection.find():
             guesses.append(_helper(_guess)["guess"])
-        embed = discord.Embed(color=0x42F56C)
-        embed.add_field(name="LhGuess Count", value=f"{len(guesses)} 🦍", inline=True)
+        embed = discord.Embed(til="LhGuess Count", color=0x42F56C)
+        embed.add_field(name="Current guess Count:", value=f"{len(guesses)} 🦍", inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("💚")
