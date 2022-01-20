@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import random
+import datetime
 
 from discord.ext import commands
 
@@ -275,7 +276,38 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         message = await ctx.send(url)
         await message.add_reaction(LhCloudy.random_emoji())
     
+    @commands.command(name="age")
+    async def age(self, ctx):
+        td=datetime.datetime.now().date() 
+        bd=datetime.date(1999,5,21)
+        age_years=int((td-bd).days /365.25)
+        message = await ctx.send(age_years)
+        await message.add_reaction(LhCloudy.random_emoji())
     
+    @commands.command(name="backlane")
+    async def backlane(self, ctx):
+        text = "fuck this game, their is no teamplay its about who gonna headshot backlane first, make goat great again"
+        message = await ctx.send(text)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="chair")
+    async def chair(self, ctx):
+        text = "Herman Miller Aeron\nhttps://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/"
+        message = await ctx.send(text)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="cloudycree")
+    async def cloudycree(self, ctx):
+        url = "https://www.twitch.tv/lep_ow/clip/DifficultAmusedBillSpicyBoy--UBV2xxbcIsLlQKW?filter=clips&range=30d&sort=time"
+        message = await ctx.send(url)
+        await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(name="from")
+    async def from_(self, ctx):
+        text = "kotka of south eastern finland of the continent of europe"
+        message = await ctx.send(text)
+        await message.add_reaction(LhCloudy.random_emoji())
+
 
 def setup(bot):
     bot.add_cog(LhCloudy(bot))
