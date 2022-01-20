@@ -35,7 +35,13 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
             "📼",
             "📈",
             "🧡",
-            "✨"
+            "✨",
+            "🍑",
+            "🔨",
+            "🛡️",
+            "🇫🇮",
+            "🐸",
+            "🐈"
         ]
         return random.choice(list(emoji_list))
 
