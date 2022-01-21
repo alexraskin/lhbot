@@ -5,9 +5,9 @@ import sys
 
 import discord
 from discord.ext import commands
-from utils.banwords import banned_words
 
 from database.db import client
+from utils.banwords import banned_words
 from utils.generate_pdf import PdfReport
 from utils.return_helper import _helper
 from utils.uploader import FileSharer
