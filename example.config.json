@@ -1,8 +1,15 @@
 {
-    "bot_prefix": "!",
-    "token": "YOUR KEY",
-    "application_id": "YOUR APP ID",
+    "bot_prefix": "?",
+    "token": "123456789",
+    "application_id": "123456789",
+    "filestack_key": "123456789",
+    "DATABASE_URL": "123456789",
     "owners": [
         123456789
-    ]
+    ],
+    "superusers": [
+        123456789
+    ],
+    "main_guild": 123456789
+
   }
