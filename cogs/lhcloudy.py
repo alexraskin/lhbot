@@ -75,7 +75,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
     @commands.command(name="climb")
     async def climb(self, ctx):
-        text = """Hey Cloudy. I am a diamond level tank player with aspirations to climb higher. I watch your streams every day in order to learn and get better. Now after studying your gameplay and applying it I have tanked to bronze. Thanks and much love."""
+        text = "Hey Cloudy. I am a diamond level tank player with aspirations to climb higher. I watch your streams every day in order to learn and get better. Now after studying your gameplay and applying it I have tanked to bronze. Thanks and much love."
         await ctx.trigger_typing()
         message = await ctx.send(text)
         await message.add_reaction(self.random_emoji())
@@ -355,7 +355,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
             '\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>' +
             '\n• Instagram: <https://www.instagram.com/lhcloudy/>')
         embed = Embed(
-            title='Links',
+            title='LhCloudy Links',
             description=links,
             color=0x2ECC71
         )
