@@ -3,7 +3,7 @@ import json
 import os
 import random
 import sys
-
+from discord import Embed
 from discord.ext import commands
 
 if not os.path.isfile("config.json"):
@@ -88,7 +88,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         message = await ctx.send(text)
         await message.add_reaction(LhCloudy.random_emoji())
 
-    @commands.command(name="code")
+    @commands.command(name="code", aliases=["workshop"])
     async def code(self, ctx):
         text = "rein: XEEAE | other: https://workshop.codes/u/Seita%232315"
         await ctx.trigger_typing()
@@ -314,7 +314,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         message = await ctx.send(url)
         await message.add_reaction(LhCloudy.random_emoji())
     
-    @commands.command(name="age")
+    @commands.command(name="age", aliases=["oldman"])
     async def age(self, ctx):
         td=datetime.datetime.now().date() 
         bd=datetime.date(1999,5,21)
@@ -350,6 +350,26 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await ctx.trigger_typing()
         message = await ctx.send(text)
         await message.add_reaction(LhCloudy.random_emoji())
+    
+    @commands.command(
+        name='links',
+        aliases=['urls'],
+    )
+    async def links(self, ctx):
+        links = (
+            '• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>'
+            + '\n• Discord: <https://discord.gg/jd6CZSj8jb>'
+            + '\n• Twitter: <https://twitter.com/LhCloudy>'
+            + '\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>'
+            + '\n• Instagram: <https://www.instagram.com/lhcloudy/>'
+        )
+        embed = Embed(
+            title='Links',
+            description=links,
+            color=0x2ECC71
+        )
+        await ctx.trigger_typing()
+        await ctx.send(embed=embed)
 
 
 def setup(client):
