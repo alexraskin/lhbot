@@ -2,8 +2,11 @@ import json
 import os
 import platform
 import sys
+from urllib.parse import quote_plus
 
+import aiohttp
 import discord
+from aiohttp import ContentTypeError
 from discord.ext import commands
 
 if not os.path.isfile("config.json"):
@@ -50,6 +53,76 @@ class General(commands.Cog, name="general"):
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         await ctx.send(embed=embed)
+    
+    @commands.command(
+        name='search',
+        aliases=['lmgtfy', 'duck', 'duckduckgo', 'google']
+    )
+    async def search(self, ctx, *, search_text):
+        """Post a duckduckgo search link"""
+        await ctx.trigger_typing()
+        await ctx.send(
+            f'here you go! <https://duckduckgo.com/?q={quote_plus(search_text)}>'
+        )
+    
+    async def duck_call(self, ctx, query=None):
+
+        if query is None:
+            return
+
+        if len(query) > 500:
+            await ctx.send('Query size is too long!')
+            return
+
+        query = '+'.join(query.split())
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                'https://api.duckduckgo.com/?format=json&t=lhbotdiscordbot&q='
+                + f'{query}'
+            ) as response:
+
+                try:
+                    answer = await response.json(content_type="application/x-javascript")
+                except ContentTypeError:
+                    await ctx.send('Invalid query')
+                    return
+
+                if (not answer) or (not answer['AbstractText']):
+                    await ctx.send(
+                        'Couldn\'t find anything, here\'s duckduckgo link '
+                        + f'<https://duckduckgo.com/?q={quote_plus(query)}>'
+                    )
+                    return
+
+                embed = discord.Embed(
+                    description=answer['AbstractText'],
+                    color=0x2ECC71
+                )
+
+                if answer['Image']:
+                    embed.set_image(url=f'https://api.duckduckgo.com{answer["Image"]}')
+
+                embed.set_author(
+                    name=answer['Heading'],
+                    icon_url='https://api.duckduckgo.com/favicon.ico'
+                )
+
+                embed.set_footer(
+                    text=f'Info from {answer["AbstractSource"]}\n'
+                    + f'at {answer["AbstractURL"]}\n'
+                    + 'Provided By: https://api.duckduckgo.com'
+                )
+                await ctx.send(embed=embed)
+    
+    @commands.command(
+        name='question',
+        aliases=['q']
+    )
+    async def question(self, ctx, *, question):
+        await ctx.trigger_typing()
+        if question:
+            await self.duck_call(ctx, question)
+            return
 
 
 def setup(bot):
