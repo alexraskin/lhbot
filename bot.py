@@ -2,9 +2,12 @@ import json
 import os
 import platform
 import random
+import re
 import sys
+from datetime import datetime as dt
 
 import discord
+from discord import DMChannel
 from discord.ext import tasks
 from discord.ext.commands import Bot
 
@@ -19,6 +22,14 @@ else:
 intents = discord.Intents.default()
 
 bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
+
+
+def get_year_string():
+    now = dt.utcnow()
+    year_end = dt(now.year+1, 1, 1)
+    year_start = dt(now.year, 1, 1)
+    year_percent = (now - year_start) / (year_end - year_start) * 100
+    return f'For your information, the year is {year_percent:.1f}% over!'
 
 
 @bot.event
@@ -75,6 +86,35 @@ async def on_message(message):
     """
     if message.author == bot.user or message.author.bot:
         return
+    
+    if isinstance(message.channel, DMChannel):
+        return
+
+    if re.search(
+            r'(?i)^(?:hi|what\'s up|yo|hey|hello) lhbot',
+            message.content
+        ):
+            await message.channel.send('hello')
+    
+    if re.search(
+            r'(?i)^lhbot meow',
+            message.content
+        ):
+            await message.channel.send('ฅ^•ﻌ•^ฅ')
+    
+    if re.search(
+            r'(?i)^lhbot what(?:\'s| is) the answer to life,? the universe and everything',
+            message.content
+        ):
+            await message.channel.send('42')
+    
+    if re.search(
+            r'(?i)(?:the|this) (?:current )?year is '
+            + r'(?:almost |basically )?(?:over|done|finished)',
+            message.content
+        ):
+            await message.channel.send(get_year_string())
+
     await bot.process_commands(message)
 
 
