@@ -7,7 +7,7 @@ from datetime import datetime
 
 import discord
 from aiohttp import ClientSession, ClientTimeout
-from discord.ext import tasks, commands
+from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 
 from utils.clear_dir import _clear_dir
@@ -17,6 +17,7 @@ if not os.path.isfile("config.json"):
 else:
     with open("config.json", encoding="utf-8") as file:
         config = json.load(file)
+
 
 class LhBot(Bot):
     def __init__(self, *args, **options):
@@ -51,8 +52,10 @@ client = LhBot(
     description='Hi I am LhBot!',
     max_messages=15000,
     intents=discord.Intents.all(),
-    allowed_mentions=discord.AllowedMentions(everyone=False, users=True, roles=True)
-)
+    allowed_mentions=discord.AllowedMentions(
+        everyone=False,
+        users=True,
+        roles=True))
 
 STARTUP_EXTENSIONS = []
 
@@ -70,6 +73,7 @@ for extension in reversed(STARTUP_EXTENSIONS):
         exc = f'{type(e).__name__}: {e}'
         print(f'Failed to load extension {extension}\n{exc}')
 
+
 @tasks.loop(minutes=1.0)
 async def status_task():
     statuses = [
@@ -82,9 +86,11 @@ async def status_task():
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
+
 @tasks.loop(minutes=60)
 async def clean_dir():
     _clear_dir("./files")
+
 
 @client.event
 async def on_ready():
@@ -130,11 +136,13 @@ async def on_command_error(context, error):
         await context.send(embed=embed)
     raise error
 
+
 @client.event
 async def on_message(message):
     if isinstance(message.channel, discord.DMChannel):
         return
     await client.process_commands(message)
+
 
 @client.event
 async def on_command_completion(ctx):
@@ -142,7 +150,8 @@ async def on_command_completion(ctx):
     split = full_command_name.split(" ")
     executed_command = str(split[0])
     print(
-        f"Executed {executed_command} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
+        f"Executed {executed_command} command in {ctx.guild.name}"
+        + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
 
 

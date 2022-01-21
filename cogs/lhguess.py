@@ -40,7 +40,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         !lhguess <your guess>
         """
-        
+
         if str(guess).lower() in self.banned_words_list:
             embed = discord.Embed(title="Guess not allowed", color=0xE74C3C)
             embed_message = await ctx.send(embed=embed)
@@ -72,8 +72,9 @@ class LhGuess(commands.Cog, name="lhguess"):
                     name="LhGuess:", value=pretty_return["guess"], inline=True
                 )
                 embed.add_field(
-                    name="Guessed by:", value=pretty_return["guessedBy"], inline=False
-                )
+                    name="Guessed by:",
+                    value=pretty_return["guessedBy"],
+                    inline=False)
                 embed.add_field(
                     name="Guess ID:", value=pretty_return["id"], inline=False
                 )
@@ -90,7 +91,10 @@ class LhGuess(commands.Cog, name="lhguess"):
         async for _guess in collection.find():
             guesses.append(_helper(_guess)["guess"])
         embed = discord.Embed(title="LhGuess Count", color=0x42F56C)
-        embed.add_field(name="Current guess Count:", value=f"{len(guesses)} 🦍", inline=True)
+        embed.add_field(
+            name="Current guess Count:",
+            value=f"{len(guesses)} 🦍",
+            inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("💚")
