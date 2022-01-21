@@ -3,8 +3,9 @@ import os
 import platform
 import re
 import sys
-from urllib.parse import quote_plus
 from datetime import datetime as dt
+from inspect import getsourcelines
+from urllib.parse import quote_plus
 
 import discord
 from aiohttp import ContentTypeError
@@ -163,6 +164,25 @@ class General(commands.Cog, name="general"):
             )
             await ctx.send(embed=embed)
 
+    @commands.command(
+        name='inspect'
+    )
+    async def inspect(self, ctx, *, command_name: str):
+        """Print a link and the source code of a command"""
+        cmd = self.client.get_command(command_name)
+        if cmd is None:
+            return
+        module = cmd.module
+        saucelines, startline = getsourcelines(cmd.callback)
+        url = (
+            '<https://github.com/alexraskin/lbhot/blob/main/'
+            f'{"/".join(module.split("."))}.py#L{startline}>\n'
+        )
+        sauce = ''.join(saucelines)
+        sanitized = sauce.replace('`', '\u200B`')
+        if len(url) + len(sanitized) > 1950:
+            sanitized = sanitized[:1950-len(url)] + '\n[...]'
+        await ctx.send(url + f'```python\n{sanitized}\n```')
 
 def setup(client):
     client.add_cog(General(client))
