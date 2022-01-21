@@ -57,10 +57,24 @@ class Fun(commands.Cog, name="Fun"):
     @commands.command(
         name="cat",
         aliases=["catpic"])
-    async def cat(self):
-        """Shows the user a random cat picture"""
-        async with self.client.session.get('http://random.cat/meow') as response:
+    async def cat(self, ctx):
+        """Shows a random cat picture"""
+        async with self.client.session.get('https://aws.random.cat/meow') as response:
             cat = await response.json()
+            cat_photo = cat["file"]
 
-            picture = cat['file']
-            await self.client.say(picture)
+            await ctx.send(cat_photo)
+
+    @commands.command(
+        name="dog",
+        aliases=["dogpic"])
+    async def dog(self, ctx):
+        """Shows a random dog picture"""
+        async with self.client.session.get('https://random.dog/woof.json') as response:
+            dog = await response.json()
+            dog_photo = dog["url"]
+
+            await ctx.send(dog_photo)
+
+def setup(client):
+    client.add_cog(Fun(client))
