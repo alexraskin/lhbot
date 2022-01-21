@@ -103,21 +103,21 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await message.add_reaction(LhCloudy.random_emoji())
     
     @commands.command(name="dva2")
-    async def dva(self, ctx):
+    async def dva_two(self, ctx):
         url = "https://clips.twitch.tv/WanderingLuckyClipzBrainSlug-0x2XxJjniDP_SSeX"
         await ctx.trigger_typing()
         message = await ctx.send(url)
         await message.add_reaction(LhCloudy.random_emoji())
     
-    @commands.command(name="dva2")
-    async def dva(self, ctx):
+    @commands.command(name="dva3")
+    async def dva_three(self, ctx):
         url = "https://clips.twitch.tv/ThirstySavageMinkAsianGlow-drRcT2-cwpRSx2gE"
         await ctx.trigger_typing()
         message = await ctx.send(url)
         await message.add_reaction(LhCloudy.random_emoji())
 
     @commands.command(name="egirl")
-    async def dva(self, ctx):
+    async def egirl(self, ctx):
         text = "hey big cwoudy man, cawn i pwease be uw egiww mewcy?"
         await ctx.trigger_typing()
         message = await ctx.send(text)
