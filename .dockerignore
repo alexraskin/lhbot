@@ -1,6 +1,5 @@
 .mypy_cache
 example.config.json
 README.md
-example.config.json
 .pylintrc
 .github/
