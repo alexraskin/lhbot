@@ -1,0 +1,9 @@
+version: '2'
+services:
+    python:
+        container_name: lhbot
+        build: .
+        volumes:
+            - ./:/opt/src
+        command: bash -c 'cd /opt/src/python && python3 bot.py'
+        restart: always
