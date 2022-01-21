@@ -76,6 +76,20 @@ class Fun(commands.Cog, name="Fun"):
             dog_photo = dog["url"]
 
             await ctx.send(dog_photo)
+    
+    @commands.command(
+        name="meme",
+        aliases=["memer"]
+    )
+    async def get_meme(self, ctx):
+        """
+        get random meme from reddit
+        """
+        async with self.client.session.get('https://meme-api.herokuapp.com/gimme') as response:
+            data = await response.json()
+            meme = data["url"]
+
+            await ctx.send(meme)
 
 
 def setup(client):
