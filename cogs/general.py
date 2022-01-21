@@ -6,7 +6,6 @@ import re
 import random
 from urllib.parse import quote_plus
 
-import aiohttp
 import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands, tasks
@@ -166,44 +165,41 @@ class General(commands.Cog, name="general"):
             return
 
         query = '+'.join(query.split())
-        async with aiohttp.ClientSession() as session:
-            async with self.client.session.get(
-                'https://api.duckduckgo.com/?format=json&t=lhbotdiscordbot&q='
-                + f'{query}'
+        async with self.client.session.get(
+            f'https://api.duckduckgo.com/?format=json&t=lhbotdiscordbot&q={query}'
             ) as response:
+            try:
+                answer = await response.json(content_type="application/x-javascript")
+            except ContentTypeError:
+                await ctx.send('Invalid query')
+                return
 
-                try:
-                    answer = await response.json(content_type="application/x-javascript")
-                except ContentTypeError:
-                    await ctx.send('Invalid query')
-                    return
-
-                if (not answer) or (not answer['AbstractText']):
-                    await ctx.send(
-                        'Couldn\'t find anything, here\'s duckduckgo link: '
-                        + f'<https://duckduckgo.com/?q={quote_plus(query)}>'
-                    )
-                    return
-
-                embed = discord.Embed(
-                    description=answer['AbstractText'],
-                    color=0x2ECC71
+            if (not answer) or (not answer['AbstractText']):
+                await ctx.send(
+                    'Couldn\'t find anything, here\'s duckduckgo link: '
+                    + f'<https://duckduckgo.com/?q={quote_plus(query)}>'
                 )
+                return
 
-                if answer['Image']:
-                    embed.set_image(url=f'https://api.duckduckgo.com{answer["Image"]}')
+            embed = discord.Embed(
+                description=answer['AbstractText'],
+                color=0x2ECC71
+            )
 
-                embed.set_author(
-                    name=answer['Heading'],
-                    icon_url='https://api.duckduckgo.com/favicon.ico'
-                )
+            if answer['Image']:
+                embed.set_image(url=f'https://api.duckduckgo.com{answer["Image"]}')
 
-                embed.set_footer(
-                    text=f'Info from {answer["AbstractSource"]}\n'
-                    + f'at {answer["AbstractURL"]}\n'
-                    + 'Provided By: https://api.duckduckgo.com'
-                )
-                await ctx.send(embed=embed)
+            embed.set_author(
+                name=answer['Heading'],
+                icon_url='https://api.duckduckgo.com/favicon.ico'
+            )
+
+            embed.set_footer(
+                text=f'Info from {answer["AbstractSource"]}\n'
+                + f'at {answer["AbstractURL"]}\n'
+                + 'Provided By: https://api.duckduckgo.com'
+            )
+            await ctx.send(embed=embed)
 
 
 def setup(client):
