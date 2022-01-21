@@ -42,7 +42,7 @@ class LhBot(Bot):
 
 
 client = LhBot(
-    command_prefix="!",
+    command_prefix="?",
     description='Hi I am LhBot!',
     max_messages=15000,
     intents=discord.Intents.all(),
@@ -74,11 +74,9 @@ async def status_task():
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{client.config["bot_prefix"]}dogpic",
-        f"{client.config["bot_prefix"]}catpic",
-        f"{client.config["bot_prefix"]}help",
-        f"{client.config["bot_prefix"]}lhhint",
-        f"{client.config["bot_prefix"]}info",
+        f"{client.config['bot_prefix']}help",
+        f"{client.config['bot_prefix']}info",
+        f"{client.config['bot_prefix']}dogpic",
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
