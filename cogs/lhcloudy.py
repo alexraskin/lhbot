@@ -357,7 +357,8 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     )
     async def links(self, ctx):
         links = (
-            '• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>'
+            '• Twitch: <https://www.twitch.tv/lhcloudy27>'
+            + '\n• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>'
             + '\n• Discord: <https://discord.gg/jd6CZSj8jb>'
             + '\n• Twitter: <https://twitter.com/LhCloudy>'
             + '\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>'
