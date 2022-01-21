@@ -6,7 +6,7 @@ import sys
 import discord
 from discord.ext import commands
 
-from database.db import client
+from database.db import db_client
 from utils.banwords import banned_words
 from utils.generate_pdf import PdfReport
 from utils.return_helper import _helper
@@ -18,14 +18,14 @@ else:
     with open("config.json") as file:
         config = json.load(file)
 
-database = client.lhbot
+database = db_client.lhbot
 
 collection = database.get_collection("lhbot_collection")
 
 
 class LhGuess(commands.Cog, name="lhguess"):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, client):
+        self.bot = client
         self.banned_words_list = banned_words.split("\n")
         self.hints = [
             "It is in English",
@@ -126,5 +126,5 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed_message.add_reaction("✨")
 
 
-def setup(bot):
-    bot.add_cog(LhGuess(bot))
+def setup(client):
+    client.add_cog(LhGuess(client))

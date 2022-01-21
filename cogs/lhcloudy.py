@@ -18,8 +18,8 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     commands from twitch chat
     """
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, client):
+        self.client = client
 
     @staticmethod
     def random_emoji():
@@ -352,5 +352,5 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await message.add_reaction(LhCloudy.random_emoji())
 
 
-def setup(bot):
-    bot.add_cog(LhCloudy(bot))
+def setup(client):
+    client.add_cog(LhCloudy(client))

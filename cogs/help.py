@@ -13,8 +13,8 @@ else:
 
 
 class Help(commands.Cog, name="help"):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, client):
+        self.client = client
 
     @commands.command(name="Help")
     async def help(self, context):
@@ -41,5 +41,5 @@ class Help(commands.Cog, name="help"):
         await context.send(embed=embed)
 
 
-def setup(bot):
-    bot.add_cog(Help(bot))
+def setup(client):
+    client.add_cog(Help(client))

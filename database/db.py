@@ -10,4 +10,4 @@ else:
     with open("./config.json", encoding="utf-8") as file:
         config = json.load(file)
 
-client = motor.motor_asyncio.AsyncIOMotorClient(config["DATABASE_URL"])
+db_client = motor.motor_asyncio.AsyncIOMotorClient(config["DATABASE_URL"])
