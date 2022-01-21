@@ -59,7 +59,9 @@ class General(commands.Cog, name="general"):
             description=f"The bot latency is {round(self.client.latency * 1000)}ms.",
             color=0x42F56C,
         )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(
+            text=f"Requested by {ctx.message.author}",
+            icon_url=ctx.author.display_avatar)
         await ctx.send(embed=embed)
     
     @commands.command(
