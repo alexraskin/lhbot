@@ -8,6 +8,7 @@ import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
 
+
 class General(commands.Cog, name="general"):
     """
     general bot commands
@@ -171,8 +172,9 @@ class General(commands.Cog, name="general"):
         sauce = ''.join(saucelines)
         sanitized = sauce.replace('`', '\u200B`')
         if len(url) + len(sanitized) > 1950:
-            sanitized = sanitized[:1950-len(url)] + '\n[...]'
+            sanitized = sanitized[:1950 - len(url)] + '\n[...]'
         await ctx.send(url + f'```python\n{sanitized}\n```')
+
 
 def setup(client):
     client.add_cog(General(client))

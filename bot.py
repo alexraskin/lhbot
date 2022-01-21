@@ -146,9 +146,8 @@ async def on_command_completion(ctx):
     split = full_command_name.split(" ")
     executed_command = str(split[0])
     print(
-        f"Executed {executed_command} command in {ctx.guild.name}"
-        + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
-    )
+        f"Executed {executed_command} command in {ctx.guild.name}" +
+        f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")
 
 
 client.run()

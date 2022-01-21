@@ -77,5 +77,6 @@ class Fun(commands.Cog, name="Fun"):
 
             await ctx.send(dog_photo)
 
+
 def setup(client):
     client.add_cog(Fun(client))
