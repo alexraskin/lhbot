@@ -56,7 +56,7 @@ class General(commands.Cog, name="general"):
         """
         embed = discord.Embed(
             title="🏓 Pong!",
-            description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
+            description=f"The bot latency is {round(self.client.latency * 1000)}ms.",
             color=0x42F56C,
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
