@@ -38,11 +38,11 @@ class LhBot(Bot):
             user_roles = [role.id for role in user.roles]
         except AttributeError:
             return False
-        permitted_roles = self.config['admin_roles']
+        permitted_roles = config['admin_roles']
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
-        superusers = self.config['superusers']
+        superusers = config['superusers']
         return user.id in superusers
 
 
@@ -64,6 +64,7 @@ for file in os.listdir(os.path.join(os.path.dirname(__file__), 'cogs/')):
 for extension in reversed(STARTUP_EXTENSIONS):
     try:
         client.load_extension(f'{extension}')
+        print(f"Loaded extension '{extension}'")
     except Exception as e:
         client.last_errors.append((e, datetime.utcnow(), None, None))
         exc = f'{type(e).__name__}: {e}'
@@ -87,12 +88,15 @@ async def clean_dir():
 
 @client.event
 async def on_ready():
+    main_id = config['main_guild']
+    client.main_guild = client.get_guild(main_id) or client.guilds[0]
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
     status_task.start()
     clean_dir.start()
+    print('\nMain guild:', client.main_guild.name)
     print(f'\n{client.user.name} started successfully')
     return True
 
