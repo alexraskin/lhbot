@@ -58,17 +58,16 @@ class General(commands.Cog, name="general"):
         name='search',
         aliases=['lmgtfy', 'duck', 'duckduckgo', 'google']
     )
-    async def search(self, ctx, *, search_text):
-        """Post a duckduckgo search link"""
-        await ctx.trigger_typing()
-        await ctx.send(
-            f'here you go! <https://duckduckgo.com/?q={quote_plus(search_text)}>'
-        )
-    
-    async def duck_call(self, ctx, query=None):
+    async def search(self, ctx, *, search_text=None):
+        if search_text is None:
+            await ctx.trigger_typing()
+            await ctx.send('Please enter a search query!')
+        if search_text:
+            await ctx.trigger_typing()
+            await self.duck_call(ctx, search_text)
 
-        if query is None:
-            return
+    
+    async def duck_call(self, ctx, query):
 
         if len(query) > 500:
             await ctx.send('Query size is too long!')
@@ -89,7 +88,7 @@ class General(commands.Cog, name="general"):
 
                 if (not answer) or (not answer['AbstractText']):
                     await ctx.send(
-                        'Couldn\'t find anything, here\'s duckduckgo link '
+                        'Couldn\'t find anything, here\'s duckduckgo link: '
                         + f'<https://duckduckgo.com/?q={quote_plus(query)}>'
                     )
                     return
@@ -113,16 +112,6 @@ class General(commands.Cog, name="general"):
                     + 'Provided By: https://api.duckduckgo.com'
                 )
                 await ctx.send(embed=embed)
-    
-    @commands.command(
-        name='question',
-        aliases=['q']
-    )
-    async def question(self, ctx, *, question):
-        await ctx.trigger_typing()
-        if question:
-            await self.duck_call(ctx, question)
-            return
 
 
 def setup(bot):
