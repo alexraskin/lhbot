@@ -1,15 +1,5 @@
-import json
-import os
-import sys
-
 import discord
 from discord.ext import commands
-
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json", encoding="utf-8") as file:
-        config = json.load(file)
 
 
 class Help(commands.Cog, name="help"):
@@ -21,7 +11,7 @@ class Help(commands.Cog, name="help"):
         """
         list all commands
         """
-        prefix = config["bot_prefix"]
+        prefix = self.client.config["bot_prefix"]
         if not isinstance(prefix, str):
             prefix = prefix[0]
         embed = discord.Embed(

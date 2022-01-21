@@ -2,7 +2,6 @@ import json
 import os
 import platform
 import random
-import sys
 from datetime import datetime
 
 import discord
@@ -12,23 +11,18 @@ from discord.ext.commands import Bot
 
 from utils.clear_dir import _clear_dir
 
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json", encoding="utf-8") as file:
-        config = json.load(file)
-
 
 class LhBot(Bot):
     def __init__(self, *args, **options):
         super().__init__(*args, **options)
         self.session = None
-        self.flood_mode = False
         self.last_errors = []
+        with open("config.json") as conffile:
+            self.config = json.load(conffile)
 
     async def start(self, *args, **kwargs):
         self.session = ClientSession(timeout=ClientTimeout(total=30))
-        await super().start(config["token"], *args, **kwargs)
+        await super().start(self.config["token"], *args, **kwargs)
 
     async def close(self):
         await self.session.close()
@@ -39,16 +33,16 @@ class LhBot(Bot):
             user_roles = [role.id for role in user.roles]
         except AttributeError:
             return False
-        permitted_roles = config['admin_roles']
+        permitted_roles = self.config['admin_roles']
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
-        superusers = config['superusers']
+        superusers = self.config['superusers']
         return user.id in superusers
 
 
 client = LhBot(
-    command_prefix=config["bot_prefix"],
+    command_prefix="!",
     description='Hi I am LhBot!',
     max_messages=15000,
     intents=discord.Intents.all(),
@@ -80,9 +74,11 @@ async def status_task():
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{config['bot_prefix']}help",
-        f"{config['bot_prefix']}lhhint",
-        f"{config['bot_prefix']}info",
+        f"{client.config["bot_prefix"]}dogpic",
+        f"{client.config["bot_prefix"]}catpic",
+        f"{client.config["bot_prefix"]}help",
+        f"{client.config["bot_prefix"]}lhhint",
+        f"{client.config["bot_prefix"]}info",
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -94,7 +90,7 @@ async def clean_dir():
 
 @client.event
 async def on_ready():
-    main_id = config['main_guild']
+    main_id = client.config['main_guild']
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")

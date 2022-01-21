@@ -1,8 +1,5 @@
-import json
-import os
 import platform
 import re
-import sys
 from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
@@ -10,13 +7,6 @@ from urllib.parse import quote_plus
 import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
-
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json", encoding="utf-8") as file:
-        config = json.load(file)
-
 
 class General(commands.Cog, name="general"):
     """
@@ -43,7 +33,7 @@ class General(commands.Cog, name="general"):
         embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
         embed.add_field(
             name="Prefix:",
-            value=f"{config['bot_prefix']}",
+            value=f"{self.client.config['bot_prefix']}",
             inline=True)
         embed.add_field(
             name="Python Version:",

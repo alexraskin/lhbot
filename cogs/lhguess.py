@@ -1,7 +1,4 @@
-import json
-import os
 import random
-import sys
 
 import discord
 from discord.ext import commands
@@ -11,12 +8,6 @@ from utils.banwords import banned_words
 from utils.generate_pdf import PdfReport
 from utils.return_helper import _helper
 from utils.uploader import FileSharer
-
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json") as file:
-        config = json.load(file)
 
 database = db_client.lhbot
 
@@ -78,7 +69,6 @@ class LhGuess(commands.Cog, name="lhguess"):
                 embed.add_field(
                     name="Guess ID:", value=pretty_return["id"], inline=False
                 )
-                embed.set_footer(icon_url=ctx.author.display_avatar)
                 embed_message = await ctx.send(embed=embed)
                 await embed_message.add_reaction("👍")
 

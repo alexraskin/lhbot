@@ -1,17 +1,8 @@
 import datetime
-import json
-import os
 import random
-import sys
 
 from discord import Embed
 from discord.ext import commands
-
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json", encoding="utf-8") as file:
-        config = json.load(file)
 
 
 class LhCloudy(commands.Cog, name="lhcloudy"):
