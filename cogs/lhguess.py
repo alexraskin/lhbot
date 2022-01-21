@@ -3,9 +3,9 @@ import os
 import random
 import sys
 
-import aiofiles
 import discord
 from discord.ext import commands
+from utils.banwords import banned_words
 
 from database.db import client
 from utils.generate_pdf import PdfReport
@@ -26,6 +26,7 @@ collection = database.get_collection("lhbot_collection")
 class LhGuess(commands.Cog, name="lhguess"):
     def __init__(self, bot):
         self.bot = bot
+        self.banned_words_list = banned_words.split("\n")
         self.hints = [
             "It is in English",
             "Made by 10 year old finnish lad",
@@ -39,11 +40,8 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         !lhguess <your guess>
         """
-        banned_list = []
-        async with aiofiles.open("./cogs/banwords.txt") as banned_words:
-            async for line in banned_words:
-                banned_list.append(line.strip("\n"))
-        if str(guess).lower() in banned_list:
+        
+        if str(guess).lower() in self.banned_words_list:
             embed = discord.Embed(title="Guess not allowed", color=0xE74C3C)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")

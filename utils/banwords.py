@@ -1,4 +1,4 @@
-2g1c
+banned_words = """2g1c
 2 girls 1 cup
 acrotomophilia
 alabama hot pocket
@@ -400,4 +400,4 @@ yaoi
 yellow showers
 yiffy
 zoophilia
-🖕
+🖕"""
