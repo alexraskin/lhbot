@@ -165,7 +165,7 @@ class General(commands.Cog, name="general"):
         module = cmd.module
         saucelines, startline = getsourcelines(cmd.callback)
         url = (
-            '<https://github.com/alexraskin/lhhot/blob/main/'
+            '<https://github.com/alexraskin/lhbot/blob/main/'
             f'{"/".join(module.split("."))}.py#L{startline}>\n'
         )
         sauce = ''.join(saucelines)
