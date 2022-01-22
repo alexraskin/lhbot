@@ -109,7 +109,6 @@ class Fun(commands.Cog, name="Fun"):
         :return: a dog picture in the form of a url.
         :doc-author: Trelent
         """
-        """Shows a random dog picture"""
         async with self.client.session.get('https://random.dog/woof.json') as response:
             dog = await response.json()
             dog_photo = dog["url"]
@@ -129,7 +128,6 @@ class Fun(commands.Cog, name="Fun"):
         :return: the link to the meme from reddit.
         :doc-author: Trelent
         """
-        """get random meme from reddit"""
         async with self.client.session.get('https://meme-api.herokuapp.com/gimme') as response:
             data = await response.json()
             meme = data["url"]

@@ -250,4 +250,12 @@ class Help(commands.Cog):
 
 
 def setup(client):
+    """
+    The setup function is used to register the commands that will be used in the bot.
+    This function is run when you load a cog, and it allows you to use commands in your cogs.
+    
+    :param client: Used to access the API.
+    :return: an instance of the class.
+    :doc-author: Trelent
+    """
     client.add_cog(Help(client))

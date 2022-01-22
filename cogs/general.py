@@ -211,7 +211,6 @@ class General(commands.Cog, name="general"):
         :return: a link to the github repo and the source code of a command.
         :doc-author: Trelent
         """
-        """Print a link and the source code of a command"""
         cmd = self.client.get_command(command_name)
         if cmd is None:
             return
@@ -229,4 +228,12 @@ class General(commands.Cog, name="general"):
 
 
 def setup(client):
+    """
+    The setup function is used to register the commands that will be used in the bot.
+    This function is run when you load a cog, and it allows you to use commands in your cogs.
+    
+    :param client: Used to pass in the client object.
+    :return: a dictionary that contains the following keys:.
+    :doc-author: Trelent
+    """
     client.add_cog(General(client))
