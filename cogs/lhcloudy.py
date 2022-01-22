@@ -749,7 +749,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def links(self, ctx):
         """
         The links function specifically outputs a list of links to social media,
-           and other websites that are relevant to the LhCloudy bot.
+           and other websites that are relevant to the LhCloudy.
 
         :param self: Used to access the attributes and methods of your cog,.
         :param ctx: Used to get the context of the command.
@@ -757,11 +757,12 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :doc-author: Trelent
         """
         links = (
-            '• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>' +
+            '• Twitch <https://www.twitch.tv/lhcloudy27>'
+            '\n• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>' +
             '\n• Discord: <https://discord.gg/jd6CZSj8jb>' +
             '\n• Twitter: <https://twitter.com/LhCloudy>' +
-            '\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>' +
-            '\n• Instagram: <https://www.instagram.com/lhcloudy/>')
+            '\n• Instagram: <https://www.instagram.com/lhcloudy/>' +
+            '\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>')
         embed = Embed(
             title='LhCloudy Links',
             description=links,
