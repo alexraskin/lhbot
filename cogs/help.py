@@ -1,7 +1,9 @@
 import itertools
+
 from discord import Embed
 from discord.ext import commands
-from discord.ext.commands import HelpCommand, DefaultHelpCommand
+from discord.ext.commands import DefaultHelpCommand, HelpCommand
+
 
 class myHelpCommand(HelpCommand):
     def __init__(self, **options):
@@ -16,7 +18,7 @@ class myHelpCommand(HelpCommand):
         )
         if header:
             embed.set_author(
-                name=self.context.bot.description,
+                name=self.context.bot.description
             )
         for category, entries in self.paginator:
             embed.add_field(
@@ -58,7 +60,7 @@ class myHelpCommand(HelpCommand):
                     entries += '\n' if cmds else ''
             self.paginator.append((category, entries))
         await self.send_pages(header=True, footer=True)
-    
+
     async def send_cog_help(self, cog):
         filtered = await self.filter_commands(cog.get_commands(), sort=True)
         if not filtered:
@@ -74,7 +76,7 @@ class myHelpCommand(HelpCommand):
         )
         self.paginator.append((category, entries))
         await self.send_pages(footer=True)
-    
+
     async def send_group_help(self, group):
         filtered = await self.filter_commands(group.commands, sort=True)
         if not filtered:
@@ -89,12 +91,12 @@ class myHelpCommand(HelpCommand):
         )
         self.paginator.append((category, entries))
         await self.send_pages(footer=True)
-    
+
     async def send_command_help(self, command):
         signature = self.get_command_signature(command)
         helptext = command.help or command.description or 'No help Text'
         self.paginator.append(
-            (signature,  helptext)
+            (signature, helptext)
         )
         await self.send_pages()
 

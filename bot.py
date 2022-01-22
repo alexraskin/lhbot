@@ -42,7 +42,7 @@ class LhBot(Bot):
 
 
 client = LhBot(
-    command_prefix="?",
+    command_prefix="!",
     description='Hi I am LhBot!',
     max_messages=15000,
     intents=discord.Intents.all(),
@@ -83,7 +83,7 @@ async def status_task():
 
 @tasks.loop(minutes=60)
 async def clean_dir():
-    _clear_dir("./files")
+    _clear_dir("./files", ".pdf")
 
 
 @client.event

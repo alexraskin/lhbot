@@ -57,8 +57,7 @@ class General(commands.Cog, name="general"):
             color=0x42F56C,
         )
         embed.set_footer(
-            text=f"Requested by {ctx.message.author}",
-            icon_url=ctx.author.display_avatar)
+            text=f"Requested by {ctx.message.author}")
         await ctx.send(embed=embed)
 
     @commands.command(
