@@ -14,7 +14,7 @@ class General(commands.Cog, name="general"):
         """
         The __init__ function is the constructor for a class. It is called when an instance of a class is created.
         It allows the newly created object to have some attributes that are specified at creation time.
-        
+
         :param self: Used to refer to the object itself.
         :param client: Used to pass the client object to the class.
         :return: the object of the class.
@@ -26,10 +26,10 @@ class General(commands.Cog, name="general"):
         """
         The get_year_string function is used to get the current year and then
         calculate the percentage of time that has passed in relation to the total
-        number of days in a year. This is done by taking today's date, adding one 
-        year and subtracting today's date from that new date. Then dividing this 
+        number of days in a year. This is done by taking today's date, adding one
+        year and subtracting today's date from that new date. Then dividing this
         difference by 365 (the number of days in a year) and multiplying it by 100.
-        
+
         :param self: Used to refer to the object instance.
         :return: the percentage of the current year that has elapsed.
         :doc-author: Trelent
@@ -44,7 +44,7 @@ class General(commands.Cog, name="general"):
     async def info(self, ctx):
         """
         The info function specifically tells the user about the bot, and gives them a link to the github page.
-        
+
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the context of where the command was called.
         :return: an embed with the bot's information.
@@ -72,7 +72,7 @@ class General(commands.Cog, name="general"):
         """
         The ping function is used to check the bot's latency.
         It returns a message with the time it takes for a message to reach Discord and be received by the bot.
-        
+
         :param self: Used to access variables that belong to the class.
         :param ctx: Used to get the context of where the command was called.
         :return: a discord embed.
@@ -92,7 +92,7 @@ class General(commands.Cog, name="general"):
         """
         The on_message function specifically handles messages that are sent to the bot.
         It checks if the message is a command, and then executes it if it is.
-        
+
         :param self: Used to access the class' attributes and methods.
         :param message: Used to store information about the message.
         :return: None.
@@ -142,7 +142,7 @@ class General(commands.Cog, name="general"):
         """
         The search function is used to search for a query on duckduckgo.
         It returns the first result of the query and sends it as an embed.
-        
+
         :param self: Used to access attributes and methods of the class.
         :param ctx: Used to access the context of the command.
         :param query=None: Used to make sure that the function cannot be called without a query.
@@ -203,7 +203,7 @@ class General(commands.Cog, name="general"):
         """
         The inspect function is used to print the source code of a command.
         It's useful for figuring out what exactly a command does, and how it works.
-        
+
         :param self: Used to access the client object.
         :param ctx: Used to access the bot's context.
         :param *: Used to pass a list of arguments to the function.
@@ -231,7 +231,7 @@ def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
-    
+
     :param client: Used to pass in the client object.
     :return: a dictionary that contains the following keys:.
     :doc-author: Trelent

@@ -10,7 +10,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The __init__ function is the constructor for a class. It is called when an instance of a class is created.
         It allows the newly created object to have some attributes that are defined by this function.
-        
+
         :param self: Used to refer to the object itself.
         :param client: Used to store the client's information.
         :return: the object of the class.
@@ -19,7 +19,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The __init__ function is the constructor for a class. It is called when an instance of a class is created.
         It allows the newly created object to have some attributes that are defined by this function.
-        
+
         :param self: Used to refer to the object itself.
         :param client: Used to store the client's information.
         :return: the object of the class.
@@ -32,14 +32,14 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The random_emoji function is used to randomly select an emoji from the list of emojis.
         This function will be called in other functions that need a random emoji.
-        
+
         :return: a random emoji from the list of emojis.
         :doc-author: Trelent
         """
         """
         The random_emoji function is used to randomly select an emoji from the list of emojis.
         This function will be called in other functions that need a random emoji.
-        
+
         :return: a random emoji from the list of emojis.
         :doc-author: Trelent
         """
@@ -71,7 +71,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The one_frame function specifically is used to send a message with the url of the clip.
         It also sends a typing indicator while it does so.
-        
+
         :param self: Used to access the bot's attributes and methods.
         :param ctx: Used to access the context of where a command was called.
         :return: the URL of a clip from the streaming channel LhCloudy27.
@@ -80,7 +80,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The one_frame function specifically is used to send a message with the url of the clip.
         It also sends a typing indicator while it does so.
-        
+
         :param self: Used to access the bot's attributes and methods.
         :param ctx: Used to access the context of where a command was called.
         :return: the URL of a clip from the streaming channel LhCloudy27.
@@ -95,7 +95,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def three_sixty(self, ctx):
         """
         The three_sixty function specifically plays the 360 clip from the streamer, and then sends a message with that link.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of the command.
         :return: a link to an animated gif of a cat spinning around.
@@ -110,7 +110,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def ball(self, ctx):
         """
         The ball function is a function that sends an image of the ball. It does this by sending the url of the image to discord.
-        
+
         :param self: Used to access the attributes and methods of your cog.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the image.
@@ -125,7 +125,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def bhop(self, ctx):
         """
         The bhop function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: a url to the youtube video that is posted on the twitch clip website.
@@ -140,7 +140,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def bhop_two(self, ctx):
         """
         The bhop_two function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to access the attributes and methods of your cog.
         :param ctx: Used to get information about the message that triggered this command.
         :return: a URL.
@@ -155,7 +155,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def climb(self, ctx):
         """
         The climb function specifically accomplishes sending a message to the user that is requesting for help. The climb function also has a typing feature which makes it seem like the bot is actually typing out the message.
-        
+
         :param self: Used to reference the class instance.
         :param ctx: Used to access the context of the command.
         :return: the text as a message.
@@ -171,7 +171,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The code function specifically creates a message that displays the code for my bot. It also sends it to the channel
         that is specified in the command.
-        
+
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to access the context of the command.
         :return: the message that is sent by the bot.
@@ -186,7 +186,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def dva(self, ctx):
         """
         The dva function specifically sends the url of a clip from D.Va on Overwatch.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: the URL of the clip and sends it in a message to the channel.
@@ -201,7 +201,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def dva_two(self, ctx):
         """
         The dva_two function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to send messages to the channel.
         :return: a url.
@@ -216,7 +216,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def dva_three(self, ctx):
         """
         The dva_three function specifically sends a message containing the url of the clip.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of the command.
         :return: a url.
@@ -233,7 +233,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         The egirl function specifically accomplishes the following:
             - It sends a message to the channel that it was called in.
             - It adds two reactions to that message, one of which is 👉 and another of which is 👈.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to get the context of where the command was called.
         :return: a message.
@@ -250,7 +250,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def fire_strike(self, ctx):
         """
         The fire_strike function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of the command.
         :return: a url.
@@ -265,7 +265,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def genji(self, ctx):
         """
         The genji function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to reference the bot itself.
         :param ctx: Used to access the context of a command.
         :return: a message.
@@ -280,7 +280,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def hanzo(self, ctx):
         """
         The hanzo function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of the command.
         :return: the url of the clip.
@@ -295,7 +295,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def hype(self, ctx):
         """
         The hype function is used to send a message that will be edited by the hype_edit function. The reason why it's in a function is so that we can use it again later on if we want to edit the message.
-        
+
         :param self: Used to reference the bot itself.
         :param ctx: Used to access the context of where the command was called.
         :return: the message "What is all the hype around @LhCloudy ? Had him on my team today and the guy is a complete r*****, I didn’t have the best of games myself due to be playing 400sr above and on an offrole.
@@ -310,7 +310,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def instagram(self, ctx):
         """
         The instagram function specifically posts the link to my Instagram page.
-        
+
         :param self: Used to access the attributes and methods in this cog.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the LHC's Instagram page.
@@ -325,7 +325,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def lucio(self, ctx):
         """
         The lucio function specifically plays the lucio clip from a twitch stream.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: the url link for the clip.
@@ -342,7 +342,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         The mercy function is a function that will send the user a random image of mercy from the Overwatch game.
         It does this by using an API call to gyazo, which allows me to get images from their website. The function then sends
         the user the url of the image and waits for them to react with :eyes: before deleting it.
-        
+
         :param self: Used to access the attributes and methods of your cog, as well as any other variables that.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the image.
@@ -357,7 +357,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def pokiw(self, ctx):
         """
         The pokiw function specifically sends a message with the link to the pokiw album on imgur.
-        
+
         :param self: Used to access the attributes and methods of your cog, such as self.
         :param ctx: Used to access the context of where the command was called.
         :return: a message with the url.
@@ -372,7 +372,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def pokiw_two(self, ctx):
         """
         The pokiw_two function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to reference the bot's instance.
         :param ctx: Used to access the context of the message.
         :return: the url of the video.
@@ -387,7 +387,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def rollout(self, ctx):
         """
         The rollout function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: a message.
@@ -403,7 +403,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The sniper function is a function that sends the sniper clip from the game Overwatch.
         It does this by sending a message with an embedded video of the clip.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of a command.
         :return: a message with the clip url.
@@ -418,7 +418,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def soldier(self, ctx):
         """
         The soldier function specifically sends a message with the url of an image of a soldier.
-        
+
         :param self: Used to access the attributes and methods of the class in which it is used.
         :param ctx: Used to access the context of where the command was called.
         :return: a message with a url.
@@ -434,7 +434,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The speed function is a function that will send the user a message with text.
         It also has an await ctx.trigger_typing() which means it will wait until the bot is typing before sending the message.
-        
+
         :param self: Used to access the attributes and methods of your cog.
         :param ctx: Used to send messages to the channel where the command was called.
         :return: the string 'you give me speed i give sr'.
@@ -450,7 +450,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The spotify function specifically links to the spotify playlist that I have created for this server.
         It is a list of songs that are currently trending on the internet, and it is updated every week.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to get the context of where the command was called.
         :return: a link to the playlist.
@@ -465,7 +465,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def playlist(self, ctx):
         """
         The playlist function specifically sends a message with the link to the playlist.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the playlist.
@@ -480,7 +480,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def srpeak(self, ctx):
         """
         The srpeak function specifically sends a message with the text "I saw Cloudy in a 4K lobby one time. I told him how cool it was to meet him in game, but I didn’t want to be a douche and bother him and ask him for friend request or anything. He said, “Oh, sr peak check?” I was taken aback, and all I could say was “Huh?” but he kept cutting me off and going “huh? huh? huh?” while using the “No” voiceline repeatedly."
-        
+
         :param self: Used to reference the bot's instance.
         :param ctx: Used to get the context of where the command was called.
         :return: a message that Cloudy has sent to the server.
@@ -496,7 +496,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The stair function is used to send a clip of the streamer doing stairs.
         This function was created by @DankMemer and can be found at https://github.com/DankMemer/memes-bot#commands
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to get information about the message that invoked this command.
         :return: the url of a clip from the Twitch channel "StinkyCheese".
@@ -514,7 +514,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
             - It sends a message to the user.
             - It waits for a response from the user.
             - Once it receives a response, it deletes that message and then sends another one.
-        
+
         :param self: Used to reference the class itself.
         :param ctx: Used to get information about the message that invoked the command.
         :return: a string with the description of Cloudy's strength.
@@ -530,7 +530,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The tips function is used to send a message that will be edited later on.
         It's used in the help command, and it sends a message with the text "W+M1".
-        
+
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: a message in the channel.
@@ -545,7 +545,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def twitter(self, ctx):
         """
         The twitter function sends the user to my twitter account.
-        
+
         :param self: Used to access the attributes and methods in the class.
         :param ctx: Used to access the context of where the command was called.
         :return: a message with a link to the twitter page for LhCloudy.
@@ -560,7 +560,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def tracer(self, ctx):
         """
         The tracer function specifically creates a message that sends the url of the image.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: a message object, containing the url.
@@ -575,7 +575,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def volskaya(self, ctx):
         """
         The volskaya function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs that are loaded.
         :param ctx: Used to get the context of where the command was called.
         :return: a url from twitch clips.
@@ -591,7 +591,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The wallbang function specifically sends a message with the link to the wallbang clip of lhcloudy27 on twitch.
         The function also triggers typing in discord so that it looks like something is happening.
-        
+
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs that are loaded.
         :param ctx: Used to get the channel and user that sent the command.
         :return: the twitch clip link.
@@ -606,7 +606,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def widow(self, ctx):
         """
         The widow function specifically sends the user a gif of a widow spider.
-        
+
         :param self: Used to access the attributes and methods of your cog.
         :param ctx: Used to access the context of where the command was called.
         :return: a message.
@@ -621,7 +621,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def youtube(self, ctx):
         """
         The youtube function specifically sends a message with the link to my youtube channel.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the youtube channel.
@@ -637,7 +637,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The zarya function specifically plays a clip of Zarya from Overwatch.
         It also sends the link to that clip.
-        
+
         :param self: Used to reference the bot.
         :param ctx: Used to get the context of the message.
         :return: a message with the URL of a clip.
@@ -652,7 +652,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def zarya_two(self, ctx):
         """
         The zarya_two function specifically sends a message with the url of the clip.
-        
+
         :param self: Used to access the attributes and methods of your cog, as well as any ctx objects that are passed in.
         :param ctx: Used to send messages to the channel where the command was called.
         :return: a url link in a string format.
@@ -667,7 +667,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def age(self, ctx):
         """
         The age function specifically calculates the age of the user and sends it to discord.
-        
+
         :param self: Used to reference the bot's instance, which is passed in as an argument when the command is called.
         :param ctx: Used to access the context of the message.
         :return: the age of the bot in years.
@@ -685,7 +685,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The backlane function is a function that will send the message of what the backlane is in league of legends.
         It will also make it so that when you type .backlane, it will send a message with text.
-        
+
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs which are loaded.
         :param ctx: Used to access the context of where the message was sent.
         :return: the text in the variable text.
@@ -700,7 +700,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def chair(self, ctx):
         """
         The chair function specifically tells the user what the chair is and where to buy it.
-        
+
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: the link to the Aeron chair.
@@ -716,7 +716,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The cloudycree function specifically posts the link to the clip of cloudycree's stream.
         It also sends a message that says it is posting the link.
-        
+
         :param self: Used to access the class functions.
         :param ctx: Used to access the context of the command.
         :return: a URL for the clip of the streamer 'LepOw' playing a game called 'Creeper World 3'.
@@ -731,7 +731,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def from_(self, ctx):
         """
         The from_ function specifically sends a message with the text "kotka of south eastern finland of the continent of europe" and then waits for a response from the user. The bot will then send another message with whatever text was sent by the user.
-        
+
         :param self: Used to access the attributes and methods of the class in which it is used.
         :param ctx: Used to access the context of the command.
         :return: a discord.
@@ -750,7 +750,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         """
         The links function specifically outputs a list of links to social media,
            and other websites that are relevant to the LhCloudy bot.
-        
+
         :param self: Used to access the attributes and methods of your cog,.
         :param ctx: Used to get the context of the command.
         :return: a string containing the links to the social media accounts of LhCloudy.
@@ -775,7 +775,7 @@ def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
-    
+
     :param client: Used to pass in the discord.
     :return: a dictionary of the following form:.
     :doc-author: Trelent

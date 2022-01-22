@@ -18,7 +18,7 @@ class LhGuess(commands.Cog, name="lhguess"):
     def __init__(self, client):
         """
         The __init__ function is a special function that Python runs automatically whenever we create a new instance based on the Dog class. The self parameter refers to the newly created object, and we can access attributes and methods of that object as its attributes.
-        
+
         :param self: Used to refer to the class instance itself.
         :param client: Used to access the client's methods and properties.
         :return: the bot object.
@@ -40,7 +40,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         The lh_guess function is used to add a guess to the database.
         It takes in a string as an argument and adds it to the database.
         The function also returns some information about the guess that was just added.
-        
+
         :param self: Used to access the bot's attributes.
         :param ctx: Used to get the context of the message.
         :param *: Used to pass in unlimited arguments.
@@ -97,7 +97,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         The guess_count function is used to display the current amount of guesses in the database.
         It does this by creating a list of all guesses and then counting them.
-        
+
         :param self: Used to access the class methods and variables.
         :param ctx: Used to pass the context of the command.
         :return: the current amount of guesses in the database.
@@ -122,9 +122,9 @@ class LhGuess(commands.Cog, name="lhguess"):
     async def run_lh_report(self, ctx):
         """
         The run_lh_report function specifically generates a PDF report of all guesses made by the user.
-        The report is generated using the PdfReport class and is stored in a file named after the author of 
+        The report is generated using the PdfReport class and is stored in a file named after the author of
         the command. The function also creates an embed object that contains a link to download the PDF file.
-        
+
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the message author and channel.
         :return: the report.
@@ -151,7 +151,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         The lh_hints function is used to send a random hint about the meaning of LH.
         It's called by typing !lh_hints in discord chat.
-        
+
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of the command.
         :return: a random hint from the hints dictionary.
@@ -173,7 +173,7 @@ def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it's what makes your commands usable.
-    
+
     :param client: Used to access the client's resources.
     :return: a dictionary of information about the bot and server.
     :doc-author: Trelent

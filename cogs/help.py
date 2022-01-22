@@ -9,7 +9,7 @@ class myHelpCommand(HelpCommand):
     def __init__(self, **options):
         """
         The __init__ function is used to initialize the class. It's called when an instance of a class is created, with the arguments that were passed to the class.
-        
+
         :param self: Used to refer to the object itself.
         :param **options: Used to pass a dictionary of keyword arguments into the function.
         :return: the superclass of the class, which is the object class.
@@ -24,7 +24,7 @@ class myHelpCommand(HelpCommand):
         The send_pages function specifically accomplishes two things:
             1. It sends the pages to the user.
             2. It adds a footer to each page, which contains information about how many pages there are and what commands can be used to get more information.
-        
+
         :param self: Used to access the attributes and methods of the class in which it is used.
         :param header=False: Used to tell the send_pages function to not.
         :param footer=False: Used to remove the footer from the embed.
@@ -56,7 +56,7 @@ class myHelpCommand(HelpCommand):
         The send_bot_help function specifically accomplishes two things:
             1. It creates a paginator with the help command's output.
             2. It adds an entry to the paginator for each cog, formatted as "Category Name:". This is done by grouping commands by their cog and then iterating over them.
-        
+
         :param self: Used to access the bot's help command.
         :param mapping: Used to determine which commands to show.
         :return: a list of tuples.
@@ -69,7 +69,7 @@ class myHelpCommand(HelpCommand):
             """
             The get_category function specifically returns the cog that a command belongs to.
             This is useful for commands that belong to more than one cog.
-            
+
             :param command: Used to access the command that was called.
             :return: the cog of the command.
             :doc-author: Trelent
@@ -102,7 +102,7 @@ class myHelpCommand(HelpCommand):
         """
         The send_cog_help function is used to send the help command for a specific cog.
         It takes in the cog as an argument and then sends a paginated embed with all of the commands that are part of that cog.
-        
+
         :param self: Used to access the bot object.
         :param cog: Used to access the cog object.
         :return: a Paginator.
@@ -127,7 +127,7 @@ class myHelpCommand(HelpCommand):
         """
         The send_group_help function is used to send the help command for a specific group.
         It takes in the group as an argument and then sends a message containing all of the commands that are part of that group.
-        
+
         :param self: Used to access the bot's attributes, such as its database.
         :param group: Used to get the name of the group, and it's description.
         :return: a string.
@@ -152,7 +152,7 @@ class myHelpCommand(HelpCommand):
         The send_command_help function specifically accomplishes two things:
         1. It adds the command signature to the paginator, along with its help text (if it exists).
         2. It also checks if there are any subcommands that need to be displayed and calls send_command_help recursively on each of them.
-        
+
         :param self: Used to access the bot's attributes and methods.
         :param command: Used to get the name of the command.
         :return: the signature and helptext of the command.
@@ -168,9 +168,9 @@ class myHelpCommand(HelpCommand):
     async def prepare_help_command(self, ctx, command=None):
         """
         The prepare_help_command function is used to prepare the help command for use.
-        It's a bit complicated, but it allows us to take commands that have been passed in as arguments and also 
+        It's a bit complicated, but it allows us to take commands that have been passed in as arguments and also
         to format them correctly.
-        
+
         :param self: Used to store the context of the command.
         :param ctx: Used to get the current context of where the command was called.
         :param command=None: Used to check if the user wants to see general help or help for a specific command.
@@ -186,7 +186,7 @@ class Help(commands.Cog):
         """
         The __init__ function is the constructor for a class. It is called whenever an object of that class is instantiated.
         The __init__ function can take arguments (as shown), but its first parameter must be 'self'. The self-parameter refers to the object being created, and it's used to access variables that belong to the object.
-        
+
         :param self: Used to refer to the bot itself.
         :param client: Used to access the client's functionality.
         :return: a client object from the discord.
@@ -205,7 +205,7 @@ class Help(commands.Cog):
         The cog_check function is used to check if the user has permission to use a specific command.
         This function will be called automatically before every command in this cog.
         The bot checks if the user has admin rights, and returns True or False accordingly.
-        
+
         :param self: Used to access the cog instance.
         :param ctx: Used to check if the user has permission to use a command.
         :return: a function that takes the ctx object as an argument.
@@ -216,7 +216,7 @@ class Help(commands.Cog):
     def cog_unload(self):
         """
         The cog_unload function specifically unregisters the help command so that it can be re-registered by the cog reloader.
-        
+
         :param self: Used to access the attributes and methods of the cog.
         :return: a boolean value.
         :doc-author: Trelent
@@ -232,7 +232,7 @@ class Help(commands.Cog):
         """
         The helpall function specifically prints the help command including all hidden commands.
         It is used to print a list of all commands, even those that are not normally visible.
-        
+
         :param self: Used to access the attributes and methods of your cog, as well as any other parts of the bot.
         :param ctx: Used to access the bot's attributes and functions.
         :param *: Used to allow for any number of arguments to be passed in.
@@ -253,7 +253,7 @@ def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
-    
+
     :param client: Used to access the API.
     :return: an instance of the class.
     :doc-author: Trelent

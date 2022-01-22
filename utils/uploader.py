@@ -15,7 +15,7 @@ class FileSharer:
     def __init__(self, filepath, api_key=config["filestack_key"]):
         """
         The __init__ function is the constructor for a class. It sets up or "initializes" the object.
-        
+
         :param self: Used to refer to the object itself.
         :param filepath: Used to store the path of the file that is uploaded.
         :param api_key=config["filestack_key"]: Used to set the api key for the filepicker.
@@ -30,7 +30,7 @@ class FileSharer:
         The share function creates a new filelink object that is then used to share the file with other users.
         The function takes in the api key and uses it to create a client object, which is then used to create a new
         filelink object. The link of this newly created filelink is returned.
-        
+
         :param self: Used to access the attributes and methods of the class in python.
         :return: the share link.
         :doc-author: Trelent

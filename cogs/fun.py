@@ -9,7 +9,7 @@ class Fun(commands.Cog, name="Fun"):
         """
         The __init__ function is the constructor for a class. It initializes the attributes of an object. In this case, it initializes
         the client attribute.
-        
+
         :param self: Used to access variables that belong to the class.
         :param client: Used to pass in the client object to the class.
         :return: a class instance and sets up the client.
@@ -22,7 +22,7 @@ class Fun(commands.Cog, name="Fun"):
     async def load_chuck_http_codes(self):
         """
         The load_chuck_http_codes function specifically loads the categories from the Chuck Norris API and stores them in a list.
-        
+
         :param self: Used to store the bot object.
         :return: a list of categories.
         :doc-author: Trelent
@@ -42,7 +42,7 @@ class Fun(commands.Cog, name="Fun"):
             -   "career"
             -   "celebrity"
             -   "dev" (NSFW)  # I'm not sure if this is NSFW or not but it's definitely weird...  # noQA: E501
-        
+
         :param self: Used to access attributes of the class.
         :param ctx: Used to get the channel and user that sent the command.
         :param category:str=None: Used to determine if the user has specified a category or not.
@@ -85,7 +85,7 @@ class Fun(commands.Cog, name="Fun"):
     async def cat(self, ctx):
         """
         The cat function specifically gets a random cat picture from the random.cat API and sends it to the channel.
-        
+
         :param self: Used to access the client and other variables in this cog.
         :param ctx: Used to get the context of where the command was called.
         :return: a random cat picture from the random.
@@ -103,7 +103,7 @@ class Fun(commands.Cog, name="Fun"):
     async def dog(self, ctx):
         """
         The dog function specifically gets a random dog picture from the website random.dog
-        
+
         :param self: Used to access the client object.
         :param ctx: Used to get the channel and author of the message.
         :return: a dog picture in the form of a url.
@@ -122,7 +122,7 @@ class Fun(commands.Cog, name="Fun"):
     async def get_meme(self, ctx):
         """
         The get_meme function specifically gets a random meme from the reddit api and returns it to the user
-        
+
         :param self: Used to access the client object.
         :param ctx: Used to access the context of where the command was called.
         :return: the link to the meme from reddit.
