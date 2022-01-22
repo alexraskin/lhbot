@@ -5,16 +5,28 @@ from discord.ext import commands, tasks
 
 
 class Fun(commands.Cog, name="Fun"):
-    """
-    Fun bot commands
-    """
-
     def __init__(self, client):
+        """
+        The __init__ function is the constructor for a class. It initializes the attributes of an object. In this case, it initializes
+        the client attribute.
+        
+        :param self: Used to access variables that belong to the class.
+        :param client: Used to pass in the client object to the class.
+        :return: a class instance and sets up the client.
+        :doc-author: Trelent
+        """
         self.client = client
         self.load_chuck_http_codes.start()
 
     @tasks.loop(count=1)
     async def load_chuck_http_codes(self):
+        """
+        The load_chuck_http_codes function specifically loads the categories from the Chuck Norris API and stores them in a list.
+        
+        :param self: Used to store the bot object.
+        :return: a list of categories.
+        :doc-author: Trelent
+        """
         async with self.client.session.get('https://api.chucknorris.io/jokes/categories') as response:
             categories = await response.json()
             self.chuck_categories = [x for x in categories if x != 'explicit']
@@ -23,8 +35,20 @@ class Fun(commands.Cog, name="Fun"):
         name="chucknorris",
         aliases=["chuck", "cn"])
     async def chucknorris(self, ctx, category: str = None):
-        """ Collects a random chuck norris joke, or collect a random joke
-            by specifying a specific category of joke. """
+        """
+        The chucknorris function is a command that allows the user to get a random chuck norris fact.
+        The function takes in an optional argument, category, which can be any of the following:
+            -   "animal"
+            -   "career"
+            -   "celebrity"
+            -   "dev" (NSFW)  # I'm not sure if this is NSFW or not but it's definitely weird...  # noQA: E501
+        
+        :param self: Used to access attributes of the class.
+        :param ctx: Used to get the channel and user that sent the command.
+        :param category:str=None: Used to determine if the user has specified a category or not.
+        :return: a random joke from the API.
+        :doc-author: Trelent
+        """
         if not hasattr(self, 'chuck_categories'):
             raise commands.BadArgument(
                 'Hold up partner, still locating Chuck!')
@@ -59,7 +83,14 @@ class Fun(commands.Cog, name="Fun"):
         name="cat",
         aliases=["catpic"])
     async def cat(self, ctx):
-        """Shows a random cat picture"""
+        """
+        The cat function specifically gets a random cat picture from the random.cat API and sends it to the channel.
+        
+        :param self: Used to access the client and other variables in this cog.
+        :param ctx: Used to get the context of where the command was called.
+        :return: a random cat picture from the random.
+        :doc-author: Trelent
+        """
         async with self.client.session.get('https://aws.random.cat/meow') as response:
             cat = await response.json()
             cat_photo = cat["file"]
@@ -70,6 +101,14 @@ class Fun(commands.Cog, name="Fun"):
         name="dog",
         aliases=["dogpic"])
     async def dog(self, ctx):
+        """
+        The dog function specifically gets a random dog picture from the website random.dog
+        
+        :param self: Used to access the client object.
+        :param ctx: Used to get the channel and author of the message.
+        :return: a dog picture in the form of a url.
+        :doc-author: Trelent
+        """
         """Shows a random dog picture"""
         async with self.client.session.get('https://random.dog/woof.json') as response:
             dog = await response.json()
@@ -82,6 +121,14 @@ class Fun(commands.Cog, name="Fun"):
         aliases=["memer"]
     )
     async def get_meme(self, ctx):
+        """
+        The get_meme function specifically gets a random meme from the reddit api and returns it to the user
+        
+        :param self: Used to access the client object.
+        :param ctx: Used to access the context of where the command was called.
+        :return: the link to the meme from reddit.
+        :doc-author: Trelent
+        """
         """get random meme from reddit"""
         async with self.client.session.get('https://meme-api.herokuapp.com/gimme') as response:
             data = await response.json()

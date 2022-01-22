@@ -14,6 +14,16 @@ from utils.clear_dir import _clear_dir
 
 class LhBot(Bot):
     def __init__(self, *args, **options):
+        """
+        The __init__ function is the constructor for a class. It is called when an instance of a class is created.
+        It can take arguments (in this case, *args and **options) that are passed to it when it's called.
+        
+        :param self: Used to refer to the object itself.
+        :param *args: Used to pass a non-keyworded, variable-length argument list to the function.
+        :param **options: Used to pass a dictionary of keyword arguments to the function.
+        :return: a new instance of the Session class.
+        :doc-author: Trelent
+        """
         super().__init__(*args, **options)
         self.session = None
         self.last_errors = []
@@ -21,14 +31,40 @@ class LhBot(Bot):
             self.config = json.load(conffile)
 
     async def start(self, *args, **kwargs):
+        """
+        The start function is used to start the bot. It creates a ClientSession object, which allows us to make requests and download data from the internet.
+        It also sets up our command prefixes and loads cogs.
+        
+        :param self: Used to access the class attributes.
+        :param *args: Used to pass a non-keyworded, variable-length argument list.
+        :param **kwargs: Used to pass a keyworded, variable-length argument list.
+        :return: ClientSession object.
+        :doc-author: Trelent
+        """
         self.session = ClientSession(timeout=ClientTimeout(total=30))
         await super().start(self.config["token"], *args, **kwargs)
 
     async def close(self):
+        """
+        The close function closes the session
+        
+        :param self: Used to access the class attributes.
+        :return: the aiohttp.
+        :doc-author: Trelent
+        """
         await self.session.close()
         await super().close()
 
     def user_is_admin(self, user):
+        """
+        The user_is_admin function specifically checks if the user has a role that is in the permitted_roles list.
+        The permitted_roles list contains all of the roles that are allowed to access admin functions.
+        
+        :param self: Used to access attributes of the class.
+        :param user: Used to check if the user has a certain role.
+        :return: false if the user attribute is not an instance of discord.
+        :doc-author: Trelent
+        """
         try:
             user_roles = [role.id for role in user.roles]
         except AttributeError:
@@ -37,6 +73,14 @@ class LhBot(Bot):
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
+        """
+        The user_is_superuser function specifically checks if the user is a superuser.
+        
+        :param self: Used to refer to the object itself.
+        :param user: Used to check if the user is a superuser.
+        :return: True if the user is a superuser and False otherwise.
+        :doc-author: Trelent
+        """
         superusers = self.config['superusers']
         return user.id in superusers
 
@@ -70,6 +114,12 @@ for extension in reversed(STARTUP_EXTENSIONS):
 
 @tasks.loop(minutes=1.0)
 async def status_task():
+    """
+    The status_task function is a loop that will run every 60 seconds. It will randomly select one of the statuses from the list and set it as the bot's status.
+    
+    :return: a list of strings that will be used to change the status of the bot.
+    :doc-author: Trelent
+    """
     statuses = [
         "Overwatch",
         "Overwatch 2",
@@ -83,11 +133,26 @@ async def status_task():
 
 @tasks.loop(minutes=60)
 async def clean_dir():
+    """
+    The clean_dir function is used to clean the directory of all files that are not
+    .py, .txt or .json files.
+    
+    :return: the directory that is passed to it.
+    :doc-author: Trelent
+    """
     _clear_dir("./files", ".pdf")
 
 
 @client.event
 async def on_ready():
+    """
+    The on_ready function specifically accomplishes the following:
+        - Sets up a status task that changes the bot's status every 10 seconds.
+        - Sets up a clean_dir task that cleans out old files in the cache directory every 5 minutes.
+    
+    :return: a string with the details of our main guild.
+    :doc-author: Trelent
+    """
     main_id = client.config['main_guild']
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     print(f"Discord.py API version: {discord.__version__}")
@@ -103,6 +168,15 @@ async def on_ready():
 
 @client.event
 async def on_command_error(context, error):
+    """
+    The on_command_error function is used to handle errors that occur while executing a command.
+    It's called when an error is raised while invoking a command, and it passes itself and the context of the invocation as arguments.
+    
+    :param context: Used to send messages to the user.
+    :param error: Used to handle errors.
+    :return: None.
+    :doc-author: Trelent
+    """
     if isinstance(error, commands.CommandOnCooldown):
         minutes, seconds = divmod(error.retry_after, 60)
         hours, minutes = divmod(minutes, 60)
@@ -133,6 +207,14 @@ async def on_command_error(context, error):
 
 @client.event
 async def on_message(message):
+    """
+    The on_message function specifically is what allows the bot to recognize messages and respond accordingly.
+    It also checks if the message was sent in a DM channel, which it ignores.
+    
+    :param message: Used to get the message content and other information.
+    :return: a "None" object.
+    :doc-author: Trelent
+    """
     if isinstance(message.channel, discord.DMChannel):
         return
     await client.process_commands(message)
@@ -140,6 +222,14 @@ async def on_message(message):
 
 @client.event
 async def on_command_completion(ctx):
+    """
+    The on_command_completion function specifically tracks the commands that are executed in each server.
+    It also prints out the command name and server name to a text file called "command_logs.txt".
+    
+    :param ctx: Used to access the context of the command.
+    :return: a string of the executed command.
+    :doc-author: Trelent
+    """
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])

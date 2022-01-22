@@ -10,14 +10,30 @@ from discord.ext import commands
 
 
 class General(commands.Cog, name="general"):
-    """
-    general bot commands
-    """
-
     def __init__(self, client):
+        """
+        The __init__ function is the constructor for a class. It is called when an instance of a class is created.
+        It allows the newly created object to have some attributes that are specified at creation time.
+        
+        :param self: Used to refer to the object itself.
+        :param client: Used to pass the client object to the class.
+        :return: the object of the class.
+        :doc-author: Trelent
+        """
         self.client = client
 
     def get_year_string(self):
+        """
+        The get_year_string function is used to get the current year and then
+        calculate the percentage of time that has passed in relation to the total
+        number of days in a year. This is done by taking today's date, adding one 
+        year and subtracting today's date from that new date. Then dividing this 
+        difference by 365 (the number of days in a year) and multiplying it by 100.
+        
+        :param self: Used to refer to the object instance.
+        :return: the percentage of the current year that has elapsed.
+        :doc-author: Trelent
+        """
         now = dt.utcnow()
         year_end = dt(now.year + 1, 1, 1)
         year_start = dt(now.year, 1, 1)
@@ -27,7 +43,12 @@ class General(commands.Cog, name="general"):
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
         """
-        information about the bot
+        The info function specifically tells the user about the bot, and gives them a link to the github page.
+        
+        :param self: Used to access the class attributes and methods.
+        :param ctx: Used to get the context of where the command was called.
+        :return: an embed with the bot's information.
+        :doc-author: Trelent
         """
         embed = discord.Embed(description="LhBot", color=0x42F56C)
         embed.set_author(name="Bot Information")
@@ -49,7 +70,13 @@ class General(commands.Cog, name="general"):
     @commands.command(name="ping")
     async def ping(self, ctx):
         """
-        ping the bot
+        The ping function is used to check the bot's latency.
+        It returns a message with the time it takes for a message to reach Discord and be received by the bot.
+        
+        :param self: Used to access variables that belong to the class.
+        :param ctx: Used to get the context of where the command was called.
+        :return: a discord embed.
+        :doc-author: Trelent
         """
         embed = discord.Embed(
             title="🏓 Pong!",
@@ -60,20 +87,17 @@ class General(commands.Cog, name="general"):
             text=f"Requested by {ctx.message.author}")
         await ctx.send(embed=embed)
 
-    @commands.command(
-        name='search',
-        aliases=['lmgtfy', 'duck', 'duckduckgo', 'google']
-    )
-    async def search(self, ctx, *, search_text=None):
-        if search_text is None:
-            await ctx.trigger_typing()
-            await ctx.send('Please enter a search query!')
-        if search_text:
-            await ctx.trigger_typing()
-            await self.duck_call(ctx, search_text)
-
     @commands.Cog.listener()
     async def on_message(self, message):
+        """
+        The on_message function specifically handles messages that are sent to the bot.
+        It checks if the message is a command, and then executes it if it is.
+        
+        :param self: Used to access the class' attributes and methods.
+        :param message: Used to store information about the message.
+        :return: None.
+        :doc-author: Trelent
+        """
         if message.author.bot:
             return
 
@@ -110,9 +134,27 @@ class General(commands.Cog, name="general"):
                 message.content):
             await message.channel.send('42')
 
-    async def duck_call(self, ctx, query):
+    @commands.command(
+        name='search',
+        aliases=['lmgtfy', 'duck', 'duckduckgo', 'google']
+    )
+    async def search(self, ctx, query=None):
+        """
+        The search function is used to search for a query on duckduckgo.
+        It returns the first result of the query and sends it as an embed.
+        
+        :param self: Used to access attributes and methods of the class.
+        :param ctx: Used to access the context of the command.
+        :param query=None: Used to make sure that the function cannot be called without a query.
+        :return: a discord embed object with the following format:.
+        :doc-author: Trelent
+        """
+        if query is None:
+            await ctx.trigger_typing()
+            await ctx.send('Please enter a search query!')
 
         if len(query) > 500:
+            await ctx.trigger_typing()
             await ctx.send('Query size is too long!')
             return
 
@@ -158,6 +200,17 @@ class General(commands.Cog, name="general"):
         name='inspect'
     )
     async def inspect(self, ctx, *, command_name: str):
+        """
+        The inspect function is used to print the source code of a command.
+        It's useful for figuring out what exactly a command does, and how it works.
+        
+        :param self: Used to access the client object.
+        :param ctx: Used to access the bot's context.
+        :param *: Used to pass a list of arguments to the function.
+        :param command_name:str: Used to specify the name of the command that we want to inspect.
+        :return: a link to the github repo and the source code of a command.
+        :doc-author: Trelent
+        """
         """Print a link and the source code of a command"""
         cmd = self.client.get_command(command_name)
         if cmd is None:

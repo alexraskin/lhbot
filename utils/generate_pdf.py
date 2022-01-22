@@ -5,10 +5,27 @@ from fpdf import FPDF
 
 class PdfReport:
     def __init__(self, filename: str, guesses: list) -> None:
+        """
+        The __init__ function is the constructor for a class. It initializes the attributes of an object. In this case, it initializes
+        the filename and guesses attributes.
+        
+        :param self: Used to refer to the object itself.
+        :param filename:str: Used to store the name of the file that is being read.
+        :param guesses:list: Used to store the guesses made by the user.
+        :return: nothing.
+        :doc-author: Trelent
+        """
         self.filename = filename
         self.guesses = guesses
 
     def generate(self):
+        """
+        The generate function creates a PDF file with the guesses from the user.
+        
+        :param self: Used to access the class attributes.
+        :return: the pdf object.
+        :doc-author: Trelent
+        """
         pdf = FPDF(orientation="P", unit="pt", format="A4")
         pdf.add_page()
         pdf.set_font(family="Times", size=25, style="B")
