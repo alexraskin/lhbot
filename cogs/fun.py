@@ -41,7 +41,6 @@ class Fun(commands.Cog, name="Fun"):
             -   "animal"
             -   "career"
             -   "celebrity"
-            -   "dev" (NSFW)  # I'm not sure if this is NSFW or not but it's definitely weird...  # noQA: E501
 
         :param self: Used to access attributes of the class.
         :param ctx: Used to get the channel and user that sent the command.
@@ -136,4 +135,12 @@ class Fun(commands.Cog, name="Fun"):
 
 
 def setup(client):
+    """
+    The setup function is used to register the commands that will be used in the bot.
+    This function is run when you load a cog, and it allows you to use commands in your cogs.
+    
+    :param client: Used to pass in the discord.
+    :return: the client object which is your entry point to the API.
+    :doc-author: Trelent
+    """
     client.add_cog(Fun(client))
