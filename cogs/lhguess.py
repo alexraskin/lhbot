@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from database.db import db_client
 from utils.banwords import banned_words
+from utils.hints import lh_hints
 from utils.generate_pdf import PdfReport
 from utils.return_helper import _helper
 from utils.uploader import FileSharer
@@ -26,13 +27,9 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         self.bot = client
         self.banned_words_list = banned_words.split("\n")
-        self.hints = [
-            "It is in English",
-            "Made by 10 year old finnish lad",
-            "Clever",
-            "Masaa can be bribed",
-            "It's not long hammer",
-        ]
+        self.hints = lh_hints.split("\n")
+        self.error_color = 0xE74C3C
+        self.success_color = 0x42F56C
 
     @commands.command(name="lhguess")
     async def lh_guess(self, ctx, *, guess):
@@ -53,7 +50,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
 
         if str(guess).lower() in self.banned_words_list:
-            embed = discord.Embed(title="Guess not allowed", color=0xE74C3C)
+            embed = discord.Embed(title="Guess not allowed", color=self.error_color)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
 
@@ -77,7 +74,7 @@ class LhGuess(commands.Cog, name="lhguess"):
                 new_guess = await collection.insert_one(guess_dict)
                 return_guess = await collection.find_one({"_id": new_guess.inserted_id})
                 pretty_return = _helper(return_guess)
-                embed = discord.Embed(color=0x42F56C)
+                embed = discord.Embed(color=self.success_color)
                 embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
                 embed.add_field(
                     name="LhGuess:", value=pretty_return["guess"], inline=True
@@ -109,7 +106,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         guesses = []
         async for _guess in collection.find():
             guesses.append(_helper(_guess)["guess"])
-        embed = discord.Embed(title="LhGuess Count", color=0x42F56C)
+        embed = discord.Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:",
             value=f"{len(guesses)} 🦍",
@@ -141,7 +138,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         )
         report.generate()
         share = FileSharer(f"{report.filename}")
-        embed = discord.Embed(title="LhGuess report is ready", color=0x42F56C)
+        embed = discord.Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✔️")
@@ -160,7 +157,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         random hint about the meaning of LH
         """
-        embed = discord.Embed(description="LhHints", color=0x42F56C)
+        embed = discord.Embed(description="LhHints", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.set_author(name="Random LH Hint")
         embed.add_field(name="Hint:", value=random_hint, inline=False)
