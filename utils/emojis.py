@@ -27,6 +27,7 @@ def random_emoji():
         "🛡️",
         "🇫🇮",
         "🐸",
-        "🐈"
+        "🐈",
+        "✨"
     ]
     return random.choice(list(emoji_list))
