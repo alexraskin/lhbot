@@ -62,6 +62,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         if str(guess).lower() in self.banned_words_list:
             embed = Embed(title="Guess not allowed", color=self.error_color)
+            await ctx.trigger_typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
 
@@ -72,6 +73,7 @@ class LhGuess(commands.Cog, name="lhguess"):
                     title="This has already been guessed 🚨",
                     description=f"LhGuess: {guess}",
                 )
+                await ctx.trigger_typing()
                 embed_message = await ctx.send(embed=embed)
                 await embed_message.add_reaction("👎")
             else:
@@ -94,8 +96,9 @@ class LhGuess(commands.Cog, name="lhguess"):
                 embed.add_field(
                     name="Guess ID:", value=pretty_return["id"], inline=False
                 )
+                await ctx.trigger_typing()
                 embed_message = await ctx.send(embed=embed)
-                await embed_message.add_reaction("👍")
+                await embed_message.add_reaction(Emoji(name=":lhcloudyCool:", require_colons=True))
 
     @commands.command(name="lhcount")
     async def guess_count(self, ctx):
@@ -107,6 +110,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param ctx: Used to pass the context of the command.
         :return: the current amount of guesses in the database.
         """
+        await ctx.trigger_typing()
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:",
@@ -127,6 +131,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param ctx: Used to get the message author and channel.
         :return: the report.
         """
+        await ctx.trigger_typing()
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf",
             guesses=self.guess_list
@@ -139,6 +144,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✔️")
+        await embed_message.add_reaction(Emoji(name=":lhcloudyCool:", require_colons=True))
 
     @commands.command(
         name="lhhint",
@@ -157,34 +163,36 @@ class LhGuess(commands.Cog, name="lhguess"):
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
+        await ctx.trigger_typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✨")
 
     @commands.command(
-        name=["lhdelete"],
+        name="lhdelete",
         aliases=["deleteguess"],
         hidden=True
     )
-    async def lh_delete(self, ctx, *, guess_id: str):
+    async def lh_delete(self, ctx, *, guess_id):
+        await ctx.trigger_typing()
         guess = await collection.find_one({"_id": ObjectId(guess_id)})
         if not guess:
-            embed = Embed(title="Delete LhGuess", color=self.error_color)
+            embed = Embed(color=self.error_color)
             embed.add_field(
-                name="Not Found",
-                value=f'Guess with ID:{guess_id} was not found',
+                name="Guess ID Not Found:",
+                value=guess_id,
                 inline=True)
             embed.set_footer(text=f"Requested by {ctx.message.author}")
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
         if guess:
-            embed = Embed(title="Delete LhGuess", color=self.success_color)
+            embed = Embed(color=self.success_color)
             embed.add_field(
-                name="Success",
-                value=f'Deleted guess {guess_id}',
+                name="Succesfully Deleted LhGuess:",
+                value=guess_id,
                 inline=True)
             embed.set_footer(text=f"Requested by {ctx.message.author}")
-            await collection.delete_one({"_id": ObjectId(id)})
+            await collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
