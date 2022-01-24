@@ -191,7 +191,8 @@ class General(commands.Cog, name="general"):
             await ctx.send(embed=embed)
 
     @commands.command(
-        name='inspect'
+        name='inspect',
+        hidden=True
     )
     async def inspect(self, ctx, *, command_name: str):
         """
