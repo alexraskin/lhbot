@@ -18,7 +18,6 @@ class General(commands.Cog, name="general"):
         :param self: Used to refer to the object itself.
         :param client: Used to pass the client object to the class.
         :return: the object of the class.
-        :doc-author: Trelent
         """
         self.client = client
 
@@ -32,7 +31,6 @@ class General(commands.Cog, name="general"):
 
         :param self: Used to refer to the object instance.
         :return: the percentage of the current year that has elapsed.
-        :doc-author: Trelent
         """
         now = dt.utcnow()
         year_end = dt(now.year + 1, 1, 1)
@@ -48,7 +46,6 @@ class General(commands.Cog, name="general"):
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the context of where the command was called.
         :return: an embed with the bot's information.
-        :doc-author: Trelent
         """
         embed = discord.Embed(description="LhBot", color=0x42F56C)
         embed.set_author(name="Bot Information")
@@ -76,7 +73,6 @@ class General(commands.Cog, name="general"):
         :param self: Used to access variables that belong to the class.
         :param ctx: Used to get the context of where the command was called.
         :return: a discord embed.
-        :doc-author: Trelent
         """
         embed = discord.Embed(
             title="🏓 Pong!",
@@ -96,7 +92,6 @@ class General(commands.Cog, name="general"):
         :param self: Used to access the class' attributes and methods.
         :param message: Used to store information about the message.
         :return: None.
-        :doc-author: Trelent
         """
         if message.author.bot:
             return
@@ -147,7 +142,6 @@ class General(commands.Cog, name="general"):
         :param ctx: Used to access the context of the command.
         :param query=None: Used to make sure that the function cannot be called without a query.
         :return: a discord embed object with the following format:.
-        :doc-author: Trelent
         """
         if query is None:
             await ctx.trigger_typing()
@@ -209,7 +203,6 @@ class General(commands.Cog, name="general"):
         :param *: Used to pass a list of arguments to the function.
         :param command_name:str: Used to specify the name of the command that we want to inspect.
         :return: a link to the github repo and the source code of a command.
-        :doc-author: Trelent
         """
         cmd = self.client.get_command(command_name)
         if cmd is None:
@@ -234,6 +227,5 @@ def setup(client):
 
     :param client: Used to pass in the client object.
     :return: a dictionary that contains the following keys:.
-    :doc-author: Trelent
     """
     client.add_cog(General(client))

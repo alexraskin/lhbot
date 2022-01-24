@@ -29,7 +29,6 @@ class LhBot(Bot):
         :param *args: Used to pass a non-keyworded, variable-length argument list to the function.
         :param **options: Used to pass a dictionary of keyword arguments to the function.
         :return: a new instance of the Session class.
-        :doc-author: Trelent
         """
         super().__init__(*args, **options)
         self.session = None
@@ -45,7 +44,6 @@ class LhBot(Bot):
         :param *args: Used to pass a non-keyworded, variable-length argument list.
         :param **kwargs: Used to pass a keyworded, variable-length argument list.
         :return: ClientSession object.
-        :doc-author: Trelent
         """
         self.session = ClientSession(timeout=ClientTimeout(total=30))
         await super().start(self.config["token"], *args, **kwargs)
@@ -56,7 +54,6 @@ class LhBot(Bot):
         
         :param self: Used to access the class attributes.
         :return: the aiohttp.
-        :doc-author: Trelent
         """
         await self.session.close()
         await super().close()
@@ -68,8 +65,7 @@ class LhBot(Bot):
         
         :param self: Used to access attributes of the class.
         :param user: Used to check if the user has a certain role.
-        :return: false if the user attribute is not an instance of discord.
-        :doc-author: Trelent
+        :return: false if the user attribute is not an instance of discord.  
         """
         try:
             user_roles = [role.id for role in user.roles]
@@ -85,7 +81,6 @@ class LhBot(Bot):
         :param self: Used to refer to the object itself.
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
-        :doc-author: Trelent
         """
         superusers = self.config['superusers']
         return user.id in superusers
@@ -124,15 +119,16 @@ async def status_task():
     The status_task function is a loop that will run every 60 seconds. It will randomly select one of the statuses from the list and set it as the bot's status.
     
     :return: a list of strings that will be used to change the status of the bot.
-    :doc-author: Trelent
     """
     statuses = [
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{client.config['bot_prefix']}help",
-        f"{client.config['bot_prefix']}info",
-        f"{client.config['bot_prefix']}dogpic",
+        f"{config['bot_prefix']}help",
+        f"{config['bot_prefix']}info",
+        f"{config['bot_prefix']}dog",
+        f"{config['bot_prefix']}cat",
+        f"{config['bot_prefix']}meme"
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -143,8 +139,7 @@ async def clean_dir():
     The clean_dir function is used to clean the directory of all files that are not
     .py, .txt or .json files.
     
-    :return: the directory that is passed to it.
-    :doc-author: Trelent
+    :return: bool
     """
     _clear_dir("./files", ".pdf")
 
@@ -157,7 +152,6 @@ async def on_ready():
         - Sets up a clean_dir task that cleans out old files in the cache directory every 5 minutes.
     
     :return: a string with the details of our main guild.
-    :doc-author: Trelent
     """
     main_id = client.config['main_guild']
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
@@ -181,7 +175,6 @@ async def on_command_error(context, error):
     :param context: Used to send messages to the user.
     :param error: Used to handle errors.
     :return: None.
-    :doc-author: Trelent
     """
     if isinstance(error, commands.CommandOnCooldown):
         minutes, seconds = divmod(error.retry_after, 60)
@@ -219,7 +212,6 @@ async def on_message(message):
     
     :param message: Used to get the message content and other information.
     :return: a "None" object.
-    :doc-author: Trelent
     """
     if isinstance(message.channel, discord.DMChannel):
         return
@@ -234,7 +226,6 @@ async def on_command_completion(ctx):
     
     :param ctx: Used to access the context of the command.
     :return: a string of the executed command.
-    :doc-author: Trelent
     """
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")

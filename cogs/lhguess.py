@@ -33,7 +33,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         self.success_color = 0x42F56C
         self.load_collection_list.start()
     
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(seconds=30)
     async def load_collection_list(self):
         """
         The load_collection_list function specifically loads the collection list from the database and stores it in a variable.
@@ -147,13 +147,12 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param ctx: Used to access the context of the command.
         :return: a random hint from the hints dictionary.
         """
-        embed = discord.Embed(description="LhHints", color=self.success_color)
+        embed = discord.Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
-        embed.set_author(name="Random LH Hint")
-        embed.add_field(name="Hint:", value=random_hint, inline=False)
+        embed.add_field(name="Hint:", value=random_hint, inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
-        embed_message.add_reaction("✨")
+        await embed_message.add_reaction("✨")
 
 
 def setup(client):

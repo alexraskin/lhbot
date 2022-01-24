@@ -13,7 +13,7 @@ class myHelpCommand(HelpCommand):
         :param self: Used to refer to the object itself.
         :param **options: Used to pass a dictionary of keyword arguments into the function.
         :return: the superclass of the class, which is the object class.
-        :doc-author: Trelent
+        
         """
         super().__init__(**options)
         self.paginator = None
@@ -29,7 +29,7 @@ class myHelpCommand(HelpCommand):
         :param header=False: Used to tell the send_pages function to not.
         :param footer=False: Used to remove the footer from the embed.
         :return: an Embed object.
-        :doc-author: Trelent
+        
         """
         destination = self.get_destination()
         embed = Embed(
@@ -60,7 +60,7 @@ class myHelpCommand(HelpCommand):
         :param self: Used to access the bot's help command.
         :param mapping: Used to determine which commands to show.
         :return: a list of tuples.
-        :doc-author: Trelent
+        
         """
         ctx = self.context
         bot = ctx.bot
@@ -72,7 +72,7 @@ class myHelpCommand(HelpCommand):
 
             :param command: Used to access the command that was called.
             :return: the cog of the command.
-            :doc-author: Trelent
+            
             """
             cog = command.cog
             return cog.qualified_name + ':' if cog is not None else 'Help:'
@@ -106,7 +106,7 @@ class myHelpCommand(HelpCommand):
         :param self: Used to access the bot object.
         :param cog: Used to access the cog object.
         :return: a Paginator.
-        :doc-author: Trelent
+        
         """
         filtered = await self.filter_commands(cog.get_commands(), sort=True)
         if not filtered:
@@ -131,7 +131,7 @@ class myHelpCommand(HelpCommand):
         :param self: Used to access the bot's attributes, such as its database.
         :param group: Used to get the name of the group, and it's description.
         :return: a string.
-        :doc-author: Trelent
+        
         """
         filtered = await self.filter_commands(group.commands, sort=True)
         if not filtered:
@@ -156,7 +156,7 @@ class myHelpCommand(HelpCommand):
         :param self: Used to access the bot's attributes and methods.
         :param command: Used to get the name of the command.
         :return: the signature and helptext of the command.
-        :doc-author: Trelent
+        
         """
         signature = self.get_command_signature(command)
         helptext = command.help or command.description or 'No help Text'
@@ -175,7 +175,7 @@ class myHelpCommand(HelpCommand):
         :param ctx: Used to get the current context of where the command was called.
         :param command=None: Used to check if the user wants to see general help or help for a specific command.
         :return: a list of strings that will be used as the help command description.
-        :doc-author: Trelent
+        
         """
         self.paginator = []
         await super().prepare_help_command(ctx, command)
@@ -190,7 +190,7 @@ class Help(commands.Cog):
         :param self: Used to refer to the bot itself.
         :param client: Used to access the client's functionality.
         :return: a client object from the discord.
-        :doc-author: Trelent
+        
         """
         self.client = client
         self.client.help_command = myHelpCommand(
@@ -209,7 +209,7 @@ class Help(commands.Cog):
         :param self: Used to access the cog instance.
         :param ctx: Used to check if the user has permission to use a command.
         :return: a function that takes the ctx object as an argument.
-        :doc-author: Trelent
+        
         """
         return self.client.user_is_admin(ctx.author)
 
@@ -219,7 +219,7 @@ class Help(commands.Cog):
 
         :param self: Used to access the attributes and methods of the cog.
         :return: a boolean value.
-        :doc-author: Trelent
+        
         """
         self.client.get_command('help').hidden = False
         self.client.help_command = DefaultHelpCommand()
@@ -238,7 +238,7 @@ class Help(commands.Cog):
         :param *: Used to allow for any number of arguments to be passed in.
         :param text=None: Used to pass a command name to the help function.
         :return: all of the commands, including hidden ones.
-        :doc-author: Trelent
+        
         """
         """Print bot help including all hidden commands"""
         self.client.help_command = myHelpCommand(show_hidden=True)
@@ -256,6 +256,6 @@ def setup(client):
 
     :param client: Used to access the API.
     :return: an instance of the class.
-    :doc-author: Trelent
+    
     """
     client.add_cog(Help(client))
