@@ -4,7 +4,7 @@ def _helper(mongo_return) -> dict:
 
     :param mongo_return: Used to store the data returned from the MongoDB query.
     :return: a dictionary containing the document's id and lhguess.
-    
+
     """
     return {
         "id": str(mongo_return["_id"]),

@@ -1,6 +1,7 @@
 import random
 
-import discord
+from bson.objectid import ObjectId
+from discord import Embed
 from discord.ext import commands, tasks
 
 from database.db import db_client
@@ -21,7 +22,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         The __init__ function is used to initialize the class. It's called when an instance of a class is created, and it
         creates space in memory for the new object. In this case, it creates space for self (the bot) and then initializes
         variables that will be used later on.
-        
+
         :param self: Used to reference the class itself.
         :param client: Used to access the bot's attributes.
         :return: the client that we will use to interact with the Discord API.
@@ -32,13 +33,13 @@ class LhGuess(commands.Cog, name="lhguess"):
         self.error_color = 0xE74C3C
         self.success_color = 0x42F56C
         self.load_collection_list.start()
-    
+
     @tasks.loop(seconds=30)
     async def load_collection_list(self):
         """
         The load_collection_list function specifically loads the collection list from the database and stores it in a variable.
         It then iterates through each guess in the collection and appends them to a list.
-        
+
         :param self: Used to access the class attributes.
         :return: a list of all the guesses in the collection.
         """
@@ -60,14 +61,14 @@ class LhGuess(commands.Cog, name="lhguess"):
         :return: a dictionary containing the guess, guessedBy and id of the guess.
         """
         if str(guess).lower() in self.banned_words_list:
-            embed = discord.Embed(title="Guess not allowed", color=self.error_color)
+            embed = Embed(title="Guess not allowed", color=self.error_color)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
 
         else:
             guessed = await collection.count_documents({"lhguess": str(guess).lower()})
             if guessed > 0:
-                embed = discord.Embed(
+                embed = Embed(
                     title="This has already been guessed 🚨",
                     description=f"LhGuess: {guess}",
                 )
@@ -81,7 +82,7 @@ class LhGuess(commands.Cog, name="lhguess"):
                 new_guess = await collection.insert_one(guess_dict)
                 return_guess = await collection.find_one({"_id": new_guess.inserted_id})
                 pretty_return = _helper(return_guess)
-                embed = discord.Embed(color=self.success_color)
+                embed = Embed(color=self.success_color)
                 embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
                 embed.add_field(
                     name="LhGuess:", value=pretty_return["guess"], inline=True
@@ -106,7 +107,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param ctx: Used to pass the context of the command.
         :return: the current amount of guesses in the database.
         """
-        embed = discord.Embed(title="LhGuess Count", color=self.success_color)
+        embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:",
             value=f"{len(self.guess_list)} 🦍",
@@ -124,7 +125,7 @@ class LhGuess(commands.Cog, name="lhguess"):
 
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the message author and channel.
-        :return: the report. 
+        :return: the report.
         """
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf",
@@ -132,12 +133,17 @@ class LhGuess(commands.Cog, name="lhguess"):
         )
         report.generate()
         share = FileSharer(f"{report.filename}")
-        embed = discord.Embed(title="LhGuess report is ready", color=self.success_color)
+        embed = Embed(
+            title="LhGuess report is ready",
+            color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✔️")
 
-    @commands.command(name="lhhint")
+    @commands.command(
+        name="lhhint",
+        aliases=["hint"]
+    )
     async def lh_hints(self, ctx):
         """
         The lh_hints function is used to send a random hint about the meaning of LH.
@@ -147,12 +153,41 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param ctx: Used to access the context of the command.
         :return: a random hint from the hints dictionary.
         """
-        embed = discord.Embed(title="Random LH Hint", color=self.success_color)
+        embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("✨")
+
+    @commands.command(
+        name=["lhdelete"],
+        aliases=["deleteguess"],
+        hidden=True
+    )
+    async def lh_delete(self, ctx, *, guess_id: str):
+        guess = await collection.find_one({"_id": ObjectId(guess_id)})
+        if not guess:
+            embed = Embed(title="Delete LhGuess", color=self.error_color)
+            embed.add_field(
+                name="Not Found",
+                value=f'Guess with ID:{guess_id} was not found',
+                inline=True)
+            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            embed_message = await ctx.send(embed=embed)
+            await embed_message.add_reaction("🔨")
+            return
+        if guess:
+            embed = Embed(title="Delete LhGuess", color=self.success_color)
+            embed.add_field(
+                name="Success",
+                value=f'Deleted guess {guess_id}',
+                inline=True)
+            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            await collection.delete_one({"_id": ObjectId(id)})
+            embed_message = await ctx.send(embed=embed)
+            await embed_message.add_reaction("🔨")
+            return
 
 
 def setup(client):

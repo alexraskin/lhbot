@@ -24,7 +24,7 @@ class LhBot(Bot):
         """
         The __init__ function is the constructor for a class. It is called when an instance of a class is created.
         It can take arguments (in this case, *args and **options) that are passed to it when it's called.
-        
+
         :param self: Used to refer to the object itself.
         :param *args: Used to pass a non-keyworded, variable-length argument list to the function.
         :param **options: Used to pass a dictionary of keyword arguments to the function.
@@ -39,7 +39,7 @@ class LhBot(Bot):
         """
         The start function is used to start the bot. It creates a ClientSession object, which allows us to make requests and download data from the internet.
         It also sets up our command prefixes and loads cogs.
-        
+
         :param self: Used to access the class attributes.
         :param *args: Used to pass a non-keyworded, variable-length argument list.
         :param **kwargs: Used to pass a keyworded, variable-length argument list.
@@ -51,7 +51,7 @@ class LhBot(Bot):
     async def close(self):
         """
         The close function closes the session
-        
+
         :param self: Used to access the class attributes.
         :return: the aiohttp.
         """
@@ -62,10 +62,10 @@ class LhBot(Bot):
         """
         The user_is_admin function specifically checks if the user has a role that is in the permitted_roles list.
         The permitted_roles list contains all of the roles that are allowed to access admin functions.
-        
+
         :param self: Used to access attributes of the class.
         :param user: Used to check if the user has a certain role.
-        :return: false if the user attribute is not an instance of discord.  
+        :return: false if the user attribute is not an instance of discord.
         """
         try:
             user_roles = [role.id for role in user.roles]
@@ -77,7 +77,7 @@ class LhBot(Bot):
     def user_is_superuser(self, user):
         """
         The user_is_superuser function specifically checks if the user is a superuser.
-        
+
         :param self: Used to refer to the object itself.
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
@@ -117,7 +117,7 @@ for extension in reversed(STARTUP_EXTENSIONS):
 async def status_task():
     """
     The status_task function is a loop that will run every 60 seconds. It will randomly select one of the statuses from the list and set it as the bot's status.
-    
+
     :return: a list of strings that will be used to change the status of the bot.
     """
     statuses = [
@@ -138,7 +138,7 @@ async def clean_dir():
     """
     The clean_dir function is used to clean the directory of all files that are not
     .py, .txt or .json files.
-    
+
     :return: bool
     """
     _clear_dir("./files", ".pdf")
@@ -150,7 +150,7 @@ async def on_ready():
     The on_ready function specifically accomplishes the following:
         - Sets up a status task that changes the bot's status every 10 seconds.
         - Sets up a clean_dir task that cleans out old files in the cache directory every 5 minutes.
-    
+
     :return: a string with the details of our main guild.
     """
     main_id = client.config['main_guild']
@@ -171,7 +171,7 @@ async def on_command_error(context, error):
     """
     The on_command_error function is used to handle errors that occur while executing a command.
     It's called when an error is raised while invoking a command, and it passes itself and the context of the invocation as arguments.
-    
+
     :param context: Used to send messages to the user.
     :param error: Used to handle errors.
     :return: None.
@@ -209,7 +209,7 @@ async def on_message(message):
     """
     The on_message function specifically is what allows the bot to recognize messages and respond accordingly.
     It also checks if the message was sent in a DM channel, which it ignores.
-    
+
     :param message: Used to get the message content and other information.
     :return: a "None" object.
     """
@@ -223,7 +223,7 @@ async def on_command_completion(ctx):
     """
     The on_command_completion function specifically tracks the commands that are executed in each server.
     It also prints out the command name and server name to a text file called "command_logs.txt".
-    
+
     :param ctx: Used to access the context of the command.
     :return: a string of the executed command.
     """

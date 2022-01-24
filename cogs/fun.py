@@ -44,7 +44,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the channel and user that sent the command.
         :param category:str=None: Used to determine if the user has specified a category or not.
         :return: a random joke from the API.
-        
+
         """
         if not hasattr(self, 'chuck_categories'):
             raise commands.BadArgument(
@@ -86,7 +86,7 @@ class Fun(commands.Cog, name="Fun"):
         :param self: Used to access the client and other variables in this cog.
         :param ctx: Used to get the context of where the command was called.
         :return: a random cat picture from the random.
-        
+
         """
         async with self.client.session.get('https://aws.random.cat/meow') as response:
             cat = await response.json()
@@ -104,7 +104,7 @@ class Fun(commands.Cog, name="Fun"):
         :param self: Used to access the client object.
         :param ctx: Used to get the channel and author of the message.
         :return: a dog picture in the form of a url.
-        
+
         """
         async with self.client.session.get('https://random.dog/woof.json') as response:
             dog = await response.json()
@@ -123,7 +123,7 @@ class Fun(commands.Cog, name="Fun"):
         :param self: Used to access the client object.
         :param ctx: Used to access the context of where the command was called.
         :return: the link to the meme from reddit.
-        
+
         """
         async with self.client.session.get('https://meme-api.herokuapp.com/gimme') as response:
             data = await response.json()
@@ -136,9 +136,9 @@ def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
-    
+
     :param client: Used to pass in the discord.
     :return: the client object which is your entry point to the API.
-    
+
     """
     client.add_cog(Fun(client))

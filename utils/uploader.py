@@ -20,7 +20,7 @@ class FileSharer:
         :param filepath: Used to store the path of the file that is uploaded.
         :param api_key=config["filestack_key"]: Used to set the api key for the filepicker.
         :return: the instantiation of the class, in this case an instance of the Filelink class.
-        
+
         """
         self.filepath = filepath
         self.api_key = api_key
@@ -33,7 +33,7 @@ class FileSharer:
 
         :param self: Used to access the attributes and methods of the class in python.
         :return: the share link.
-        
+
         """
         client = Client(self.api_key)
         new_filelink = client.upload(filepath=self.filepath)

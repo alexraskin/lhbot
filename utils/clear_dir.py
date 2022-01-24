@@ -9,7 +9,7 @@ def _clear_dir(directory: str, ext: str) -> bool:
     :param directory:str: Used to specify the directory that is to be cleared.
     :param ext:str: Used to specify the file extension to filter for.
     :return: a boolean value that tells us whether the directory was successfully cleared.
-    
+
     """
     files_in_directory = os.listdir(directory)
     filtered_files = [

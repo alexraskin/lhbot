@@ -13,7 +13,7 @@ class PdfReport:
         :param filename:str: Used to store the name of the file that is being read.
         :param guesses:list: Used to store the guesses made by the user.
         :return: nothing.
-        
+
         """
         self.filename = filename
         self.guesses = guesses
@@ -24,7 +24,7 @@ class PdfReport:
 
         :param self: Used to access the class attributes.
         :return: the pdf object.
-        
+
         """
         pdf = FPDF(orientation="P", unit="pt", format="A4")
         pdf.add_page()

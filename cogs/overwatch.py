@@ -15,7 +15,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         :param self: Used to access variables that belong to the class.
         :param client: Used to store the reference to the client object.
         :return: a new instance of the class.
-        
+
         """
         self.client = client
         self.base_url = 'https://owapi.io'
@@ -36,7 +36,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         :param *: Used to pass in unlimited parameters to this function.
         :param info=None: Used to pass in the user's information.
         :return: :.
-        
+
         """
         if info is None:
             embed = Embed(
@@ -117,6 +117,6 @@ def setup(client):
 
     :param client: Used to pass in the discord client, which is used to interact with the Discord API.
     :return: a dictionary with the following keys:.
-    
+
     """
     client.add_cog(OverwatchAPI(client))
