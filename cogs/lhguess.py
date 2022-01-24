@@ -1,12 +1,12 @@
 import random
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from database.db import db_client
 from utils.banwords import banned_words
-from utils.hints import lh_hints
 from utils.generate_pdf import PdfReport
+from utils.hints import lh_hints
 from utils.return_helper import _helper
 from utils.uploader import FileSharer
 
@@ -18,18 +18,33 @@ collection = database.get_collection("lhbot_collection")
 class LhGuess(commands.Cog, name="lhguess"):
     def __init__(self, client):
         """
-        The __init__ function is a special function that Python runs automatically whenever we create a new instance based on the Dog class. The self parameter refers to the newly created object, and we can access attributes and methods of that object as its attributes.
-
-        :param self: Used to refer to the class instance itself.
-        :param client: Used to access the client's methods and properties.
-        :return: the bot object.
-        :doc-author: Trelent
+        The __init__ function is used to initialize the class. It's called when an instance of a class is created, and it
+        creates space in memory for the new object. In this case, it creates space for self (the bot) and then initializes
+        variables that will be used later on.
+        
+        :param self: Used to reference the class itself.
+        :param client: Used to access the bot's attributes.
+        :return: the client that we will use to interact with the Discord API.
         """
         self.bot = client
         self.banned_words_list = banned_words.split("\n")
         self.hints = lh_hints.split("\n")
         self.error_color = 0xE74C3C
         self.success_color = 0x42F56C
+        self.load_collection_list.start()
+    
+    @tasks.loop(minutes=1.0)
+    async def load_collection_list(self):
+        """
+        The load_collection_list function specifically loads the collection list from the database and stores it in a variable.
+        It then iterates through each guess in the collection and appends them to a list.
+        
+        :param self: Used to access the class attributes.
+        :return: a list of all the guesses in the collection.
+        """
+        self.guess_list = []
+        async for guess in collection.find():
+            self.guess_list.append(_helper(guess)["guess"])
 
     @commands.command(name="lhguess")
     async def lh_guess(self, ctx, *, guess):
@@ -43,23 +58,15 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param *: Used to pass in unlimited arguments.
         :param guess: Used to store the user's guess.
         :return: a dictionary containing the guess, guessedBy and id of the guess.
-        :doc-author: Trelent
         """
-        """
-        !lhguess <your guess>
-        """
-
         if str(guess).lower() in self.banned_words_list:
             embed = discord.Embed(title="Guess not allowed", color=self.error_color)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
 
         else:
-
-            guesses = []
-            async for _guess in collection.find():
-                guesses.append(_helper(_guess)["guess"])
-            if str(guess).lower() in guesses:
+            guessed = await collection.count_documents({"lhguess": str(guess).lower()})
+            if guessed > 0:
                 embed = discord.Embed(
                     title="This has already been guessed 🚨",
                     description=f"LhGuess: {guess}",
@@ -98,18 +105,11 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param self: Used to access the class methods and variables.
         :param ctx: Used to pass the context of the command.
         :return: the current amount of guesses in the database.
-        :doc-author: Trelent
         """
-        """
-        current amount of guesses in the database
-        """
-        guesses = []
-        async for _guess in collection.find():
-            guesses.append(_helper(_guess)["guess"])
         embed = discord.Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:",
-            value=f"{len(guesses)} 🦍",
+            value=f"{len(self.guess_list)} 🦍",
             inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
@@ -124,17 +124,11 @@ class LhGuess(commands.Cog, name="lhguess"):
 
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the message author and channel.
-        :return: the report.
-        :doc-author: Trelent
+        :return: the report. 
         """
-        """
-        generate LhGuess PDF report
-        """
-        guess_list = []
-        async for _guess in collection.find():
-            guess_list.append(_helper(_guess)["guess"])
         report = PdfReport(
-            filename=f"{ctx.message.author}-report.pdf", guesses=guess_list
+            filename=f"{ctx.message.author}-report.pdf",
+            guesses=self.guess_list
         )
         report.generate()
         share = FileSharer(f"{report.filename}")
@@ -152,10 +146,6 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of the command.
         :return: a random hint from the hints dictionary.
-        :doc-author: Trelent
-        """
-        """
-        random hint about the meaning of LH
         """
         embed = discord.Embed(description="LhHints", color=self.success_color)
         random_hint = random.choice(list(self.hints))
@@ -173,6 +163,5 @@ def setup(client):
 
     :param client: Used to access the client's resources.
     :return: a dictionary of information about the bot and server.
-    :doc-author: Trelent
     """
     client.add_cog(LhGuess(client))

@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import random
+import sys
 from datetime import datetime
 
 import discord
@@ -10,6 +11,12 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 
 from utils.clear_dir import _clear_dir
+
+if not os.path.isfile("config.json"):
+    sys.exit("'config.json' not found! Please add it and try again.")
+else:
+    with open("config.json", encoding="utf-8") as file:
+        config = json.load(file)
 
 
 class LhBot(Bot):
@@ -27,8 +34,7 @@ class LhBot(Bot):
         super().__init__(*args, **options)
         self.session = None
         self.last_errors = []
-        with open("config.json") as conffile:
-            self.config = json.load(conffile)
+        self.config = config
 
     async def start(self, *args, **kwargs):
         """
@@ -86,7 +92,7 @@ class LhBot(Bot):
 
 
 client = LhBot(
-    command_prefix="!",
+    command_prefix=config["bot_prefix"],
     description='Hi I am LhBot!',
     max_messages=15000,
     intents=discord.Intents.all(),

@@ -9,9 +9,8 @@ motor = "*"
 pymongo = "*"
 dnspython = "*"
 aiohttp = "*"
-aiofiles = "*"
-filestack-python = "*"
 fpdf = "*"
+filestack-python = "*"
 
 [dev-packages]
 pylint = "*"
