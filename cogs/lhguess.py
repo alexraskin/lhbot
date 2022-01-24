@@ -6,6 +6,7 @@ from discord.ext import commands, tasks
 
 from database.db import db_client
 from utils.banwords import banned_words
+from utils.emojis import random_emoji
 from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
 from utils.return_helper import _helper
@@ -98,7 +99,7 @@ class LhGuess(commands.Cog, name="lhguess"):
                 )
                 await ctx.trigger_typing()
                 embed_message = await ctx.send(embed=embed)
-                await embed_message.add_reaction(Emoji(name=":lhcloudyCool:", require_colons=True))
+                await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhcount")
     async def guess_count(self, ctx):
@@ -143,8 +144,7 @@ class LhGuess(commands.Cog, name="lhguess"):
             color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction("✔️")
-        await embed_message.add_reaction(Emoji(name=":lhcloudyCool:", require_colons=True))
+        await embed_message.add_reaction(random_emoji())
 
     @commands.command(
         name="lhhint",
@@ -165,7 +165,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         await ctx.trigger_typing()
         embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction("✨")
+        await embed_message.add_reaction(random_emoji())
 
     @commands.command(
         name="lhdelete",
