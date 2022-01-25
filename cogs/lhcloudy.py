@@ -97,6 +97,13 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await ctx.trigger_typing()
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
+    
+    @commands.command(name="lhfurry")
+    async def lhfurry(self, ctx):
+        url = "https://i.gyazo.com/3ae8376713000ab829a2853d0f31e6f2.png"
+        await ctx.trigger_typing()
+        message = await ctx.send(url)
+        await message.add_reaction(random_emoji())
 
     @commands.command(name="bhop2")
     async def bhop_two(self, ctx):
