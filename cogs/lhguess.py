@@ -28,7 +28,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param client: Used to access the bot's attributes.
         :return: the client that we will use to interact with the Discord API.
         """
-        self.bot = client
+        self.client = client
         self.banned_words_list = banned_words.split("\n")
         self.hints = lh_hints.split("\n")
         self.error_color = 0xE74C3C
@@ -61,45 +61,52 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param guess: Used to store the user's guess.
         :return: a dictionary containing the guess, guessedBy and id of the guess.
         """
-        if str(guess).lower() in self.banned_words_list:
-            embed = Embed(title="Guess not allowed", color=self.error_color)
+        if not str(guess).lower().startswith("l"):
+            embed = Embed(title="Guess not allowed!", color=self.error_color)
             await ctx.trigger_typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
+            return
 
+        if str(guess).lower() in self.banned_words_list:
+            embed = Embed(title="Guess not allowed!", color=self.error_color)
+            await ctx.trigger_typing()
+            embed_message = await ctx.send(embed=embed)
+            await embed_message.add_reaction("❌")
+            return
+
+        guessed = await collection.count_documents({"lhguess": str(guess).lower()})
+        if guessed > 0:
+            embed = Embed(
+                title="This has already been guessed 🚨",
+                description=f"LhGuess: {guess}",
+            )
+            await ctx.trigger_typing()
+            embed_message = await ctx.send(embed=embed)
+            await embed_message.add_reaction("👎")
         else:
-            guessed = await collection.count_documents({"lhguess": str(guess).lower()})
-            if guessed > 0:
-                embed = Embed(
-                    title="This has already been guessed 🚨",
-                    description=f"LhGuess: {guess}",
-                )
-                await ctx.trigger_typing()
-                embed_message = await ctx.send(embed=embed)
-                await embed_message.add_reaction("👎")
-            else:
-                guess_dict = {
-                    "lhguess": str(guess).lower(),
-                    "guessedBy": str(ctx.message.author),
-                }
-                new_guess = await collection.insert_one(guess_dict)
-                return_guess = await collection.find_one({"_id": new_guess.inserted_id})
-                pretty_return = _helper(return_guess)
-                embed = Embed(color=self.success_color)
-                embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
-                embed.add_field(
-                    name="LhGuess:", value=pretty_return["guess"], inline=True
-                )
-                embed.add_field(
-                    name="Guessed by:",
-                    value=pretty_return["guessedBy"],
-                    inline=False)
-                embed.add_field(
-                    name="Guess ID:", value=pretty_return["id"], inline=False
-                )
-                await ctx.trigger_typing()
-                embed_message = await ctx.send(embed=embed)
-                await embed_message.add_reaction(random_emoji())
+            guess_dict = {
+                "lhguess": str(guess).lower(),
+                "guessedBy": str(ctx.message.author),
+            }
+            new_guess = await collection.insert_one(guess_dict)
+            return_guess = await collection.find_one({"_id": new_guess.inserted_id})
+            pretty_return = _helper(return_guess)
+            embed = Embed(color=self.success_color)
+            embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
+            embed.add_field(
+                name="LhGuess:", value=pretty_return["guess"], inline=True
+            )
+            embed.add_field(
+                name="Guessed by:",
+                value=pretty_return["guessedBy"],
+                inline=False)
+            embed.add_field(
+                name="Guess ID:", value=pretty_return["id"], inline=False
+            )
+            await ctx.trigger_typing()
+            embed_message = await ctx.send(embed=embed)
+            await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhcount")
     async def guess_count(self, ctx):
@@ -173,6 +180,12 @@ class LhGuess(commands.Cog, name="lhguess"):
         hidden=True
     )
     async def lh_delete(self, ctx, *, guess_id):
+        if not self.client.user_is_superuser(ctx.author):
+            embed = Embed(
+                title="You do not have permisson to run this command!",
+                color=self.error_color
+            )
+            return
         await ctx.trigger_typing()
         guess = await collection.find_one({"_id": ObjectId(guess_id)})
         if not guess:
