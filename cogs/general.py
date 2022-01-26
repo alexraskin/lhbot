@@ -135,6 +135,7 @@ class General(commands.Cog, name="general"):
         if query is None:
             await ctx.trigger_typing()
             await ctx.send("Please enter a search query!")
+            return
 
         if len(query) > 500:
             await ctx.trigger_typing()
@@ -148,10 +149,12 @@ class General(commands.Cog, name="general"):
             try:
                 answer = await response.json(content_type="application/x-javascript")
             except ContentTypeError:
+                await ctx.trigger_typing()
                 await ctx.send("Invalid query")
                 return
 
             if (not answer) or (not answer["AbstractText"]):
+                await ctx.trigger_typing()
                 await ctx.send(
                     "Couldn't find anything, here's duckduckgo link: "
                     + f"<https://duckduckgo.com/?q={quote_plus(query)}>"
@@ -173,6 +176,7 @@ class General(commands.Cog, name="general"):
                 + f'at {answer["AbstractURL"]}\n'
                 + "Provided By: https://api.duckduckgo.com"
             )
+            await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
     @commands.command(name="inspect", hidden=True)
@@ -200,6 +204,7 @@ class General(commands.Cog, name="general"):
         sanitized = sauce.replace("`", "\u200B`")
         if len(url) + len(sanitized) > 1950:
             sanitized = sanitized[: 1950 - len(url)] + "\n[...]"
+        await ctx.trigger_typing()
         await ctx.send(url + f"```python\n{sanitized}\n```")
 
 

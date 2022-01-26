@@ -9,7 +9,8 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class. It initializes the attributes of an object. In this case, it initializes
+        The __init__ function is the constructor for a class. 
+        It initializes the attributes of an object. In this case, it initializes
         the client attribute.
 
         :param self: Used to access variables that belong to the class.
@@ -27,9 +28,11 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     )
     async def get_overwatch_profile(self, ctx, *, info=None):
         """
-        The get_overwatch_profile function specifically retrieves the Overwatch profile of a user.
-        It takes in three parameters, which are the context, and two strings. The first string is for platform (pc/xbl/psn),
-        and the second string is for region (us/eu/kr). It then splits these two strings into three separate variables.
+        The get overwatch profile command retrieves the Overwatch profile of a user.
+        It takes in three parameters, which are the context, and two strings. 
+        The first string is for platform (pc/xbl/psn),
+        the second string is for region (us/eu/kr). 
+        It then splits these two strings into three separate variables.
 
         :param self: Used to access variables that belong to the class.
         :param ctx: Used to get the context of where the message was sent.
@@ -54,6 +57,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                 name="Region of player:", value="us/eu/kr/cn/global", inline=True
             )
             embed.add_field(name="BattleTag of user:", value="Jay3#11894", inline=True)
+            await ctx.trigger_typing()
             await ctx.send(embed=embed)
         else:
             platform, region, profile = str(info).split(" ")
@@ -65,8 +69,10 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                         title="Unable to find profile",
                         color=random.randint(0, 0xFFFFFF),
                     )
+                    await ctx.trigger_typing()
                     await ctx.send(embed=embed)
                 if not user_data["private"]:
+                    await ctx.trigger_typing()
                     embed = Embed(color=random.randint(0, 0xFFFFFF))
                     embed.set_author(
                         name=user_data["username"], icon_url=user_data["portrait"]
@@ -97,6 +103,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                         name=f'{user_data["username"]} is not a public profile',
                         icon_url=user_data["portrait"],
                     )
+                    await ctx.trigger_typing()
                     await ctx.send(embed=embed)
 
 
