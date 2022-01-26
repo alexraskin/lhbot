@@ -59,7 +59,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param ctx: Used to get the context of the message.
         :param *: Used to pass in unlimited arguments.
         :param guess: Used to store the user's guess.
-        :return: a dictionary containing the guess, guessedBy and id of the guess.
+        :return: an embed message
         """
         if not str(guess).lower().startswith("l"):
             embed = Embed(title="Guess not allowed!", color=self.error_color)
@@ -120,7 +120,7 @@ class LhGuess(commands.Cog, name="lhguess"):
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction("💚")
+        await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhreport")
     async def run_lh_report(self, ctx):
@@ -175,14 +175,18 @@ class LhGuess(commands.Cog, name="lhguess"):
         :param guess_id: Used to specify the ID of the guess that is to be deleted.
         :return: the embed message that is sent to the channel.
         """
+        await ctx.trigger_typing()
         if not self.client.user_is_superuser(ctx.author):
             embed = Embed(
                 title="You do not have permisson to run this command!",
                 color=self.error_color,
             )
+            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            embed_message = await ctx.send(embed=embed)
+            await embed_message.add_reaction("🔨")
             return
-        await ctx.trigger_typing()
         guess = await collection.find_one({"_id": ObjectId(guess_id)})
+
         if not guess:
             embed = Embed(
                 title=f"Guess with ID: {guess_id} was not found!",
@@ -192,6 +196,7 @@ class LhGuess(commands.Cog, name="lhguess"):
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
+
         if guess:
             embed = Embed(color=self.success_color)
             embed.add_field(
