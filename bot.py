@@ -22,8 +22,9 @@ else:
 class LhBot(Bot):
     def __init__(self, *args, **options):
         """
-        The __init__ function is the constructor for a class. It is called when an instance of a class is created.
-        It can take arguments (in this case, *args and **options) that are passed to it when it's called.
+        The __init__ function is the constructor for a class. 
+        It is called when an instance of a class is created.
+        It can take arguments (in this case, *args and **options)
 
         :param self: Used to refer to the object itself.
         :param *args: Used to pass a non-keyworded, variable-length argument list to the function.
@@ -37,7 +38,9 @@ class LhBot(Bot):
 
     async def start(self, *args, **kwargs):
         """
-        The start function is used to start the bot. It creates a ClientSession object, which allows us to make requests and download data from the internet.
+        The start function is used to start the bot.
+        It creates a ClientSession object
+         which allows us to make requests and download data from the internet.
         It also sets up our command prefixes and loads cogs.
 
         :param self: Used to access the class attributes.
@@ -60,8 +63,10 @@ class LhBot(Bot):
 
     def user_is_admin(self, user):
         """
-        The user_is_admin function specifically checks if the user has a role that is in the permitted_roles list.
-        The permitted_roles list contains all of the roles that are allowed to access admin functions.
+        The user_is_admin function specifically checks 
+        if the user has a role that is in the permitted_roles list.
+        The permitted_roles list contains 
+        all of the roles that are allowed to access admin functions.
 
         :param self: Used to access attributes of the class.
         :param user: Used to check if the user has a certain role.
@@ -114,7 +119,9 @@ for extension in reversed(STARTUP_EXTENSIONS):
 @tasks.loop(minutes=1.0)
 async def status_task():
     """
-    The status_task function is a loop that will run every 60 seconds. It will randomly select one of the statuses from the list and set it as the bot's status.
+    The status_task function is a loop that will run every 60 seconds. 
+    It will randomly select one of the statuses from the list 
+    and set it as the bot's status.
 
     :return: a list of strings that will be used to change the status of the bot.
     """

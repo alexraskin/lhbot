@@ -12,8 +12,10 @@ from discord.ext import commands
 class General(commands.Cog, name="general"):
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class. It is called when an instance of a class is created.
-        It allows the newly created object to have some attributes that are specified at creation time.
+        The __init__ function is the constructor for a class. 
+        It is called when an instance of a class is created.
+        It allows the newly created object to have 
+        some attributes that are specified at creation time.
 
         :param self: Used to refer to the object itself.
         :param client: Used to pass the client object to the class.
@@ -41,7 +43,8 @@ class General(commands.Cog, name="general"):
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
         """
-        The info function specifically tells the user about the bot, and gives them a link to the github page.
+        The info function specifically tells the user about the bot,
+        and gives them a link to the github page.
 
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the context of where the command was called.
@@ -65,7 +68,8 @@ class General(commands.Cog, name="general"):
     async def ping(self, ctx):
         """
         The ping function is used to check the bot's latency.
-        It returns a message with the time it takes for a message to reach Discord and be received by the bot.
+        It returns a message with the time it takes for a message
+        to reach Discord and be received by the bot.
 
         :param self: Used to access variables that belong to the class.
         :param ctx: Used to get the context of where the command was called.
