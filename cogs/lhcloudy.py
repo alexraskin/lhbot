@@ -17,28 +17,10 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :return: the object of the class.
 
         """
-        """
-        The __init__ function is the constructor for a class. It is called when an instance of a class is created.
-        It allows the newly created object to have some attributes that are defined by this function.
-
-        :param self: Used to refer to the object itself.
-        :param client: Used to store the client's information.
-        :return: the object of the class.
-
-        """
         self.client = client
 
     @commands.command(name="1frame")
     async def one_frame(self, ctx):
-        """
-        The one_frame function specifically is used to send a message with the url of the clip.
-        It also sends a typing indicator while it does so.
-
-        :param self: Used to access the bot's attributes and methods.
-        :param ctx: Used to access the context of where a command was called.
-        :return: the URL of a clip from the streaming channel LhCloudy27.
-
-        """
         """
         The one_frame function specifically is used to send a message with the url of the clip.
         It also sends a typing indicator while it does so.
