@@ -175,23 +175,14 @@ async def on_ready():
 async def on_command_error(context, error):
     """
     The on_command_error function is used to handle errors that occur while executing a command.
-    It's called when an error is raised while invoking a command, and it passes itself and the context of the invocation as arguments.
+    It's called when an error is raised while invoking a command, 
+    and it passes itself and the context of the invocation as arguments.
 
     :param context: Used to send messages to the user.
     :param error: Used to handle errors.
     :return: None.
     """
-    if isinstance(error, commands.CommandOnCooldown):
-        minutes, seconds = divmod(error.retry_after, 60)
-        hours, minutes = divmod(minutes, 60)
-        hours = hours % 24
-        embed = discord.Embed(
-            title="Hey, please slow down!",
-            description=f"You can use this command again in {f'{round(hours)} hours' if round(hours) > 0 else ''} {f'{round(minutes)} minutes' if round(minutes) > 0 else ''} {f'{round(seconds)} seconds' if round(seconds) > 0 else ''}.",
-            color=0xE02B2B,
-        )
-        await context.send(embed=embed)
-    elif isinstance(error, commands.MissingPermissions):
+    if isinstance(error, commands.MissingPermissions):
         embed = discord.Embed(
             title="Error!",
             description="You are missing the permission `"
