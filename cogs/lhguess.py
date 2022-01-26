@@ -94,16 +94,11 @@ class LhGuess(commands.Cog, name="lhguess"):
             pretty_return = _helper(return_guess)
             embed = Embed(color=self.success_color)
             embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
+            embed.add_field(name="LhGuess:", value=pretty_return["guess"], inline=True)
             embed.add_field(
-                name="LhGuess:", value=pretty_return["guess"], inline=True
+                name="Guessed by:", value=pretty_return["guessedBy"], inline=False
             )
-            embed.add_field(
-                name="Guessed by:",
-                value=pretty_return["guessedBy"],
-                inline=False)
-            embed.add_field(
-                name="Guess ID:", value=pretty_return["id"], inline=False
-            )
+            embed.add_field(name="Guess ID:", value=pretty_return["id"], inline=False)
             await ctx.trigger_typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction(random_emoji())
@@ -121,9 +116,8 @@ class LhGuess(commands.Cog, name="lhguess"):
         await ctx.trigger_typing()
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
-            name="Current guess Count:",
-            value=f"{len(self.guess_list)} 🦍",
-            inline=True)
+            name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
+        )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction("💚")
@@ -141,22 +135,16 @@ class LhGuess(commands.Cog, name="lhguess"):
         """
         await ctx.trigger_typing()
         report = PdfReport(
-            filename=f"{ctx.message.author}-report.pdf",
-            guesses=self.guess_list
+            filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
         report.generate()
         share = FileSharer(f"{report.filename}")
-        embed = Embed(
-            title="LhGuess report is ready",
-            color=self.success_color)
+        embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.share())
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.command(
-        name="lhhint",
-        aliases=["hint"]
-    )
+    @commands.command(name="lhhint", aliases=["hint"])
     async def lh_hints(self, ctx):
         """
         The lh_hints function is used to send a random hint about the meaning of LH.
@@ -174,26 +162,32 @@ class LhGuess(commands.Cog, name="lhguess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.command(
-        name="lhdelete",
-        aliases=["deleteguess"],
-        hidden=True
-    )
+    @commands.command(name="lhdelete", aliases=["deleteguess"], hidden=True)
     async def lh_delete(self, ctx, *, guess_id):
+        """
+        The lh_delete function is used to delete a specific guess from the database.
+        It takes in a string of the guess id and deletes it from the database. It also
+        returns an embed message with confirmation that it was deleted.
+
+        :param self: Used to access the class attributes and methods.
+        :param ctx: Used to access the context of where the command was called.
+        :param *: Used to take in any number of arguments.
+        :param guess_id: Used to specify the ID of the guess that is to be deleted.
+        :return: the embed message that is sent to the channel.
+        """
         if not self.client.user_is_superuser(ctx.author):
             embed = Embed(
                 title="You do not have permisson to run this command!",
-                color=self.error_color
+                color=self.error_color,
             )
             return
         await ctx.trigger_typing()
         guess = await collection.find_one({"_id": ObjectId(guess_id)})
         if not guess:
-            embed = Embed(color=self.error_color)
-            embed.add_field(
-                name="Guess ID Not Found:",
-                value=guess_id,
-                inline=True)
+            embed = Embed(
+                title=f"Guess with ID: {guess_id} was not found!",
+                color=self.error_color,
+            )
             embed.set_footer(text=f"Requested by {ctx.message.author}")
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
@@ -201,9 +195,8 @@ class LhGuess(commands.Cog, name="lhguess"):
         if guess:
             embed = Embed(color=self.success_color)
             embed.add_field(
-                name="Succesfully Deleted LhGuess:",
-                value=guess_id,
-                inline=True)
+                name="Succesfully Deleted LhGuess:", value=guess_id, inline=True
+            )
             embed.set_footer(text=f"Requested by {ctx.message.author}")
             await collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)

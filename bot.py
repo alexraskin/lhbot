@@ -71,7 +71,7 @@ class LhBot(Bot):
             user_roles = [role.id for role in user.roles]
         except AttributeError:
             return False
-        permitted_roles = self.config['admin_roles']
+        permitted_roles = self.config["admin_roles"]
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
@@ -82,35 +82,33 @@ class LhBot(Bot):
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
         """
-        superusers = self.config['superusers']
+        superusers = self.config["superusers"]
         return user.id in superusers
 
 
 client = LhBot(
     command_prefix=config["bot_prefix"],
-    description='Hi I am LhBot!',
+    description="Hi I am LhBot!",
     max_messages=15000,
     intents=discord.Intents.all(),
-    allowed_mentions=discord.AllowedMentions(
-        everyone=False,
-        users=True,
-        roles=True))
+    allowed_mentions=discord.AllowedMentions(everyone=False, users=True, roles=True),
+)
 
 STARTUP_EXTENSIONS = []
 
-for file in os.listdir(os.path.join(os.path.dirname(__file__), 'cogs/')):
+for file in os.listdir(os.path.join(os.path.dirname(__file__), "cogs/")):
     filename, ext = os.path.splitext(file)
-    if '.py' in ext:
-        STARTUP_EXTENSIONS.append(f'cogs.{filename}')
+    if ".py" in ext:
+        STARTUP_EXTENSIONS.append(f"cogs.{filename}")
 
 for extension in reversed(STARTUP_EXTENSIONS):
     try:
-        client.load_extension(f'{extension}')
+        client.load_extension(f"{extension}")
         print(f"Loaded extension '{extension}'")
     except Exception as e:
         client.last_errors.append((e, datetime.utcnow(), None, None))
-        exc = f'{type(e).__name__}: {e}'
-        print(f'Failed to load extension {extension}\n{exc}')
+        exc = f"{type(e).__name__}: {e}"
+        print(f"Failed to load extension {extension}\n{exc}")
 
 
 @tasks.loop(minutes=1.0)
@@ -128,7 +126,7 @@ async def status_task():
         f"{config['bot_prefix']}info",
         f"{config['bot_prefix']}dog",
         f"{config['bot_prefix']}cat",
-        f"{config['bot_prefix']}meme"
+        f"{config['bot_prefix']}meme",
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -153,7 +151,7 @@ async def on_ready():
 
     :return: a string with the details of our main guild.
     """
-    main_id = client.config['main_guild']
+    main_id = client.config["main_guild"]
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
@@ -161,8 +159,8 @@ async def on_ready():
     print("-------------------")
     status_task.start()
     clean_dir.start()
-    print('\nMain guild:', client.main_guild.name)
-    print(f'\n{client.user.name} started successfully')
+    print("\nMain guild:", client.main_guild.name)
+    print(f"\n{client.user.name} started successfully")
     return True
 
 
@@ -183,22 +181,21 @@ async def on_command_error(context, error):
         embed = discord.Embed(
             title="Hey, please slow down!",
             description=f"You can use this command again in {f'{round(hours)} hours' if round(hours) > 0 else ''} {f'{round(minutes)} minutes' if round(minutes) > 0 else ''} {f'{round(seconds)} seconds' if round(seconds) > 0 else ''}.",
-            color=0xE02B2B
+            color=0xE02B2B,
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.MissingPermissions):
         embed = discord.Embed(
             title="Error!",
-            description="You are missing the permission `" + ", ".join(
-                error.missing_perms) + "` to execute this command!",
-            color=0xE02B2B
+            description="You are missing the permission `"
+            + ", ".join(error.missing_perms)
+            + "` to execute this command!",
+            color=0xE02B2B,
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(
-            title="Error!",
-            description=str(error).capitalize(),
-            color=0xE02B2B
+            title="Error!", description=str(error).capitalize(), color=0xE02B2B
         )
         await context.send(embed=embed)
     raise error
@@ -231,9 +228,10 @@ async def on_command_completion(ctx):
     split = full_command_name.split(" ")
     executed_command = str(split[0])
     print(
-        f"Executed {executed_command} command in {ctx.guild.name}" +
-        f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")
+        f"Executed {executed_command} command in {ctx.guild.name}"
+        + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
+    )
 
 
 client.run()
-print('LhBot has exited')
+print("LhBot has exited")

@@ -32,23 +32,13 @@ class myHelpCommand(HelpCommand):
 
         """
         destination = self.get_destination()
-        embed = Embed(
-            color=0x2ECC71
-        )
+        embed = Embed(color=0x2ECC71)
         if header:
-            embed.set_author(
-                name=self.context.bot.description
-            )
+            embed.set_author(name=self.context.bot.description)
         for category, entries in self.paginator:
-            embed.add_field(
-                name=category,
-                value=entries,
-                inline=False
-            )
+            embed.add_field(name=category, value=entries, inline=False)
         if footer:
-            embed.set_footer(
-                text='Use !help <command/category> for more information.'
-            )
+            embed.set_footer(text="Use !help <command/category> for more information.")
         await destination.send(embed=embed)
 
     async def send_bot_help(self, mapping):
@@ -75,26 +65,22 @@ class myHelpCommand(HelpCommand):
 
             """
             cog = command.cog
-            return cog.qualified_name + ':' if cog is not None else 'Help:'
+            return cog.qualified_name + ":" if cog is not None else "Help:"
 
-        filtered = await self.filter_commands(
-            bot.commands,
-            sort=True,
-            key=get_category
-        )
+        filtered = await self.filter_commands(bot.commands, sort=True, key=get_category)
         to_iterate = itertools.groupby(filtered, key=get_category)
         for cog_name, command_grouper in to_iterate:
             cmds = sorted(command_grouper, key=lambda c: c.name)
-            category = f'► {cog_name}'
+            category = f"► {cog_name}"
             if len(cmds) == 1:
-                entries = f'{self.spacer}{cmds[0].name} → {cmds[0].short_doc}'
+                entries = f"{self.spacer}{cmds[0].name} → {cmds[0].short_doc}"
             else:
-                entries = ''
+                entries = ""
                 while len(cmds) > 0:
                     entries += self.spacer
-                    entries += ' | '.join([cmd.name for cmd in cmds[0:8]])
+                    entries += " | ".join([cmd.name for cmd in cmds[0:8]])
                     cmds = cmds[8:]
-                    entries += '\n' if cmds else ''
+                    entries += "\n" if cmds else ""
             self.paginator.append((category, entries))
         await self.send_pages(header=True, footer=True)
 
@@ -111,13 +97,13 @@ class myHelpCommand(HelpCommand):
         filtered = await self.filter_commands(cog.get_commands(), sort=True)
         if not filtered:
             await self.context.send(
-                'No public commands in this cog. Try again with lhbot helpall.'
+                "No public commands in this cog. Try again with lhbot helpall."
             )
             return
-        category = f'▼ {cog.qualified_name}'
-        entries = '\n'.join(
-            self.spacer +
-            f'**{command.name}** → {command.short_doc or command.description}'
+        category = f"▼ {cog.qualified_name}"
+        entries = "\n".join(
+            self.spacer
+            + f"**{command.name}** → {command.short_doc or command.description}"
             for command in filtered
         )
         self.paginator.append((category, entries))
@@ -136,12 +122,12 @@ class myHelpCommand(HelpCommand):
         filtered = await self.filter_commands(group.commands, sort=True)
         if not filtered:
             await self.context.send(
-                'No public commands in group. Try again with !help helpall.'
+                "No public commands in group. Try again with !help helpall."
             )
             return
-        category = f'**{group.name}** - {group.description or group.short_doc}'
-        entries = '\n'.join(
-            self.spacer + f'**{command.name}** → {command.short_doc}'
+        category = f"**{group.name}** - {group.description or group.short_doc}"
+        entries = "\n".join(
+            self.spacer + f"**{command.name}** → {command.short_doc}"
             for command in filtered
         )
         self.paginator.append((category, entries))
@@ -159,10 +145,8 @@ class myHelpCommand(HelpCommand):
 
         """
         signature = self.get_command_signature(command)
-        helptext = command.help or command.description or 'No help Text'
-        self.paginator.append(
-            (signature, helptext)
-        )
+        helptext = command.help or command.description or "No help Text"
+        self.paginator.append((signature, helptext))
         await self.send_pages()
 
     async def prepare_help_command(self, ctx, command=None):
@@ -195,8 +179,8 @@ class Help(commands.Cog):
         self.client = client
         self.client.help_command = myHelpCommand(
             command_attrs={
-                'aliases': ['halp'],
-                'help': 'Shows help about the bot, a command, or a category'
+                "aliases": ["halp"],
+                "help": "Shows help about the bot, a command, or a category",
             }
         )
 
@@ -221,13 +205,10 @@ class Help(commands.Cog):
         :return: a boolean value.
 
         """
-        self.client.get_command('help').hidden = False
+        self.client.get_command("help").hidden = False
         self.client.help_command = DefaultHelpCommand()
 
-    @commands.command(
-        aliases=['halpall'],
-        hidden=True
-    )
+    @commands.command(aliases=["halpall"], hidden=True)
     async def helpall(self, ctx, *, text=None):
         """
         The helpall function specifically prints the help command including all hidden commands.

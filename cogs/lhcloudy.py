@@ -97,7 +97,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await ctx.trigger_typing()
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
-    
+
     @commands.command(name="lhfurry")
     async def lhfurry(self, ctx):
         url = "https://i.gyazo.com/3ae8376713000ab829a2853d0f31e6f2.png"
@@ -123,14 +123,19 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="climb")
     async def climb(self, ctx):
         """
-        The climb function specifically accomplishes sending a message to the user that is requesting for help. The climb function also has a typing feature which makes it seem like the bot is actually typing out the message.
+        The climb function specifically accomplishes
+        sending a message to the user that is requesting for help
 
         :param self: Used to reference the class instance.
         :param ctx: Used to access the context of the command.
         :return: the text as a message.
 
         """
-        text = "Hey Cloudy. I am a diamond level tank player with aspirations to climb higher. I watch your streams every day in order to learn and get better. Now after studying your gameplay and applying it I have tanked to bronze. Thanks and much love."
+        text = (
+            "Hey Cloudy. I am a diamond level tank player with aspirations to climb higher. "
+            + "I watch your streams every day in order to learn and get better. "
+            + "Now after studying your gameplay and applying it I have tanked to bronze. Thanks and much love."
+        )
         await ctx.trigger_typing()
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
@@ -138,8 +143,8 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="code", aliases=["workshop"])
     async def code(self, ctx):
         """
-        The code function specifically creates a message that displays the code for my bot. It also sends it to the channel
-        that is specified in the command.
+        The code function specifically creates a message that displays the code for my bot.
+        It also sends it to the channel that is specified in the command.
 
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to access the context of the command.
@@ -159,7 +164,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: the URL of the clip and sends it in a message to the channel.
-
         """
         url = "https://www.twitch.tv/lhcloudy27/clip/SmokyDifferentCobblerDoggo-rY6mWkS8b2Jj5kDm"
         await ctx.trigger_typing()
@@ -173,8 +177,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
         :param self: Used to access the bot's attributes.
         :param ctx: Used to send messages to the channel.
-        :return: a url.
-
+        :return: a url
         """
         url = "https://clips.twitch.tv/WanderingLuckyClipzBrainSlug-0x2XxJjniDP_SSeX"
         await ctx.trigger_typing()
@@ -189,7 +192,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of the command.
         :return: a url.
-
         """
         url = "https://clips.twitch.tv/ThirstySavageMinkAsianGlow-drRcT2-cwpRSx2gE"
         await ctx.trigger_typing()
@@ -206,7 +208,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the bot's attributes.
         :param ctx: Used to get the context of where the command was called.
         :return: a message.
-
         """
         text = "hey big cwoudy man, cawn i pwease be uw egiww mewcy?"
         await ctx.trigger_typing()
@@ -222,8 +223,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of the command.
-        :return: a url.
-
+        :return: a url
         """
         url = "https://www.twitch.tv/lhcloudy27/clip/CalmFurtiveVelociraptorTheTarFu-z0r_NEsmXN4_Xp9P"
         await ctx.trigger_typing()
@@ -237,8 +237,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
         :param self: Used to reference the bot itself.
         :param ctx: Used to access the context of a command.
-        :return: a message.
-
+        :return: a url
         """
         url = "https://clips.twitch.tv/InspiringRoundScorpionHeyGirl-gudJtViOZOW4z5tg"
         await ctx.trigger_typing()
@@ -252,8 +251,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of the command.
-        :return: the url of the clip.
-
+        :return: a url
         """
         url = "https://clips.twitch.tv/ThankfulArtsyWheelFrankerZ-Mh-4_e_SyGsCU-_c"
         await ctx.trigger_typing()
@@ -263,14 +261,17 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="hype")
     async def hype(self, ctx):
         """
-        The hype function is used to send a message that will be edited by the hype_edit function. The reason why it's in a function is so that we can use it again later on if we want to edit the message.
+        The hype function is used to send a message
 
         :param self: Used to reference the bot itself.
         :param ctx: Used to access the context of where the command was called.
-        :return: the message "What is all the hype around @LhCloudy ? Had him on my team today and the guy is a complete r*****, I didn’t have the best of games myself due to be playing 400sr above and on an offrole.
-
+        :return: text
         """
-        text = "What is all the hype around @LhCloudy ? Had him on my team today and the guy is a complete r*****, I didn’t have the best of games myself due to be playing 400sr above and on an offrole. This guy hard feeds into DS on Rein. Blinded by his own ego. How tf did he used to play in OWL"
+        text = """What is all the hype around @LhCloudy ?
+        Had him on my team today and the guy is a complete r*****,
+        I didn’t have the best of games myself due to be playing 400sr above and on an offrole.
+        This guy hard feeds into DS on Rein. Blinded by his own ego. How tf did he used to play in OWL"
+        """
         await ctx.trigger_typing()
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
@@ -283,7 +284,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the attributes and methods in this cog.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the LHC's Instagram page.
-
         """
         url = "https://www.instagram.com/lhcloudy/"
         await ctx.trigger_typing()
@@ -298,7 +298,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: the url link for the clip.
-
         """
         url = "https://clips.twitch.tv/ImpossibleBombasticAardvarkBlargNaut-2lnCp98G-ix8bmnw"
         await ctx.trigger_typing()
@@ -308,14 +307,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="mercy")
     async def mercy(self, ctx):
         """
-        The mercy function is a function that will send the user a random image of mercy from the Overwatch game.
-        It does this by using an API call to gyazo, which allows me to get images from their website. The function then sends
-        the user the url of the image and waits for them to react with :eyes: before deleting it.
-
         :param self: Used to access the attributes and methods of your cog, as well as any other variables that.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the image.
-
         """
         url = "https://i.gyazo.com/thumb/1200/a394f225d5c384952909e498e324c5f5-jpg.jpg"
         await ctx.trigger_typing()
@@ -325,12 +319,11 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="pokiw")
     async def pokiw(self, ctx):
         """
-        The pokiw function specifically sends a message with the link to the pokiw album on imgur.
+        The pokiw function specifically sends a message with the link to the pokiw image on imgur.
 
         :param self: Used to access the attributes and methods of your cog, such as self.
         :param ctx: Used to access the context of where the command was called.
         :return: a message with the url.
-
         """
         url = "https://imgur.com/a/SOZg7Lr"
         await ctx.trigger_typing()
@@ -345,7 +338,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to reference the bot's instance.
         :param ctx: Used to access the context of the message.
         :return: the url of the video.
-
         """
         url = "https://clips.twitch.tv/CallousSassySaladPicoMause-gexEqHi49_OZ6vQz"
         await ctx.trigger_typing()
@@ -360,7 +352,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: a message.
-
         """
         url = "https://clips.twitch.tv/WanderingCheerfulTrollOpieOP-wovrMAmwVmXPeBWz"
         await ctx.trigger_typing()
@@ -376,7 +367,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of a command.
         :return: a message with the clip url.
-
         """
         url = "https://clips.twitch.tv/PunchyBoxyClipsdadBigBrother-bUVRYZljuBsYv-rK"
         await ctx.trigger_typing()
@@ -391,7 +381,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the attributes and methods of the class in which it is used.
         :param ctx: Used to access the context of where the command was called.
         :return: a message with a url.
-
         """
         url = "https://gyazo.com/2e6fa3ff597b7865c6582759aa1e6ea0"
         await ctx.trigger_typing()
@@ -402,12 +391,10 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     async def speed(self, ctx):
         """
         The speed function is a function that will send the user a message with text.
-        It also has an await ctx.trigger_typing() which means it will wait until the bot is typing before sending the message.
 
         :param self: Used to access the attributes and methods of your cog.
         :param ctx: Used to send messages to the channel where the command was called.
         :return: the string 'you give me speed i give sr'.
-
         """
         text = '"you give me speed i give sr"'
         await ctx.trigger_typing()
@@ -423,7 +410,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to reference the bot.
         :param ctx: Used to get the context of where the command was called.
         :return: a link to the playlist.
-
         """
         url = "https://open.spotify.com/playlist/3JuA2BZjl0aZsEHKry1B67?si=14278d6ea4c04330"
         await ctx.trigger_typing()
@@ -438,7 +424,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to reference the bot.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the playlist.
-
         """
         url = "https://www.youtube.com/watch?v=p1SlBlB5pzU&list=RDHiu1hPdJk-Y&index=23"
         await ctx.trigger_typing()
@@ -448,14 +433,22 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="srpeak")
     async def srpeak(self, ctx):
         """
-        The srpeak function specifically sends a message with the text "I saw Cloudy in a 4K lobby one time. I told him how cool it was to meet him in game, but I didn’t want to be a douche and bother him and ask him for friend request or anything. He said, “Oh, sr peak check?” I was taken aback, and all I could say was “Huh?” but he kept cutting me off and going “huh? huh? huh?” while using the “No” voiceline repeatedly."
+        The srpeak function specifically sends a message with text
 
         :param self: Used to reference the bot's instance.
         :param ctx: Used to get the context of where the command was called.
         :return: a message that Cloudy has sent to the server.
 
         """
-        text = "I saw Cloudy in a 4K lobby one time. I told him how cool it was to meet him in game, but I didn’t want to be a douche and bother him and ask him for friend request or anything. He said, “Oh, sr peak check?” I was taken aback, and all I could say was “Huh?” but he kept cutting me off and going “huh? huh? huh?” while using the “No” voiceline repeatedly."
+        text = (
+            "I saw Cloudy in a 4K lobby one time. "
+            + "I told him how cool it was to meet him in game, "
+            + "but I didn’t want to be a douche and bother him and "
+            + "ask him for friend request or anything. He said, "
+            + "“Oh, sr peak check?” I was taken aback, and all I could say was “Huh?” "
+            + "but he kept cutting me off and going “huh? huh? huh?” "
+            + "while using the “No” voiceline repeatedly."
+        )
         await ctx.trigger_typing()
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
@@ -463,13 +456,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="stairs")
     async def stair(self, ctx):
         """
-        The stair function is used to send a clip of the streamer doing stairs.
-        This function was created by @DankMemer and can be found at https://github.com/DankMemer/memes-bot#commands
-
         :param self: Used to access the bot's attributes.
         :param ctx: Used to get information about the message that invoked this command.
-        :return: the url of a clip from the Twitch channel "StinkyCheese".
-
+        :return: a url
         """
         url = "https://clips.twitch.tv/ProductiveSuspiciousReubenChocolateRain-apmCaU0TwTIFuF2Z"
         await ctx.trigger_typing()
@@ -479,17 +468,15 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="strength")
     async def strength(self, ctx):
         """
-        The strength function specifically accomplishes the following:
-            - It sends a message to the user.
-            - It waits for a response from the user.
-            - Once it receives a response, it deletes that message and then sends another one.
-
         :param self: Used to reference the class itself.
         :param ctx: Used to get information about the message that invoked the command.
         :return: a string with the description of Cloudy's strength.
-
         """
-        text = "Cloudys strength is aggression, catching people off guard with it. But I’ve noticed it gets him in bad positions because a lack of patience."
+        text = (
+            "Cloudys strength is aggression, "
+            + "catching people off guard with it. "
+            + "But I’ve noticed it gets him in bad positions because a lack of patience."
+        )
         await ctx.trigger_typing()
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
@@ -497,13 +484,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="tips")
     async def tips(self, ctx):
         """
-        The tips function is used to send a message that will be edited later on.
-        It's used in the help command, and it sends a message with the text "W+M1".
-
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: a message in the channel.
-
         """
         text = "W+M1"
         await ctx.trigger_typing()
@@ -513,12 +496,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="twitter")
     async def twitter(self, ctx):
         """
-        The twitter function sends the user to my twitter account.
-
         :param self: Used to access the attributes and methods in the class.
         :param ctx: Used to access the context of where the command was called.
         :return: a message with a link to the twitter page for LhCloudy.
-
         """
         url = "https://twitter.com/LhCloudy"
         await ctx.trigger_typing()
@@ -528,12 +508,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="tracer")
     async def tracer(self, ctx):
         """
-        The tracer function specifically creates a message that sends the url of the image.
-
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: a message object, containing the url.
-
         """
         url = "https://gyazo.com/444bd292aa15ca168bddb563aefc1191"
         await ctx.trigger_typing()
@@ -548,7 +525,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs that are loaded.
         :param ctx: Used to get the context of where the command was called.
         :return: a url from twitch clips.
-
         """
         url = "https://clips.twitch.tv/ColdSuccessfulFlyTheTarFu-Tg_R4sjZyjCMO5cY"
         await ctx.trigger_typing()
@@ -564,7 +540,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs that are loaded.
         :param ctx: Used to get the channel and user that sent the command.
         :return: the twitch clip link.
-
         """
         url = "hhttps://www.twitch.tv/lhcloudy27/clip/RudeAbstruseHummingbirdPunchTrees-y7H3Pk3hrdoKarhP?filter=clips&range=7d&sort=time"
         await ctx.trigger_typing()
@@ -574,12 +549,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="widow")
     async def widow(self, ctx):
         """
-        The widow function specifically sends the user a gif of a widow spider.
-
         :param self: Used to access the attributes and methods of your cog.
         :param ctx: Used to access the context of where the command was called.
         :return: a message.
-
         """
         url = "https://gyazo.com/4939b21f5db58b259314a5cf70390341"
         await ctx.trigger_typing()
@@ -589,12 +561,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="youtube")
     async def youtube(self, ctx):
         """
-        The youtube function specifically sends a message with the link to my youtube channel.
-
         :param self: Used to access the bot's attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: the url of the youtube channel.
-
         """
         url = "SMÄSH THAT LIKE AND SUBSCRIBE BUTTON -> https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A"
         await ctx.trigger_typing()
@@ -610,7 +579,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to reference the bot.
         :param ctx: Used to get the context of the message.
         :return: a message with the URL of a clip.
-
         """
         url = "https://clips.twitch.tv/PeacefulAstuteClintTwitchRaid-iVjcGr7u5ZGr_6Sz"
         await ctx.trigger_typing()
@@ -625,7 +593,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the attributes and methods of your cog, as well as any ctx objects that are passed in.
         :param ctx: Used to send messages to the channel where the command was called.
         :return: a url link in a string format.
-
         """
         url = "https://clips.twitch.tv/UninterestedWealthyDurian4Head-F-XGgZtBOwdvBAdU"
         await ctx.trigger_typing()
@@ -652,13 +619,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="backlane")
     async def backlane(self, ctx):
         """
-        The backlane function is a function that will send the message of what the backlane is in league of legends.
-        It will also make it so that when you type .backlane, it will send a message with text.
-
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs which are loaded.
         :param ctx: Used to access the context of where the message was sent.
         :return: the text in the variable text.
-
         """
         text = "fuck this game, their is no teamplay its about who gonna headshot backlane first, make goat great again"
         await ctx.trigger_typing()
@@ -673,7 +636,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the class attributes.
         :param ctx: Used to access the context of where the command was called.
         :return: the link to the Aeron chair.
-
         """
         text = "Herman Miller Aeron\nhttps://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/"
         await ctx.trigger_typing()
@@ -689,7 +651,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the class functions.
         :param ctx: Used to access the context of the command.
         :return: a URL for the clip of the streamer 'LepOw' playing a game called 'Creeper World 3'.
-
         """
         url = "https://www.twitch.tv/lep_ow/clip/DifficultAmusedBillSpicyBoy--UBV2xxbcIsLlQKW?filter=clips&range=30d&sort=time"
         await ctx.trigger_typing()
@@ -699,12 +660,9 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
     @commands.command(name="from")
     async def from_(self, ctx):
         """
-        The from_ function specifically sends a message with the text "kotka of south eastern finland of the continent of europe" and then waits for a response from the user. The bot will then send another message with whatever text was sent by the user.
-
         :param self: Used to access the attributes and methods of the class in which it is used.
         :param ctx: Used to access the context of the command.
         :return: a discord.
-
         """
         text = "kotka of south eastern finland of the continent of europe"
         await ctx.trigger_typing()
@@ -712,8 +670,8 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await message.add_reaction(random_emoji())
 
     @commands.command(
-        name='links',
-        aliases=['urls'],
+        name="links",
+        aliases=["urls"],
     )
     async def links(self, ctx):
         """
@@ -723,20 +681,16 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to access the attributes and methods of your cog,.
         :param ctx: Used to get the context of the command.
         :return: a string containing the links to the social media accounts of LhCloudy.
-
         """
         links = (
-            '• Twitch <https://www.twitch.tv/lhcloudy27>'
-            '\n• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>' +
-            '\n• Discord: <https://discord.gg/jd6CZSj8jb>' +
-            '\n• Twitter: <https://twitter.com/LhCloudy>' +
-            '\n• Instagram: <https://www.instagram.com/lhcloudy/>' +
-            '\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>')
-        embed = Embed(
-            title='LhCloudy Links',
-            description=links,
-            color=0x2ECC71
+            "• Twitch <https://www.twitch.tv/lhcloudy27>"
+            "\n• Youtube: <https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A>"
+            + "\n• Discord: <https://discord.gg/jd6CZSj8jb>"
+            + "\n• Twitter: <https://twitter.com/LhCloudy>"
+            + "\n• Instagram: <https://www.instagram.com/lhcloudy/>"
+            + "\n• Reddit: <https://www.reddit.com/r/overwatchSRpeakCHECK/>"
         )
+        embed = Embed(title="LhCloudy Links", description=links, color=0x2ECC71)
         await ctx.trigger_typing()
         await ctx.send(embed=embed)
 
