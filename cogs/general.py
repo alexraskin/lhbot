@@ -10,7 +10,6 @@ from discord.ext import commands
 
 PREFIX = "!"
 
-
 class General(commands.Cog, name="general"):
     def __init__(self, client):
         """
@@ -28,7 +27,7 @@ class General(commands.Cog, name="general"):
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
         await info_execute(ctx)
-        
+
     @commands.command(name="ping")
     async def ping(self, ctx):
         await ping_execute(ctx, round(self.client.latency * 1000))
