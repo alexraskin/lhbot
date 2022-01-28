@@ -18,4 +18,10 @@ Cloudy Youtube - [Youtube](https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS
 ___
 `docker build -t lhbot:latest .`
 
-`docker run -it lhbot:latest`
+`docker run -it lhbot:latest`  
+  
+### Testing
+___
+`cd tests`  
+  
+`py -m unittest discover unit`
