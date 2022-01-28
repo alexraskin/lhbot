@@ -1,16 +1,10 @@
-from asyncio import Future
 from asyncio.windows_events import NULL
-from cgi import test
-from lib2to3.pgen2.token import EQUAL
 import unittest
-from unittest import mock
 import unittest.mock
 
-from unittest.mock import AsyncMock, MagicMock, Mock, PropertyMock, create_autospec, patch
+from unittest.mock import AsyncMock, patch
 
-import discord
 from discord.ext.commands import Context
-from discord.message import Message
 
 import sys
 sys.path.append("../cogs")
