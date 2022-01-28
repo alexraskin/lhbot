@@ -2,6 +2,10 @@
 
 ![LhBot](https://i.gyazo.com/632f0e60dc0535128971887acad98993.png)
 
+pfp credit: https://twitter.com/PetraYle
+
+---
+
 If you follow LhCloudy on twitch, you will know that he will not share what Lh stands for in his name. I decided to write a bot that keeps tracks of everyones guesses in his discord. 
 
 ### Connect
