@@ -11,6 +11,6 @@ class Settings(BaseSettings):
     owners: list = os.getenv("owners")
     admin_roles: list = os.getenv("admin_roles")
     superusers: list = os.getenv("superusers")
-    main_guild: int = os.get("main_guild")
+    main_guild: int = os.getenv("main_guild")
 
     
