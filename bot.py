@@ -19,13 +19,14 @@ PREFIX = "!"
 def settings():
     return Settings()
 
+
 creds = settings()
 
 
 class LhBot(Bot):
     def __init__(self, *args, **options):
         """
-        The __init__ function is the constructor for a class. 
+        The __init__ function is the constructor for a class.
         It is called when an instance of a class is created.
         It can take arguments (in this case, *args and **options)
 
@@ -65,9 +66,9 @@ class LhBot(Bot):
 
     def user_is_admin(self, user):
         """
-        The user_is_admin function specifically checks 
+        The user_is_admin function specifically checks
         if the user has a role that is in the permitted_roles list.
-        The permitted_roles list contains 
+        The permitted_roles list contains
         all of the roles that are allowed to access admin functions.
 
         :param self: Used to access attributes of the class.
@@ -121,8 +122,8 @@ for extension in reversed(STARTUP_EXTENSIONS):
 @tasks.loop(minutes=1.0)
 async def status_task():
     """
-    The status_task function is a loop that will run every 60 seconds. 
-    It will randomly select one of the statuses from the list 
+    The status_task function is a loop that will run every 60 seconds.
+    It will randomly select one of the statuses from the list
     and set it as the bot's status.
 
     :return: a list of strings that will be used to change the status of the bot.
@@ -155,7 +156,7 @@ async def clean_dir():
 async def on_ready():
     """
     The on_ready function specifically accomplishes the following:
-        - Sets up a status task that changes the bot's status every 10 seconds.
+        - Sets up a status task that changes the bot's status every 60 seconds.
         - Sets up a clean_dir task that cleans out old files in the cache directory every 5 minutes.
 
     :return: a string with the details of our main guild.
@@ -177,7 +178,7 @@ async def on_ready():
 async def on_command_error(context, error):
     """
     The on_command_error function is used to handle errors that occur while executing a command.
-    It's called when an error is raised while invoking a command, 
+    It's called when an error is raised while invoking a command,
     and it passes itself and the context of the invocation as arguments.
 
     :param context: Used to send messages to the user.
