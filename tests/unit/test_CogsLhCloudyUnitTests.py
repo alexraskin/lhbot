@@ -1,17 +1,12 @@
+import sys
 import unittest
 import unittest.mock
-
 from unittest.mock import AsyncMock, patch
 
 from discord.ext.commands import Context
 
-import sys
-
 sys.path.append("../cogs")
-sys.path.append('../utils')
-
 from lhcloudy import one_frame_execute
-from emojis import random_emoji
 
 
 class ChannelTestClass:
