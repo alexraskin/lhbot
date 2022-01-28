@@ -11,3 +11,17 @@ Cloudy live on Twitch - [Twitch](https://www.twitch.tv/lhcloudy27)
 Cloudy on Twitter - [Twitter](https://twitter.com/LhCloudy)
 
 Cloudy Discord - [Discord](https://discord.com/invite/jd6CZSj8jb)
+
+Cloudy Youtube - [Youtube](https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A)
+
+### Docker
+___
+`docker build -t lhbot:latest .`
+
+`docker run -it lhbot:latest`  
+  
+### Testing
+___
+`cd tests`  
+  
+`py -m unittest discover unit`
