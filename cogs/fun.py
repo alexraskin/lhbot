@@ -180,6 +180,22 @@ class Fun(commands.Cog, name="Fun"):
             embed.add_field(name="Random Dad Joke", value=joke, inline=True)
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
+    
+    @commands.command(name="animechan", aliases=["animequote"])
+    async def random_anime_chan(self, ctx):
+        async with self.client.session.get(
+            "https://animechan.vercel.app/api/random"
+        ) as response:
+            data = await response.json()
+            anime = data["anime"]
+            character = data["character"]
+            quote = data["quote"]
+            await ctx.trigger_typing()
+            embed = Embed(title="Random Anime Quote", color=random.randint(0, 0xFFFFFF))
+            embed.add_field(name="Anime:", value=anime, inline=True)
+            embed.add_field(name="Character:", value=character, inline=True)
+            embed.add_field(name="Quote:", value=quote, inline=True)
+            await ctx.send(embed=embed)
 
 
 def setup(client):
