@@ -9,7 +9,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class. 
+        The __init__ function is the constructor for a class.
         It initializes the attributes of an object. In this case, it initializes
         the client attribute.
 
@@ -29,9 +29,9 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     async def get_overwatch_profile(self, ctx, *, info=None):
         """
         The get overwatch profile command retrieves the Overwatch profile of a user.
-        It takes in three parameters, which are the context, and two strings. 
+        It takes in three parameters, which are the context, and two strings.
         The first string is for platform (pc/xbl/psn),
-        the second string is for region (us/eu/kr). 
+        the second string is for region (us/eu/kr).
         It then splits these two strings into three separate variables.
 
         :param self: Used to access variables that belong to the class.

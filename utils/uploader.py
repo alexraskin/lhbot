@@ -3,9 +3,11 @@ from filestack import Client
 
 from config import Settings
 
+
 @lru_cache()
 def settings():
     return Settings()
+
 
 creds = settings()
 

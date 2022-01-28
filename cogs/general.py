@@ -10,12 +10,13 @@ from discord.ext import commands
 
 PREFIX = "!"
 
+
 class General(commands.Cog, name="general"):
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class. 
+        The __init__ function is the constructor for a class.
         It is called when an instance of a class is created.
-        It allows the newly created object to have 
+        It allows the newly created object to have
         some attributes that are specified at creation time.
 
         :param self: Used to refer to the object itself.
@@ -133,6 +134,7 @@ def setup(client):
     """
     client.add_cog(General(client))
 
+
 async def info_execute(ctx):
     """
     The info function specifically tells the user about the bot,
@@ -144,9 +146,7 @@ async def info_execute(ctx):
     embed = discord.Embed(description="LhBot", color=0x42F56C)
     embed.set_author(name="Bot Information")
     embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-    embed.add_field(
-        name="Prefix:", value=PREFIX, inline=True
-    )
+    embed.add_field(name="Prefix:", value=PREFIX, inline=True)
     embed.add_field(
         name="Python Version:", value=f"{platform.python_version()}", inline=True
     )
@@ -154,6 +154,7 @@ async def info_execute(ctx):
         name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
     )
     await ctx.send(embed=embed)
+
 
 async def ping_execute(ctx, latency):
     """
@@ -173,6 +174,7 @@ async def ping_execute(ctx, latency):
     embed.set_footer(text=f"Requested by {ctx.message.author}")
     await ctx.send(embed=embed)
 
+
 def get_year_string():
     """
     The get_year_string function is used to get the current year and then
@@ -188,6 +190,7 @@ def get_year_string():
     year_start = dt(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
     return f"For your information, the year is {year_percent:.1f}% over!"
+
 
 async def on_message_execute(message):
     """
