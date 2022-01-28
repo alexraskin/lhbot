@@ -13,7 +13,7 @@ from discord.ext.commands import Context
 from discord.message import Message
 
 import sys
-sys.path.append("../../cogs")
+sys.path.append("../cogs")
 
 from general import info_execute, get_year_string, ping_execute, on_message_execute
 
@@ -42,8 +42,11 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
         :param mocked_content: mocked content to pass into general as ctx param
         """
         print("Running test_shouldReturnInfo_whenInfoCommandCalled")
+        #arrange
+        #act
         await info_execute(mocked_context)
 
+        #assert
         mocked_context.send.assert_called_once()
 
         self.assertEqual("Bot Information", mocked_context.send.call_args_list[0][1]['embed'].author.name)
@@ -67,6 +70,9 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
 
         """
         print("Running test_shouldReturnStringWithDate_whenGetYearStringCalled")
+        #arrange
+        #act
+        #assert
         self.assertTrue(get_year_string().startswith("For your information, the year is "))
         self.assertTrue(get_year_string().endswith(" over!"))
 
@@ -79,9 +85,10 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
         :param mocked_content: mocked content to pass into general as ctx param
         """
         print("Running test_shouldReturnPing_whenPingCommandCalled")
- 
+        #arrange
+        #act
         await ping_execute(mocked_context, 100)
-  
+        #assert
         self.assertTrue(mocked_context.send.called)
         self.assertTrue(mocked_context.send.call_args_list[0][1]['embed'].footer.text.startswith("Requested by <AsyncMock name='send.message.author' "))
         
@@ -99,6 +106,7 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
         :param mocked_content: mocked content to pass into general as ctx param
         """
         print("Running test_shouldCallMessage_whenOnMessageCommandCalled")
+        #arrange
         mocked_channel = AsyncMock(mocked_channel)
         mocked_channel.send = AsyncMock(return_value=True)
         message = MessageTestClass()
@@ -108,10 +116,10 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
 
         message.author = author
         message.channel = mocked_channel
-
+        #act
         message.content = 'hi lhbot'
         await on_message_execute(message)
-
+        #assert
         self.assertTrue(mocked_channel.send.called)
         self.assertEqual("hello", mocked_channel.send.call_args_list[0][0][0])
 
