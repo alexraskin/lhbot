@@ -25,23 +25,6 @@ class General(commands.Cog, name="general"):
         """
         self.client = client
 
-    def get_year_string(self):
-        """
-        The get_year_string function is used to get the current year and then
-        calculate the percentage of time that has passed in relation to the total
-        number of days in a year. This is done by taking today's date, adding one
-        year and subtracting today's date from that new date. Then dividing this
-        difference by 365 (the number of days in a year) and multiplying it by 100.
-
-        :param self: Used to refer to the object instance.
-        :return: the percentage of the current year that has elapsed.
-        """
-        now = dt.utcnow()
-        year_end = dt(now.year + 1, 1, 1)
-        year_start = dt(now.year, 1, 1)
-        year_percent = (now - year_start) / (year_end - year_start) * 100
-        return f"For your information, the year is {year_percent:.1f}% over!"
-
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
         await info_Execute(self, ctx)
@@ -90,7 +73,7 @@ class General(commands.Cog, name="general"):
             + r"(?:almost |basically )?(?:over|done|finished)",
             message.content,
         ):
-            await message.channel.send(self.get_year_string())
+            await message.channel.send(get_year_string())
 
         if re.search(r"(?i)^you wanna fight, lhbot\?", message.content):
             await message.channel.send("bring it on pal (╯°□°）╯︵ ┻━┻")
@@ -222,3 +205,19 @@ async def info_Execute(ctx):
             name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
         )
         await ctx.send(embed=embed)
+
+def get_year_string():
+    """
+    The get_year_string function is used to get the current year and then
+    calculate the percentage of time that has passed in relation to the total
+    number of days in a year. This is done by taking today's date, adding one
+    year and subtracting today's date from that new date. Then dividing this
+    difference by 365 (the number of days in a year) and multiplying it by 100.
+
+    :return: the percentage of the current year that has elapsed.
+    """
+    now = dt.utcnow()
+    year_end = dt(now.year + 1, 1, 1)
+    year_start = dt(now.year, 1, 1)
+    year_percent = (now - year_start) / (year_end - year_start) * 100
+    return f"For your information, the year is {year_percent:.1f}% over!"
