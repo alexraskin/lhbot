@@ -1,11 +1,5 @@
 name: PyTest
-on:
-  push:
-    branches:
-      - [main, staging]
-  pull_request:
-    branches:
-      - [main, staging]
+on: push
 
 jobs:
   test:
