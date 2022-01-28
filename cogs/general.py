@@ -8,7 +8,7 @@ import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
 
-from bot import PREFIX
+PREFIX = "!"
 
 
 class General(commands.Cog, name="general"):
@@ -44,27 +44,8 @@ class General(commands.Cog, name="general"):
 
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
-        """
-        The info function specifically tells the user about the bot,
-        and gives them a link to the github page.
-
-        :param self: Used to access the class attributes and methods.
-        :param ctx: Used to get the context of where the command was called.
-        :return: an embed with the bot's information.
-        """
-        embed = discord.Embed(description="LhBot", color=0x42F56C)
-        embed.set_author(name="Bot Information")
-        embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-        embed.add_field(
-            name="Prefix:", value=PREFIX, inline=True
-        )
-        embed.add_field(
-            name="Python Version:", value=f"{platform.python_version()}", inline=True
-        )
-        embed.add_field(
-            name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
-        )
-        await ctx.send(embed=embed)
+        await info_Execute(self, ctx)
+        
 
     @commands.command(name="ping")
     async def ping(self, ctx):
@@ -219,3 +200,25 @@ def setup(client):
     :return: a dictionary that contains the following keys:.
     """
     client.add_cog(General(client))
+
+async def info_Execute(ctx):
+        """
+        The info function specifically tells the user about the bot,
+        and gives them a link to the github page.
+
+        :param ctx: Used to get the context of where the command was called.
+        :return: an embed with the bot's information.
+        """
+        embed = discord.Embed(description="LhBot", color=0x42F56C)
+        embed.set_author(name="Bot Information")
+        embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
+        embed.add_field(
+            name="Prefix:", value=PREFIX, inline=True
+        )
+        embed.add_field(
+            name="Python Version:", value=f"{platform.python_version()}", inline=True
+        )
+        embed.add_field(
+            name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
+        )
+        await ctx.send(embed=embed)
