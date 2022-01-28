@@ -140,8 +140,3 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(mocked_channel.send.called)
         self.assertEqual("42", mocked_channel.send.call_args_list[0][0][0])
 
-
-
-
-
-
