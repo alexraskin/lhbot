@@ -13,11 +13,6 @@ Cloudy on Twitter - [Twitter](https://twitter.com/LhCloudy)
 Cloudy Discord - [Discord](https://discord.com/invite/jd6CZSj8jb)
 
 
-### Install
-___
-1. Copy `example.config.json` into `config.json` and change the values
-2. Create a MongoDB Cluster and add the URL to the `config.json`
-
 ### Docker
 ___
 `docker build -t lhbot:latest .`
