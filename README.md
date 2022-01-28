@@ -12,6 +12,7 @@ Cloudy on Twitter - [Twitter](https://twitter.com/LhCloudy)
 
 Cloudy Discord - [Discord](https://discord.com/invite/jd6CZSj8jb)
 
+Cloudy Youtube - [Youtube](https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A)
 
 ### Docker
 ___
