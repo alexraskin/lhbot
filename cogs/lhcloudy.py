@@ -667,14 +667,6 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await ctx.trigger_typing()
         await ctx.send(embed=embed)
 
-
-async def one_frame_execute(ctx):
-    url = "https://www.twitch.tv/lhcloudy27/clip/AbstruseKindRuffFutureMan-dLWae-FGvNag2jtK"
-    await ctx.trigger_typing()
-    message = await ctx.send(url)
-    # await message.add_reaction(random_emoji())
-
-
 def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
@@ -685,3 +677,11 @@ def setup(client):
 
     """
     client.add_cog(LhCloudy(client))
+
+
+async def one_frame_execute(ctx):
+    url = "https://www.twitch.tv/lhcloudy27/clip/AbstruseKindRuffFutureMan-dLWae-FGvNag2jtK"
+    await ctx.trigger_typing()
+    message = await ctx.send(url)
+    # await message.add_reaction(random_emoji())
+

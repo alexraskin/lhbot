@@ -32,7 +32,7 @@ class CogsLhCloudyTests(unittest.IsolatedAsyncioTestCase):
     async def test_shouldReturnOneFrame_when1FrameCommandCalled(self, mocked_context):
         """
         The test_shouldReturnOneFrame_when1FrameCommandCalled function specifically tests the one_frame_execute function.
-        
+
         :param self: Used to access the class variables and methods.
         :param mocked_context: Used to mock the context of the command.
         :return: the following:.
