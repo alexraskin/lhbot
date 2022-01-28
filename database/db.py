@@ -9,6 +9,7 @@ from config import Settings
 def settings():
     return Settings()
 
+
 creds = settings()
 
 db_client = motor.motor_asyncio.AsyncIOMotorClient(creds.database_url)

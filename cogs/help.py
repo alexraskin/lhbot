@@ -8,8 +8,8 @@ from discord.ext.commands import DefaultHelpCommand, HelpCommand
 class myHelpCommand(HelpCommand):
     def __init__(self, **options):
         """
-        The __init__ function is used to initialize the class. 
-        It's called when an instance of a class is created, 
+        The __init__ function is used to initialize the class.
+        It's called when an instance of a class is created,
         with the arguments that were passed to the class.
 
         :param self: Used to refer to the object itself.
@@ -25,8 +25,8 @@ class myHelpCommand(HelpCommand):
         """
         The send_pages function specifically accomplishes two things:
             1. It sends the pages to the user.
-            2. It adds a footer to each page, 
-            which contains information about how many pages there are 
+            2. It adds a footer to each page,
+            which contains information about how many pages there are
             and what commands can be used to get more information.
 
         :param self: Used to access the attributes and methods of the class in which it is used.
@@ -115,9 +115,9 @@ class myHelpCommand(HelpCommand):
 
     async def send_group_help(self, group):
         """
-        The send_group_help function is used to send the 
+        The send_group_help function is used to send the
         help command for a specific group.
-        It takes in the group as an argument and then sends a message 
+        It takes in the group as an argument and then sends a message
         containing all of the commands that are part of that group.
 
         :param self: Used to access the bot's attributes, such as its database.
@@ -143,7 +143,7 @@ class myHelpCommand(HelpCommand):
         """
         The send_command_help function specifically accomplishes two things:
         1. It adds the command signature to the paginator, along with its help text (if it exists).
-        2. It also checks if there are any subcommands 
+        2. It also checks if there are any subcommands
         that need to be displayed and calls send_command_help recursively on each of them.
 
         :param self: Used to access the bot's attributes and methods.
@@ -175,12 +175,12 @@ class myHelpCommand(HelpCommand):
 class Help(commands.Cog):
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class. 
+        The __init__ function is the constructor for a class.
         It is called whenever an object of that class is instantiated.
 
-        The __init__ function can take arguments (as shown), 
-        but its first parameter must be 'self'. 
-        The self-parameter refers to the object being created, 
+        The __init__ function can take arguments (as shown),
+        but its first parameter must be 'self'.
+        The self-parameter refers to the object being created,
         and it's used to access variables that belong to the object.
 
         :param self: Used to refer to the bot itself.
@@ -198,7 +198,7 @@ class Help(commands.Cog):
 
     async def cog_check(self, ctx):
         """
-        The cog_check function is used to check if the user 
+        The cog_check function is used to check if the user
         has permission to use a specific command.
 
         This function will be called automatically before every command in this cog.
@@ -213,7 +213,7 @@ class Help(commands.Cog):
 
     def cog_unload(self):
         """
-        The cog_unload function specifically unregisters the 
+        The cog_unload function specifically unregisters the
         help command so that it can be re-registered by the cog reloader.
 
         :param self: Used to access the attributes and methods of the cog.
