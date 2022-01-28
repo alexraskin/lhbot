@@ -27,65 +27,15 @@ class General(commands.Cog, name="general"):
 
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
-        await info_Execute(self, ctx)
+        await info_execute(ctx)
         
-
     @commands.command(name="ping")
     async def ping(self, ctx):
-        """
-        The ping function is used to check the bot's latency.
-        It returns a message with the time it takes for a message
-        to reach Discord and be received by the bot.
-
-        :param self: Used to access variables that belong to the class.
-        :param ctx: Used to get the context of where the command was called.
-        :return: a discord embed.
-        """
-        embed = discord.Embed(
-            title="🏓 Pong!",
-            description=f"The bot latency is {round(self.client.latency * 1000)}ms.",
-            color=0x42F56C,
-        )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
-        await ctx.send(embed=embed)
+        await ping_execute(ctx, round(self.client.latency * 1000))
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        """
-        The on_message function specifically handles messages that are sent to the bot.
-        It checks if the message is a command, and then executes it if it is.
-
-        :param self: Used to access the class' attributes and methods.
-        :param message: Used to store information about the message.
-        :return: None.
-        """
-        if message.author.bot:
-            return
-
-        if isinstance(message.channel, discord.DMChannel):
-            return
-
-        if re.search(r"(?i)^(?:hi|what\'s up|yo|hey|hello) lhbot", message.content):
-            await message.channel.send("hello")
-
-        if re.search(
-            r"(?i)(?:the|this) (?:current )?year is "
-            + r"(?:almost |basically )?(?:over|done|finished)",
-            message.content,
-        ):
-            await message.channel.send(get_year_string())
-
-        if re.search(r"(?i)^you wanna fight, lhbot\?", message.content):
-            await message.channel.send("bring it on pal (╯°□°）╯︵ ┻━┻")
-
-        if re.search(r"(?i)^lhbot meow", message.content):
-            await message.channel.send("ฅ^•ﻌ•^ฅ")
-
-        if re.search(
-            r"(?i)^lh what(?:\'s| is) the answer to life,? the universe and everything",
-            message.content,
-        ):
-            await message.channel.send("42")
+        await on_message_execute(message)
 
     @commands.command(name="search", aliases=["lmgtfy", "duck", "duckduckgo", "google"])
     async def search(self, ctx, query=None):
@@ -184,27 +134,45 @@ def setup(client):
     """
     client.add_cog(General(client))
 
-async def info_Execute(ctx):
-        """
-        The info function specifically tells the user about the bot,
-        and gives them a link to the github page.
+async def info_execute(ctx):
+    """
+    The info function specifically tells the user about the bot,
+    and gives them a link to the github page.
 
-        :param ctx: Used to get the context of where the command was called.
-        :return: an embed with the bot's information.
-        """
-        embed = discord.Embed(description="LhBot", color=0x42F56C)
-        embed.set_author(name="Bot Information")
-        embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-        embed.add_field(
-            name="Prefix:", value=PREFIX, inline=True
-        )
-        embed.add_field(
-            name="Python Version:", value=f"{platform.python_version()}", inline=True
-        )
-        embed.add_field(
-            name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
-        )
-        await ctx.send(embed=embed)
+    :param ctx: Used to get the context of where the command was called.
+    :return: an embed with the bot's information.
+    """
+    embed = discord.Embed(description="LhBot", color=0x42F56C)
+    embed.set_author(name="Bot Information")
+    embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
+    embed.add_field(
+        name="Prefix:", value=PREFIX, inline=True
+    )
+    embed.add_field(
+        name="Python Version:", value=f"{platform.python_version()}", inline=True
+    )
+    embed.add_field(
+        name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
+    )
+    await ctx.send(embed=embed)
+
+async def ping_execute(ctx, latency):
+    """
+    The ping function is used to check the bot's latency.
+    It returns a message with the time it takes for a message
+    to reach Discord and be received by the bot.
+
+    :param self: Used to access variables that belong to the class.
+    :param ctx: Used to get the context of where the command was called.
+    :return: a discord embed.
+    """
+    embed = discord.Embed(
+        title="🏓 Pong!",
+        description=f"The bot latency is {latency}ms.",
+        color=0x42F56C,
+    )
+    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    await ctx.send(embed=embed)
 
 def get_year_string():
     """
@@ -221,3 +189,40 @@ def get_year_string():
     year_start = dt(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
     return f"For your information, the year is {year_percent:.1f}% over!"
+
+async def on_message_execute(message):
+    """
+    The on_message function specifically handles messages that are sent to the bot.
+    It checks if the message is a command, and then executes it if it is.
+
+    :param self: Used to access the class' attributes and methods.
+    :param message: Used to store information about the message.
+    :return: None.
+    """
+    if message.author.bot:
+        return
+
+    if isinstance(message.channel, discord.DMChannel):
+        return
+
+    if re.search(r"(?i)^(?:hi|what\'s up|yo|hey|hello) lhbot", message.content):
+        await message.channel.send("hello")
+
+    if re.search(
+        r"(?i)(?:the|this) (?:current )?year is "
+        + r"(?:almost |basically )?(?:over|done|finished)",
+        message.content,
+    ):
+        await message.channel.send(get_year_string())
+
+    if re.search(r"(?i)^you wanna fight, lhbot\?", message.content):
+        await message.channel.send("bring it on pal (╯°□°）╯︵ ┻━┻")
+
+    if re.search(r"(?i)^lhbot meow", message.content):
+        await message.channel.send("ฅ^•ﻌ•^ฅ")
+
+    if re.search(
+        r"(?i)^lh what(?:\'s| is) the answer to life,? the universe and everything",
+        message.content,
+    ):
+        await message.channel.send("42")
