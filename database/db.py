@@ -1,13 +1,17 @@
 import json
 import os
 import sys
+from functools import lru_cache
 
 import motor.motor_asyncio
 
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json", encoding="utf-8") as file:
-        config = json.load(file)
+from config import Settings
 
-db_client = motor.motor_asyncio.AsyncIOMotorClient(config["DATABASE_URL"])
+
+@lru_cache()
+def settings():
+    return Settings()
+
+creds = settings()
+
+db_client = motor.motor_asyncio.AsyncIOMotorClient(creds.database_url)

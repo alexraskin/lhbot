@@ -183,6 +183,13 @@ class Fun(commands.Cog, name="Fun"):
     
     @commands.command(name="animechan", aliases=["animequote"])
     async def random_anime_chan(self, ctx):
+        """
+        The random anime chan function specifically retrieves a random anime quote from an API.
+        
+        :param self: Used to access the client variable in this class.
+        :param ctx: Used to get the context of where the command was called.
+        :return: an embed that has the anime, character and quote of a random anime.
+        """
         async with self.client.session.get(
             "https://animechan.vercel.app/api/random"
         ) as response:

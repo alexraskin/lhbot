@@ -8,6 +8,8 @@ import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
 
+from bot import PREFIX
+
 
 class General(commands.Cog, name="general"):
     def __init__(self, client):
@@ -54,7 +56,7 @@ class General(commands.Cog, name="general"):
         embed.set_author(name="Bot Information")
         embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
         embed.add_field(
-            name="Prefix:", value=f"{self.client.config['bot_prefix']}", inline=True
+            name="Prefix:", value=PREFIX, inline=True
         )
         embed.add_field(
             name="Python Version:", value=f"{platform.python_version()}", inline=True

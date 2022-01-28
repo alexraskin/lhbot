@@ -11,6 +11,7 @@ dnspython = "*"
 aiohttp = "*"
 fpdf = "*"
 filestack-python = "*"
+pydantic = "*"
 
 [dev-packages]
 pylint = "*"

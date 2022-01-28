@@ -4,19 +4,22 @@ import platform
 import random
 import sys
 from datetime import datetime
+from functools import lru_cache
 
 import discord
 from aiohttp import ClientSession, ClientTimeout
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 
+from config import Settings
 from utils.clear_dir import _clear_dir
 
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json", encoding="utf-8") as file:
-        config = json.load(file)
+PREFIX = "!"
+
+
+@lru_cache()
+def settings():
+    return Settings()
 
 
 class LhBot(Bot):
@@ -34,7 +37,7 @@ class LhBot(Bot):
         super().__init__(*args, **options)
         self.session = None
         self.last_errors = []
-        self.config = config
+        self.settings = settings()
 
     async def start(self, *args, **kwargs):
         """
@@ -49,7 +52,7 @@ class LhBot(Bot):
         :return: ClientSession object.
         """
         self.session = ClientSession(timeout=ClientTimeout(total=30))
-        await super().start(self.config["token"], *args, **kwargs)
+        await super().start(self.settings.bot_token, *args, **kwargs)
 
     async def close(self):
         """
@@ -76,7 +79,7 @@ class LhBot(Bot):
             user_roles = [role.id for role in user.roles]
         except AttributeError:
             return False
-        permitted_roles = self.config["admin_roles"]
+        permitted_roles = self.settings.admin_roles
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
@@ -87,12 +90,12 @@ class LhBot(Bot):
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
         """
-        superusers = self.config["superusers"]
+        superusers = self.settings.superusers
         return user.id in superusers
 
 
 client = LhBot(
-    command_prefix=config["bot_prefix"],
+    command_prefix=PREFIX,
     description="Hi I am LhBot!",
     max_messages=15000,
     intents=discord.Intents.all(),
@@ -129,11 +132,11 @@ async def status_task():
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{config['bot_prefix']}help",
-        f"{config['bot_prefix']}info",
-        f"{config['bot_prefix']}dog",
-        f"{config['bot_prefix']}cat",
-        f"{config['bot_prefix']}meme",
+        f"{PREFIX}help",
+        f"{PREFIX}info",
+        f"{PREFIX}dog",
+        f"{PREFIX}cat",
+        f"{PREFIX}meme",
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -158,7 +161,7 @@ async def on_ready():
 
     :return: a string with the details of our main guild.
     """
-    main_id = client.config["main_guild"]
+    main_id = client.settings.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")

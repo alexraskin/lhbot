@@ -1,18 +1,20 @@
 import json
 import os
 import sys
-
+from functools import lru_cache
 from filestack import Client
 
-if not os.path.isfile("config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open("config.json") as file:
-        config = json.load(file)
+from config import Settings
+
+@lru_cache()
+def settings():
+    return Settings()
+
+creds = settings()
 
 
 class FileSharer:
-    def __init__(self, filepath, api_key=config["filestack_key"]):
+    def __init__(self, filepath, api_key=creds.filestack_api_key):
         """
         The __init__ function is the constructor for a class. It sets up or "initializes" the object.
 
