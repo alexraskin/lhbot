@@ -1,8 +1,6 @@
-import json
 import os
 import platform
 import random
-import sys
 from datetime import datetime
 from functools import lru_cache
 
@@ -21,6 +19,8 @@ PREFIX = "!"
 def settings():
     return Settings()
 
+creds = settings()
+
 
 class LhBot(Bot):
     def __init__(self, *args, **options):
@@ -37,7 +37,6 @@ class LhBot(Bot):
         super().__init__(*args, **options)
         self.session = None
         self.last_errors = []
-        self.settings = settings()
 
     async def start(self, *args, **kwargs):
         """
@@ -52,7 +51,7 @@ class LhBot(Bot):
         :return: ClientSession object.
         """
         self.session = ClientSession(timeout=ClientTimeout(total=30))
-        await super().start(self.settings.bot_token, *args, **kwargs)
+        await super().start(creds.bot_token, *args, **kwargs)
 
     async def close(self):
         """
@@ -95,7 +94,7 @@ class LhBot(Bot):
 
 
 client = LhBot(
-    command_prefix=PREFIX,
+    command_prefix=creds.bot_prefix,
     description="Hi I am LhBot!",
     max_messages=15000,
     intents=discord.Intents.all(),
@@ -132,11 +131,11 @@ async def status_task():
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{PREFIX}help",
-        f"{PREFIX}info",
-        f"{PREFIX}dog",
-        f"{PREFIX}cat",
-        f"{PREFIX}meme",
+        f"{creds.bot_prefix}help",
+        f"{creds.bot_prefix}info",
+        f"{creds.bot_prefix}dog",
+        f"{creds.bot_prefix}cat",
+        f"{creds.bot_prefix}meme",
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
