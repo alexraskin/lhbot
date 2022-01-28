@@ -3,8 +3,7 @@ import datetime
 from discord import Embed
 from discord.ext import commands
 
-
-from ..utils.emojis import random_emoji
+from utils.emojis import random_emoji
 
 
 class LhCloudy(commands.Cog, name="lhcloudy"):
