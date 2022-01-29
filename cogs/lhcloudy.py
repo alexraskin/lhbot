@@ -69,6 +69,11 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
     @commands.command(name="lhfurry")
     async def lhfurry(self, ctx):
+        """
+        :param self: Used to store data that is used by the bot.
+        :param ctx: Used to access the context of where the command was called.
+        :return: the url of the image.
+        """
         url = "https://i.gyazo.com/3ae8376713000ab829a2853d0f31e6f2.png"
         await ctx.trigger_typing()
         message = await ctx.send(url)
@@ -663,6 +668,7 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         await ctx.trigger_typing()
         await ctx.send(embed=embed)
 
+
 def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
@@ -680,4 +686,3 @@ async def one_frame_execute(ctx):
     await ctx.trigger_typing()
     message = await ctx.send(url)
     # await message.add_reaction(random_emoji())
-
