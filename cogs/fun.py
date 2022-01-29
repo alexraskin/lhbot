@@ -7,8 +7,9 @@ from discord.ext import commands, tasks
 class Fun(commands.Cog, name="Fun"):
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class. It initializes the attributes of an object. In this case, it initializes
-        the client attribute.
+        The __init__ function is the constructor for a class.
+        It initializes the attributes of an object. 
+        In this case, it initializes the client attribute.
 
         :param self: Used to access variables that belong to the class.
         :param client: Used to pass in the client object to the class.
@@ -20,7 +21,8 @@ class Fun(commands.Cog, name="Fun"):
     @tasks.loop(count=1)
     async def load_chuck_http_codes(self):
         """
-        The load_chuck_http_codes function specifically loads the categories from the Chuck Norris API and stores them in a list.
+        The load_chuck_http_codes function specifically loads the
+        categories from the Chuck Norris API and stores them in a list.
 
         :param self: Used to store the bot object.
         :return: a list of categories.
@@ -170,6 +172,13 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.command(name="joke", aliases=["dadjoke"])
     async def random_joke(self, ctx):
+        """
+        The random_joke function specifically retrieves a random joke from the icanhazdadjoke.
+
+        :param self: Used to access the client and its functions.
+        :param ctx: Used to get the context of where the command was called.
+        :return: the joke from the icnhazdadjoke.
+        """
         headers = {"Accept": "application/json"}
         async with self.client.session.get(
             "https://icanhazdadjoke.com/", headers=headers
@@ -202,6 +211,20 @@ class Fun(commands.Cog, name="Fun"):
             embed.add_field(name="Anime:", value=anime, inline=True)
             embed.add_field(name="Character:", value=character, inline=True)
             embed.add_field(name="Quote:", value=quote, inline=True)
+            await ctx.send(embed=embed)
+
+    @commands.command(name="dogfact", aliases=["df"])
+    async def random_dog_fact(self, ctx):
+        headers = {"Accept": "application/json"}
+        async with self.client.session.get(
+            "https://dog-fact-api.herokuapp.com/api/v1/resources/dogs?number=1",
+            headers=headers,
+        ) as response:
+            data = await response.json()
+            fact = data[0]["fact"]
+            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed.add_field(name="Random Dog Fact", value=fact, inline=True)
+            await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
 
