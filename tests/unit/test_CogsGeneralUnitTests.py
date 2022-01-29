@@ -1,15 +1,13 @@
+import sys
 import unittest
 import unittest.mock
-
 from unittest.mock import AsyncMock, patch
 
 from discord.ext.commands import Context
 
-import sys
-
 sys.path.append("../cogs")
 
-from general import info_execute, get_year_string, ping_execute, on_message_execute
+from general import get_year_string, info_execute, on_message_execute, ping_execute
 
 
 class ChannelTestClass:

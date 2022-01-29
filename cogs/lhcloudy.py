@@ -15,25 +15,12 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
         :param self: Used to refer to the object itself.
         :param client: Used to store the client's information.
         :return: the object of the class.
-
         """
         self.client = client
 
     @commands.command(name="1frame")
     async def one_frame(self, ctx):
-        """
-        The one_frame function specifically is used to send a message with the url of the clip.
-        It also sends a typing indicator while it does so.
-
-        :param self: Used to access the bot's attributes and methods.
-        :param ctx: Used to access the context of where a command was called.
-        :return: the URL of a clip from the streaming channel LhCloudy27.
-
-        """
-        url = "https://www.twitch.tv/lhcloudy27/clip/AbstruseKindRuffFutureMan-dLWae-FGvNag2jtK"
-        await ctx.trigger_typing()
-        message = await ctx.send(url)
-        await message.add_reaction(random_emoji())
+        await one_frame_execute(ctx)
 
     @commands.command(name="360")
     async def three_sixty(self, ctx):
@@ -82,6 +69,11 @@ class LhCloudy(commands.Cog, name="lhcloudy"):
 
     @commands.command(name="lhfurry")
     async def lhfurry(self, ctx):
+        """
+        :param self: Used to store data that is used by the bot.
+        :param ctx: Used to access the context of where the command was called.
+        :return: the url of the image.
+        """
         url = "https://i.gyazo.com/3ae8376713000ab829a2853d0f31e6f2.png"
         await ctx.trigger_typing()
         message = await ctx.send(url)
@@ -687,3 +679,10 @@ def setup(client):
 
     """
     client.add_cog(LhCloudy(client))
+
+
+async def one_frame_execute(ctx):
+    url = "https://www.twitch.tv/lhcloudy27/clip/AbstruseKindRuffFutureMan-dLWae-FGvNag2jtK"
+    await ctx.trigger_typing()
+    message = await ctx.send(url)
+    # await message.add_reaction(random_emoji())
