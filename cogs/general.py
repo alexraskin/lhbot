@@ -245,10 +245,12 @@ async def shatter_execute(ctx, target_user):
     :param target_user: User that is being shattered.
     :return: a discord embed.
     """
-    if target_user is None or target_user is "":
-            await ctx.trigger_typing()
-            await ctx.send("You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD.")
-            return
+    if target_user == None or target_user == "":
+        await ctx.trigger_typing()
+        await ctx.send(
+            "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
+        )
+        return
 
     if len(target_user) > 500:
         await ctx.trigger_typing()
@@ -256,12 +258,12 @@ async def shatter_execute(ctx, target_user):
         return
 
     random.seed(dt.utcnow().__str__())
-    rollShatter = random.randint(0,100)
-    didShatter = "hit" if rollShatter < 25 else "was blocked by" 
+    roll_shatter = random.randint(0, 100)
+    did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
 
     embed = discord.Embed(
         title="Shatter!",
-        description=f"Your shatter {didShatter} {target_user}.",
+        description=f"Your shatter {did_shatter} {target_user}.",
         color=0x42F56C,
     )
     embed.set_footer(text=f"Requested by {ctx.message.author}")

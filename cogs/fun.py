@@ -8,7 +8,7 @@ class Fun(commands.Cog, name="Fun"):
     def __init__(self, client):
         """
         The __init__ function is the constructor for a class.
-        It initializes the attributes of an object. 
+        It initializes the attributes of an object.
         In this case, it initializes the client attribute.
 
         :param self: Used to access variables that belong to the class.
