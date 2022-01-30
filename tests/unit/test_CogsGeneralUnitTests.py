@@ -7,7 +7,13 @@ from discord.ext.commands import Context
 
 sys.path.append("../cogs")
 
-from general import get_year_string, info_execute, on_message_execute, ping_execute, shatter_execute
+from general import (
+    get_year_string,
+    info_execute,
+    on_message_execute,
+    ping_execute,
+    shatter_execute,
+)
 
 
 class ChannelTestClass:
@@ -201,18 +207,22 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(
             "Shatter!", mocked_context.send.call_args_list[0][1]["embed"].title
         )
-        self.assertIsNotNone(mocked_context.send.call_args_list[0][1]["embed"].description)
-        if len(mocked_context.send.call_args_list[0][1]["embed"].description) == len("Your shatter hit reinfrog."):
+        self.assertIsNotNone(
+            mocked_context.send.call_args_list[0][1]["embed"].description
+        )
+        if len(mocked_context.send.call_args_list[0][1]["embed"].description) == len(
+            "Your shatter hit reinfrog."
+        ):
             self.assertEqual(
-            "Your shatter hit reinfrog.",
-            mocked_context.send.call_args_list[0][1]["embed"].description,
+                "Your shatter hit reinfrog.",
+                mocked_context.send.call_args_list[0][1]["embed"].description,
             )
         else:
             self.assertEqual(
-            "Your shatter was blocked by reinfrog.",
-            mocked_context.send.call_args_list[0][1]["embed"].description,
+                "Your shatter was blocked by reinfrog.",
+                mocked_context.send.call_args_list[0][1]["embed"].description,
             )
-        
+
         self.assertEqual(
             0x42F56C, mocked_context.send.call_args_list[0][1]["embed"].color.value
         )
@@ -220,6 +230,7 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
         await shatter_execute(mocked_context, "")
         # assert
         self.assertTrue(mocked_context.send.called)
-        self.assertEqual("You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD.",
-            mocked_context.send.call_args_list[1][0][0])
-        
+        self.assertEqual(
+            "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD.",
+            mocked_context.send.call_args_list[1][0][0],
+        )
