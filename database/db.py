@@ -10,6 +10,6 @@ def settings():
     return Settings()
 
 
-creds = settings()
+conf = settings()
 
-db_client = motor.motor_asyncio.AsyncIOMotorClient(creds.database_url)
+db_client = motor.motor_asyncio.AsyncIOMotorClient(conf.database_url)

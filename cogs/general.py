@@ -9,7 +9,9 @@ import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
 
-PREFIX = "!"
+from config import Settings
+
+conf = Settings()
 
 
 class General(commands.Cog, name="general"):
@@ -128,7 +130,7 @@ class General(commands.Cog, name="general"):
     async def shatter(self, ctx, target_user=None):
         """
         Shatter another user in the server!
-        
+
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the current context of where the command was called.
         :param target_user=None: Used to specify the user to be targeted.
@@ -158,7 +160,7 @@ async def info_execute(ctx):
     embed = discord.Embed(description="LhBot", color=0x42F56C)
     embed.set_author(name="Bot Information")
     embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-    embed.add_field(name="Prefix:", value=PREFIX, inline=True)
+    embed.add_field(name="Prefix:", value="!", inline=True)
     embed.add_field(
         name="Python Version:", value=f"{platform.python_version()}", inline=True
     )

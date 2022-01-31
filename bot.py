@@ -12,15 +12,13 @@ from discord.ext.commands import Bot
 from config import Settings
 from utils.clear_dir import _clear_dir
 
-PREFIX = "!"
-
 
 @lru_cache()
 def settings():
     return Settings()
 
 
-creds = settings()
+conf = settings()
 
 
 class LhBot(Bot):
@@ -52,7 +50,7 @@ class LhBot(Bot):
         :return: ClientSession object.
         """
         self.session = ClientSession(timeout=ClientTimeout(total=30))
-        await super().start(creds.bot_token, *args, **kwargs)
+        await super().start(conf.bot_token, *args, **kwargs)
 
     async def close(self):
         """
@@ -79,7 +77,7 @@ class LhBot(Bot):
             user_roles = [role.id for role in user.roles]
         except AttributeError:
             return False
-        permitted_roles = creds.admin_roles
+        permitted_roles = conf.admin_roles
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
@@ -90,12 +88,12 @@ class LhBot(Bot):
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
         """
-        superusers = creds.superusers
+        superusers = conf.superusers
         return user.id in superusers
 
 
 client = LhBot(
-    command_prefix=creds.bot_prefix,
+    command_prefix=conf.bot_prefix,
     description="Hi I am LhBot!",
     max_messages=15000,
     intents=discord.Intents.all(),
@@ -132,11 +130,11 @@ async def status_task():
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{creds.bot_prefix}help",
-        f"{creds.bot_prefix}info",
-        f"{creds.bot_prefix}dog",
-        f"{creds.bot_prefix}cat",
-        f"{creds.bot_prefix}meme",
+        f"{conf.bot_prefix}help",
+        f"{conf.bot_prefix}info",
+        f"{conf.bot_prefix}dog",
+        f"{conf.bot_prefix}cat",
+        f"{conf.bot_prefix}meme",
     ]
     await client.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -161,7 +159,7 @@ async def on_ready():
 
     :return: a string with the details of our main guild.
     """
-    main_id = creds.main_guild
+    main_id = conf.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
@@ -175,31 +173,26 @@ async def on_ready():
 
 
 @client.event
-async def on_command_error(context, error):
-    """
-    The on_command_error function is used to handle errors that occur while executing a command.
-    It's called when an error is raised while invoking a command,
-    and it passes itself and the context of the invocation as arguments.
-
-    :param context: Used to send messages to the user.
-    :param error: Used to handle errors.
-    :return: None.
-    """
-    if isinstance(error, commands.MissingPermissions):
-        embed = discord.Embed(
-            title="Error!",
-            description="You are missing the permission `"
-            + ", ".join(error.missing_perms)
-            + "` to execute this command!",
-            color=0xE02B2B,
+async def on_command_error(ctx, error):
+    error_message = {
+        commands.BotMissingPermissions: "I don't have the permissions needed to run this command",
+        commands.MissingRole: "You don't have the role(s) needed to use this command",
+        commands.BadArgument: "Unexpected argument (check your capitalization and parameter order)",
+        commands.MissingRequiredArgument: "Missing required argument.",
+        commands.TooManyArguments: "Too many arguments",
+        commands.CheckFailure: "You don't have the permissions needed to use this command",
+        AttributeError: "It's probably due to a spelling error somewhere",
+    }
+    try:
+        description = "Error: " + error_message[error]
+    except KeyError:
+        if isinstance(error, commands.CommandNotFound):
+            return
+    await ctx.channel.send(
+        embed=discord.Embed(
+            description=description, color=discord.Color.from_rgb(214, 11, 11)
         )
-        await context.send(embed=embed)
-    elif isinstance(error, commands.MissingRequiredArgument):
-        embed = discord.Embed(
-            title="Error!", description=str(error).capitalize(), color=0xE02B2B
-        )
-        await context.send(embed=embed)
-    raise error
+    )
 
 
 @client.event
