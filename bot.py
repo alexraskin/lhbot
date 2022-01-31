@@ -174,20 +174,25 @@ async def on_ready():
 
 @client.event
 async def on_command_error(ctx, error):
-    error_message = {commands.BotMissingPermissions: "I don't have the permissions needed to run this command",
-                     commands.MissingRole: "You don't have the role(s) needed to use this command",
-                     commands.BadArgument: "Unexpected argument (check your capitalization and parameter order)",
-                     commands.MissingRequiredArgument: "Missing required argument.",
-                     commands.TooManyArguments: "Too many arguments",
-                     commands.CheckFailure: "You don't have the permissions needed to use this command",
-                     AttributeError: "It's probably due to a spelling error somewhere"
-                    }
+    error_message = {
+        commands.BotMissingPermissions: "I don't have the permissions needed to run this command",
+        commands.MissingRole: "You don't have the role(s) needed to use this command",
+        commands.BadArgument: "Unexpected argument (check your capitalization and parameter order)",
+        commands.MissingRequiredArgument: "Missing required argument.",
+        commands.TooManyArguments: "Too many arguments",
+        commands.CheckFailure: "You don't have the permissions needed to use this command",
+        AttributeError: "It's probably due to a spelling error somewhere",
+    }
     try:
         description = "Error: " + error_message[error]
     except KeyError:
         if isinstance(error, commands.CommandNotFound):
             return
-    await ctx.channel.send(embed=discord.Embed(description=description, color=discord.Color.from_rgb(214, 11, 11)))
+    await ctx.channel.send(
+        embed=discord.Embed(
+            description=description, color=discord.Color.from_rgb(214, 11, 11)
+        )
+    )
 
 
 @client.event
