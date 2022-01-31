@@ -1,11 +1,11 @@
-name: PyTest
+name: PyTest & CodeCov
 on: push
 
 jobs:
-  test:
+  run-tests:
+
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
