@@ -160,7 +160,7 @@ async def info_execute(ctx):
     embed = discord.Embed(description="LhBot", color=0x42F56C)
     embed.set_author(name="Bot Information")
     embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-    embed.add_field(name="Prefix:", value=conf.bot_prefix, inline=True)
+    embed.add_field(name="Prefix:", value="!", inline=True)
     embed.add_field(
         name="Python Version:", value=f"{platform.python_version()}", inline=True
     )
