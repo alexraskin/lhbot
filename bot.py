@@ -12,7 +12,6 @@ from discord.ext.commands import Bot
 from config import Settings
 from utils.clear_dir import _clear_dir
 
-PREFIX = "!"
 
 
 @lru_cache()
