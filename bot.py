@@ -173,31 +173,21 @@ async def on_ready():
 
 
 @client.event
-async def on_command_error(context, error):
-    """
-    The on_command_error function is used to handle errors that occur while executing a command.
-    It's called when an error is raised while invoking a command,
-    and it passes itself and the context of the invocation as arguments.
-
-    :param context: Used to send messages to the user.
-    :param error: Used to handle errors.
-    :return: None.
-    """
-    if isinstance(error, commands.MissingPermissions):
-        embed = discord.Embed(
-            title="Error!",
-            description="You are missing the permission `"
-            + ", ".join(error.missing_perms)
-            + "` to execute this command!",
-            color=0xE02B2B,
-        )
-        await context.send(embed=embed)
-    elif isinstance(error, commands.MissingRequiredArgument):
-        embed = discord.Embed(
-            title="Error!", description=str(error).capitalize(), color=0xE02B2B
-        )
-        await context.send(embed=embed)
-    raise error
+async def on_command_error(ctx, error):
+    error_message = {commands.BotMissingPermissions: "I don't have the permissions needed to run this command",
+                     commands.MissingRole: "You don't have the role(s) needed to use this command",
+                     commands.BadArgument: "Unexpected argument (check your capitalization and parameter order)",
+                     commands.MissingRequiredArgument: "Missing required argument.",
+                     commands.TooManyArguments: "Too many arguments",
+                     commands.CheckFailure: "You don't have the permissions needed to use this command",
+                     AttributeError: "It's probably due to a spelling error somewhere"
+                    }
+    try:
+        description = "Error: " + error_message[error]
+    except KeyError:
+        if isinstance(error, commands.CommandNotFound):
+            return
+    await ctx.channel.send(embed=discord.Embed(description=description, color=discord.Color.from_rgb(214, 11, 11)))
 
 
 @client.event
