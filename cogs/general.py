@@ -130,7 +130,7 @@ class General(commands.Cog, name="general"):
     async def shatter(self, ctx, target_user=None):
         """
         Shatter another user in the server!
-        
+
         :param self: Used to access the class attributes and methods.
         :param ctx: Used to get the current context of where the command was called.
         :param target_user=None: Used to specify the user to be targeted.

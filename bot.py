@@ -13,7 +13,6 @@ from config import Settings
 from utils.clear_dir import _clear_dir
 
 
-
 @lru_cache()
 def settings():
     return Settings()
