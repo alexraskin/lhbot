@@ -9,7 +9,7 @@ sys.path.append("../cogs")
 
 
 from general import (get_year_string, info_execute, on_message_execute,
-                     ping_execute)
+                     ping_execute, shatter_execute)
 
 
 class ChannelTestClass:
