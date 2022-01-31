@@ -13,3 +13,4 @@ class Settings(BaseSettings):
     admin_roles: list = os.getenv("admin_roles")
     superusers: list = os.getenv("superusers")
     main_guild: int = os.getenv("main_guild")
+    sentry_dsn: str = os.getenv("SENTRY_DSN")
