@@ -8,6 +8,8 @@ import discord
 from aiohttp import ClientSession, ClientTimeout
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
+import sentry_sdk
+from sentry_sdk import capture_exception
 
 from config import Settings
 from utils.clear_dir import _clear_dir
@@ -17,8 +19,9 @@ from utils.clear_dir import _clear_dir
 def settings():
     return Settings()
 
-
 conf = settings()
+
+sentry_sdk.init(conf.sentry_dsn, traces_sample_rate=1.0)
 
 
 class LhBot(Bot):
@@ -75,7 +78,8 @@ class LhBot(Bot):
         """
         try:
             user_roles = [role.id for role in user.roles]
-        except AttributeError:
+        except AttributeError as e:
+            capture_exception(e)
             return False
         permitted_roles = conf.admin_roles
         return any(role in permitted_roles for role in user_roles)
@@ -112,6 +116,7 @@ for extension in reversed(STARTUP_EXTENSIONS):
         client.load_extension(f"{extension}")
         print(f"Loaded extension '{extension}'")
     except Exception as e:
+        capture_exception(e)
         client.last_errors.append((e, datetime.utcnow(), None, None))
         exc = f"{type(e).__name__}: {e}"
         print(f"Failed to load extension {extension}\n{exc}")
@@ -185,7 +190,8 @@ async def on_command_error(ctx, error):
     }
     try:
         description = "Error: " + error_message[error]
-    except KeyError:
+    except KeyError as e:
+        capture_exception(e)
         if isinstance(error, commands.CommandNotFound):
             return
     await ctx.channel.send(
