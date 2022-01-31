@@ -125,8 +125,15 @@ class General(commands.Cog, name="general"):
         await ctx.send(url + f"```python\n{sanitized}\n```")
 
     @commands.command(name="shatter")
-    async def shatter(self, ctx, query=None):
-        await shatter_execute(ctx, query)
+    async def shatter(self, ctx, target_user=None):
+        """
+        Shatter another user in the server!
+        
+        :param self: Used to access the class attributes and methods.
+        :param ctx: Used to get the current context of where the command was called.
+        :param target_user=None: Used to specify the user to be targeted.
+        """
+        await shatter_execute(ctx, target_user)
 
 
 def setup(client):
