@@ -1,4 +1,5 @@
 import platform
+import random
 import re
 from datetime import datetime as dt
 from inspect import getsourcelines
@@ -123,6 +124,17 @@ class General(commands.Cog, name="general"):
         await ctx.trigger_typing()
         await ctx.send(url + f"```python\n{sanitized}\n```")
 
+    @commands.command(name="shatter")
+    async def shatter(self, ctx, target_user=None):
+        """
+        Shatter another user in the server!
+        
+        :param self: Used to access the class attributes and methods.
+        :param ctx: Used to get the current context of where the command was called.
+        :param target_user=None: Used to specify the user to be targeted.
+        """
+        await shatter_execute(ctx, target_user)
+
 
 def setup(client):
     """
@@ -162,8 +174,8 @@ async def ping_execute(ctx, latency):
     It returns a message with the time it takes for a message
     to reach Discord and be received by the bot.
 
-    :param self: Used to access variables that belong to the class.
     :param ctx: Used to get the context of where the command was called.
+    :param latency: Latency of the bot.
     :return: a discord embed.
     """
     embed = discord.Embed(
@@ -228,3 +240,38 @@ async def on_message_execute(message):
         message.content,
     ):
         await message.channel.send("42")
+
+
+async def shatter_execute(ctx, target_user):
+    """
+    The sahtter function is used to shatter another user in chat.
+    It returns a message determining if your shatter was blocked or not.
+        - 25% chance to hit shatter
+
+    :param ctx: Used to get the context of where the command was called.
+    :param target_user: User that is being shattered.
+    :return: a discord embed.
+    """
+    if target_user == None or target_user == "":
+        await ctx.trigger_typing()
+        await ctx.send(
+            "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
+        )
+        return
+
+    if len(target_user) > 500:
+        await ctx.trigger_typing()
+        await ctx.send("Username is too long!")
+        return
+
+    random.seed(dt.utcnow().__str__())
+    roll_shatter = random.randint(0, 100)
+    did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
+
+    embed = discord.Embed(
+        title="Shatter!",
+        description=f"Your shatter {did_shatter} {target_user}.",
+        color=0x42F56C,
+    )
+    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    await ctx.send(embed=embed)

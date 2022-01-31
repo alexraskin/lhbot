@@ -7,7 +7,13 @@ from discord.ext.commands import Context
 
 sys.path.append("../cogs")
 
-from general import get_year_string, info_execute, on_message_execute, ping_execute
+from general import (
+    get_year_string,
+    info_execute,
+    on_message_execute,
+    ping_execute,
+    shatter_execute,
+)
 
 
 class ChannelTestClass:
@@ -177,3 +183,54 @@ class CogsGeneralTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertTrue(mocked_channel.send.called)
         self.assertEqual("42", mocked_channel.send.call_args_list[0][0][0])
+
+    @patch.object(Context, "send")
+    async def test_shouldReturnShatter_whenShatterCommandCalled(self, mocked_context):
+        """
+        This test tests the Ping command from the General Cog
+
+        :mock Context: Discord context mocked message.author
+        :param mocked_content: mocked content to pass into general as ctx param
+        """
+        print("Running test_shouldReturnShatter_whenShatterCommandCalled")
+        # arrange
+        # act
+        await shatter_execute(mocked_context, "reinfrog")
+        # assert
+        self.assertTrue(mocked_context.send.called)
+        self.assertTrue(
+            mocked_context.send.call_args_list[0][1]["embed"].footer.text.startswith(
+                "Requested by <AsyncMock name='send.message.author' "
+            )
+        )
+
+        self.assertEqual(
+            "Shatter!", mocked_context.send.call_args_list[0][1]["embed"].title
+        )
+        self.assertIsNotNone(
+            mocked_context.send.call_args_list[0][1]["embed"].description
+        )
+        if len(mocked_context.send.call_args_list[0][1]["embed"].description) == len(
+            "Your shatter hit reinfrog."
+        ):
+            self.assertEqual(
+                "Your shatter hit reinfrog.",
+                mocked_context.send.call_args_list[0][1]["embed"].description,
+            )
+        else:
+            self.assertEqual(
+                "Your shatter was blocked by reinfrog.",
+                mocked_context.send.call_args_list[0][1]["embed"].description,
+            )
+
+        self.assertEqual(
+            0x42F56C, mocked_context.send.call_args_list[0][1]["embed"].color.value
+        )
+
+        await shatter_execute(mocked_context, "")
+        # assert
+        self.assertTrue(mocked_context.send.called)
+        self.assertEqual(
+            "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD.",
+            mocked_context.send.call_args_list[1][0][0],
+        )
