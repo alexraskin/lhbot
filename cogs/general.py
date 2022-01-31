@@ -8,7 +8,9 @@ import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
 
-PREFIX = "!"
+from config import Settings
+
+conf = Settings()
 
 
 class General(commands.Cog, name="general"):
@@ -146,7 +148,7 @@ async def info_execute(ctx):
     embed = discord.Embed(description="LhBot", color=0x42F56C)
     embed.set_author(name="Bot Information")
     embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-    embed.add_field(name="Prefix:", value=PREFIX, inline=True)
+    embed.add_field(name="Prefix:", value=conf.bot_prefix, inline=True)
     embed.add_field(
         name="Python Version:", value=f"{platform.python_version()}", inline=True
     )
