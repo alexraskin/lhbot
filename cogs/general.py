@@ -8,6 +8,7 @@ from urllib.parse import quote_plus
 import discord
 from aiohttp import ContentTypeError
 from discord.ext import commands
+from sentry_sdk import capture_exception
 
 from config import Settings
 
@@ -67,7 +68,8 @@ class General(commands.Cog, name="general"):
         ) as response:
             try:
                 answer = await response.json(content_type="application/x-javascript")
-            except ContentTypeError:
+            except ContentTypeError as e:
+                capture_exception(e)
                 await ctx.trigger_typing()
                 await ctx.send("Invalid query")
                 return

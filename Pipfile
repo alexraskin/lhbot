@@ -12,6 +12,7 @@ aiohttp = "*"
 fpdf = "*"
 filestack-python = "*"
 pydantic = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 pylint = "*"
