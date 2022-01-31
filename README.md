@@ -28,4 +28,4 @@ ___
 ___
 `cd tests`  
   
-`py -m unittest discover unit`
+`pipenv run tests`
