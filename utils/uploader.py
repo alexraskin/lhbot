@@ -9,11 +9,11 @@ def settings():
     return Settings()
 
 
-creds = settings()
+conf = settings()
 
 
 class FileSharer:
-    def __init__(self, filepath, api_key=creds.filestack_api_key):
+    def __init__(self, filepath, api_key=conf.filestack_api_key):
         """
         The __init__ function is the constructor for a class. It sets up or "initializes" the object.
 
