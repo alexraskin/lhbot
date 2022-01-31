@@ -31,4 +31,10 @@ jobs:
       - name: Run tests
         working-directory: ./tests
         run: |
-          pipenv run tests -v
+          pipenv run test-report
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          files: ./tests/coverage.xml
