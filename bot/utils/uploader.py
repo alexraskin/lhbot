@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from filestack import Client
 
-from config import Settings
+from .config import Settings
 
 
 @lru_cache()

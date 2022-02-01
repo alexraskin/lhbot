@@ -5,7 +5,8 @@ from unittest.mock import AsyncMock, patch
 
 from discord.ext.commands import Context
 
-from bot.cogs.lhcloudy import one_frame_execute
+sys.path.append("../bot/cogs")
+from lhcloudy import one_frame_execute
 
 
 class ChannelTestClass:
