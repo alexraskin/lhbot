@@ -1,4 +1,6 @@
 import os
+from urllib.request import urlopen
+from PIL import Image
 
 from fpdf import FPDF
 
@@ -17,6 +19,9 @@ class PdfReport:
         """
         self.filename = filename
         self.guesses = guesses
+        self.img_url = "https://i.gyazo.com/8c8dfea116df795342361794b2499530.jpg"
+        self.img = Image.open(urlopen(self.img_url))
+
 
     def generate(self):
         """
@@ -31,7 +36,7 @@ class PdfReport:
         pdf.set_font(family="Times", size=25, style="B")
         pdf.cell(w=0, h=80, txt="LhGuess Report", border=0, align="C", ln=1)
         pdf.image(
-            link="https://i.gyazo.com/8c8dfea116df795342361794b2499530.jpg",
+            name=self.img,
             w=100,
             h=100,
         )
