@@ -4,13 +4,13 @@ from bson.objectid import ObjectId
 from discord import Embed
 from discord.ext import commands, tasks
 
-from bot.database.db import db_client
-from bot.utils.banwords import banned_words
-from bot.utils.emojis import random_emoji
-from bot.utils.generate_pdf import PdfReport
-from bot.utils.hints import lh_hints
-from bot.utils.return_helper import _helper
-from bot.utils.uploader import FileSharer
+from database.db import db_client
+from utils.banwords import banned_words
+from utils.emojis import random_emoji
+from utils.generate_pdf import PdfReport
+from utils.hints import lh_hints
+from utils.return_helper import _helper
+from utils.uploader import FileSharer
 
 database = db_client.lhbot
 
