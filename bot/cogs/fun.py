@@ -4,6 +4,7 @@ from discord import Embed
 from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
 
+
 class Fun(commands.Cog, name="Fun"):
     def __init__(self, client):
         """
