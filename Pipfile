@@ -13,6 +13,7 @@ fpdf = "*"
 filestack-python = "*"
 pydantic = "*"
 sentry-sdk = "*"
+pillow = "*"
 
 [dev-packages]
 pylint = "*"
