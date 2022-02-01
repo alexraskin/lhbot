@@ -30,15 +30,10 @@ class PdfReport:
         pdf.add_page()
         pdf.set_font(family="Times", size=25, style="B")
         pdf.cell(w=0, h=80, txt="LhGuess Report", border=0, align="C", ln=1)
-        pdf.image(
-            link="https://i.gyazo.com/8c8dfea116df795342361794b2499530.jpg",
-            w=100,
-            h=100,
-        )
 
         pdf.set_font(family="Times", size=12)
         for guess in self.guesses:
             pdf.multi_cell(w=100, h=20, txt=guess, border=0, align="C")
 
-        os.chdir("files")
+        os.chdir("bot/files")
         pdf.output(self.filename)
