@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from discord import Embed
 from discord.ext import commands, tasks
 
-from database.db import db_client
+from bot.database.db import db_client
 from bot.utils.banwords import banned_words
 from bot.utils.emojis import random_emoji
 from bot.utils.generate_pdf import PdfReport
