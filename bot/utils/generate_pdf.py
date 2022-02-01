@@ -1,8 +1,6 @@
 import os
-from urllib.request import urlopen
 
 from fpdf import FPDF
-from PIL import Image
 
 
 class PdfReport:
@@ -19,9 +17,6 @@ class PdfReport:
         """
         self.filename = filename
         self.guesses = guesses
-        self.img_url = "https://i.gyazo.com/8c8dfea116df795342361794b2499530.jpg"
-        self.img = Image.open(urlopen(self.img_url))
-
 
     def generate(self):
         """
@@ -35,15 +30,10 @@ class PdfReport:
         pdf.add_page()
         pdf.set_font(family="Times", size=25, style="B")
         pdf.cell(w=0, h=80, txt="LhGuess Report", border=0, align="C", ln=1)
-        pdf.image(
-            name=self.img,
-            w=100,
-            h=100,
-        )
 
         pdf.set_font(family="Times", size=12)
         for guess in self.guesses:
             pdf.multi_cell(w=100, h=20, txt=guess, border=0, align="C")
 
-        os.chdir("files")
+        os.chdir("bot/files")
         pdf.output(self.filename)

@@ -150,7 +150,7 @@ async def clean_dir():
 
     :return: bool
     """
-    _clear_dir("./files", ".pdf")
+    _clear_dir("./bot/files", ".pdf")
 
 
 @client.event
