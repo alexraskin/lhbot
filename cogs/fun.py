@@ -2,7 +2,7 @@ import random
 
 from discord import Embed
 from discord.ext import commands, tasks
-
+from sentry_sdk import capture_exception
 
 class Fun(commands.Cog, name="Fun"):
     def __init__(self, client):
@@ -74,7 +74,8 @@ class Fun(commands.Cog, name="Fun"):
                 await ctx.trigger_typing()
                 await ctx.send(embed=embed)
 
-        except BaseException:
+        except BaseException as e:
+            capture_exception(e)
             raise commands.BadArgument(
                 "Chuck not found, currently evading GPS in Texas!"
             )
