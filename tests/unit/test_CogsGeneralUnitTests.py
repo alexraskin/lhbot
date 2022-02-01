@@ -1,4 +1,3 @@
-import sys
 import unittest
 import unittest.mock
 from unittest.mock import AsyncMock, patch
