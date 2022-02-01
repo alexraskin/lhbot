@@ -18,6 +18,7 @@ from utils.clear_dir import _clear_dir
 def settings():
     return Settings()
 
+
 conf = settings()
 
 sentry_sdk.init(conf.sentry_dsn, traces_sample_rate=1.0)
@@ -167,10 +168,10 @@ async def on_ready():
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
-    status_task.start()
-    clean_dir.start()
     print("\nMain guild:", client.main_guild.name)
     print(f"\n{client.user.name} started successfully")
+    status_task.start()
+    clean_dir.start()
     return True
 
 
@@ -187,15 +188,15 @@ async def on_command_error(ctx, error):
     }
     try:
         description = "Error: " + error_message[error]
+        await ctx.channel.send(
+            embed=discord.Embed(
+                description=description, color=discord.Color.from_rgb(214, 11, 11)
+            )
+        )
     except KeyError as e:
         capture_exception(e)
         if isinstance(error, commands.CommandNotFound):
             return
-    await ctx.channel.send(
-        embed=discord.Embed(
-            description=description, color=discord.Color.from_rgb(214, 11, 11)
-        )
-    )
 
 
 @client.event
