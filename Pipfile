@@ -26,6 +26,6 @@ python_version = "3.10"
 
 ['scripts']
 clean-env = "pipenv clean"
-bot = "python bot.py"
+bot = "python bot/bot.py"
 tests = "pipenv run pytest --cov=./ -v"
 test-report = "pipenv run pytest --cov=./ --cov-report=xml -v"
