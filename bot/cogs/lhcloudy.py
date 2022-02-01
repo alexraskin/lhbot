@@ -1,8 +1,10 @@
+import sys
 import datetime
 
 from discord import Embed
 from discord.ext import commands
 
+sys.path.append("../bot/")
 from utils.emojis import random_emoji
 
 

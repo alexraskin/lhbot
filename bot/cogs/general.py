@@ -1,3 +1,4 @@
+import sys
 import platform
 import random
 import re
@@ -10,6 +11,7 @@ from aiohttp import ContentTypeError
 from discord.ext import commands
 from sentry_sdk import capture_exception
 
+sys.path.append("../bot")
 from config import Settings
 
 conf = Settings()
