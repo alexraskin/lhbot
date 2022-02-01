@@ -18,6 +18,7 @@ from utils.clear_dir import _clear_dir
 def settings():
     return Settings()
 
+
 conf = settings()
 
 sentry_sdk.init(conf.sentry_dsn, traces_sample_rate=1.0)
