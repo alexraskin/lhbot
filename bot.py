@@ -1,14 +1,13 @@
 import os
 import platform
 import random
-from datetime import datetime
 from functools import lru_cache
 
 import discord
+import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
-import sentry_sdk
 from sentry_sdk import capture_exception
 
 from config import Settings
@@ -38,7 +37,6 @@ class LhBot(Bot):
         """
         super().__init__(*args, **options)
         self.session = None
-        self.last_errors = []
 
     async def start(self, *args, **kwargs):
         """
@@ -117,7 +115,6 @@ for extension in reversed(STARTUP_EXTENSIONS):
         print(f"Loaded extension '{extension}'")
     except Exception as e:
         capture_exception(e)
-        client.last_errors.append((e, datetime.utcnow(), None, None))
         exc = f"{type(e).__name__}: {e}"
         print(f"Failed to load extension {extension}\n{exc}")
 
