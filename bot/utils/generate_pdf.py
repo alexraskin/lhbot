@@ -1,8 +1,6 @@
 import os
-from urllib.request import urlopen
 
 from fpdf import FPDF
-from PIL import Image
 
 
 class PdfReport:
@@ -19,9 +17,6 @@ class PdfReport:
         """
         self.filename = filename
         self.guesses = guesses
-        self.img_url = "https://i.gyazo.com/8c8dfea116df795342361794b2499530.jpg"
-        self.img = Image.open(urlopen(self.img_url))
-
 
     def generate(self):
         """
