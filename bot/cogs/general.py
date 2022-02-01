@@ -10,7 +10,7 @@ from aiohttp import ContentTypeError
 from discord.ext import commands
 from sentry_sdk import capture_exception
 
-from bot.config import Settings
+from config import Settings
 
 conf = Settings()
 
