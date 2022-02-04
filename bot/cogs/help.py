@@ -19,7 +19,7 @@ class myHelpCommand(HelpCommand):
         """
         super().__init__(**options)
         self.paginator = None
-        self.spacer = "\u1160"
+        self.spacer = " "
 
     async def send_pages(self, header=False, footer=False):
         """
