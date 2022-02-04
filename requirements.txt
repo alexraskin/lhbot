@@ -112,9 +112,6 @@ fpdf==1.7.2 \
 idna==3.3; python_full_version >= "3.6.0" and python_version >= "3.6" \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
     --hash=sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d
-iniconfig==1.1.1; python_version >= "3.6" \
-    --hash=sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3 \
-    --hash=sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32
 motor==2.5.1; python_full_version >= "3.5.2" \
     --hash=sha256:961fdceacaae2c7236c939166f66415be81be8bbb762da528386738de3a0f509 \
     --hash=sha256:663473f4498f955d35db7b6f25651cb165514c247136f368b84419cb7635f6b8
@@ -178,18 +175,9 @@ multidict==6.0.2; python_version >= "3.7" and python_full_version >= "3.5.3" \
     --hash=sha256:23b616fdc3c74c9fe01d76ce0d1ce872d2d396d8fa8e4899398ad64fb5aa214a \
     --hash=sha256:4bae31803d708f6f15fd98be6a6ac0b6958fcf68fda3c77a048a4f9073704aae \
     --hash=sha256:5ff3bd75f38e4c43f1f470f2df7a4d430b821c4ce22be384e1459cb57d6bb013
-packaging==21.3; python_version >= "3.6" \
-    --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522 \
-    --hash=sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb
-pluggy==1.0.0; python_version >= "3.6" \
-    --hash=sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3 \
-    --hash=sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159
 py-cord==1.7.3; python_full_version >= "3.5.3" \
     --hash=sha256:b319b0c282e6cd55fedf11efefe30f024fc9293fee3b3e2b715777be6d9fb1ae \
     --hash=sha256:19cb49ee6cb830d71e8b5d9555249cef5c15c652c096176e69edce5ff993701b
-py==1.11.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6" \
-    --hash=sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378 \
-    --hash=sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719
 pydantic==1.9.0; python_full_version >= "3.6.1" \
     --hash=sha256:cb23bcc093697cdea2708baae4f9ba0e972960a835af22560f6ae4e7e47d33f5 \
     --hash=sha256:1d5278bd9f0eee04a44c712982343103bba63507480bfd2fc2790fa70cd64cf4 \
