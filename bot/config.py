@@ -5,7 +5,6 @@ from pydantic import BaseSettings
 
 load_dotenv()
 
-
 class Settings(BaseSettings):
     bot_prefix: str = os.getenv("BOT_PREFIX")
     bot_token: str = os.getenv("BOT_TOKEN")
