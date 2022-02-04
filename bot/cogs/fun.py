@@ -81,7 +81,7 @@ class Fun(commands.Cog, name="Fun"):
                 "Chuck not found, currently evading GPS in Texas!"
             )
 
-    @commands.command(name="cat", aliases=["catpic"])
+    @commands.command(name="cat", aliases=["catpic", "catto"])
     async def cat(self, ctx):
         """
         The cat function specifically gets a random cat picture from the random.cat API and sends it to the channel.
