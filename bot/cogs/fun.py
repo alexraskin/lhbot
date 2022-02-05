@@ -207,7 +207,7 @@ class Fun(commands.Cog, name="Fun"):
             data = await response.json()
             anime = data["anime"]
             character = data["character"]
-            quote = data["quote"]
+            quote = str(data["quote"]).strip("[").strip("]")
             await ctx.trigger_typing()
             embed = Embed(title="Random Anime Quote", color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Anime:", value=anime, inline=True)
