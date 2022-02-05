@@ -8,7 +8,7 @@ sys.path.append("../bot/")
 from utils.emojis import random_emoji
 
 
-class LhCloudy(commands.Cog, name="lhcloudy"):
+class LhCloudy(commands.Cog, name="LhCloudy"):
     def __init__(self, client):
         """
         The __init__ function is the constructor for a class. It is called when an instance of a class is created.

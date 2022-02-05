@@ -17,7 +17,7 @@ from config import Settings
 conf = Settings()
 
 
-class General(commands.Cog, name="general"):
+class General(commands.Cog, name="General"):
     def __init__(self, client):
         """
         The __init__ function is the constructor for a class.
