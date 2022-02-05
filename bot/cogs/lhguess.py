@@ -17,7 +17,7 @@ database = db_client.lhbot
 collection = database.get_collection("lhbot_collection")
 
 
-class LhGuess(commands.Cog, name="lhguess"):
+class LhGuess(commands.Cog, name="LhGuess"):
     def __init__(self, client):
         """
         The __init__ function is used to initialize the class. It's called when an instance of a class is created, and it
