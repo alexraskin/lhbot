@@ -217,6 +217,14 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.command(name="dogfact", aliases=["df"])
     async def random_dog_fact(self, ctx):
+        """
+        The random_dog_fact function retrieves a random dog fact 
+        from the Dog Fact API and embeds it in an Embed object.
+        
+        :param self: Used to access the client, which is used to access the bot's commands.
+        :param ctx: Used to access the context of where the command was called.
+        :return: discord embed
+        """
         headers = {"Accept": "application/json"}
         async with self.client.session.get(
             "https://dog-fact-api.herokuapp.com/api/v1/resources/dogs?number=1",
@@ -225,7 +233,7 @@ class Fun(commands.Cog, name="Fun"):
             data = await response.json()
             fact = data[0]["fact"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
-            embed.add_field(name="Random Dog Fact", value=fact, inline=True)
+            embed.add_field(name="Random Dog Fact:", value=fact, inline=True)
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
