@@ -517,7 +517,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         :param ctx: Used to get the channel and user that sent the command.
         :return: the twitch clip link.
         """
-        url = "hhttps://www.twitch.tv/lhcloudy27/clip/RudeAbstruseHummingbirdPunchTrees-y7H3Pk3hrdoKarhP?filter=clips&range=7d&sort=time"
+        url = "https://www.twitch.tv/lhcloudy27/clip/RudeAbstruseHummingbirdPunchTrees-y7H3Pk3hrdoKarhP?filter=clips&range=7d&sort=time"
         await ctx.trigger_typing()
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
