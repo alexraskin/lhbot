@@ -218,9 +218,9 @@ class Fun(commands.Cog, name="Fun"):
     @commands.command(name="dogfact", aliases=["df"])
     async def random_dog_fact(self, ctx):
         """
-        The random_dog_fact function retrieves a random dog fact 
+        The random_dog_fact function retrieves a random dog fact
         from the Dog Fact API and embeds it in an Embed object.
-        
+
         :param self: Used to access the client, which is used to access the bot's commands.
         :param ctx: Used to access the context of where the command was called.
         :return: discord embed
