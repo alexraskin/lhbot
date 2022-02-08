@@ -3,6 +3,9 @@ import random
 from discord import Embed
 from discord.ext import commands
 
+from utils.reinquotes import quotes
+from utils.emojis import random_emoji
+
 
 class OverwatchAPI(commands.Cog, name="Overwatch"):
     """Overwatch specify commands"""
@@ -19,6 +22,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
         """
         self.client = client
+        self.rein_quotes = quotes.split("\n")
         self.base_url = "https://owapi.io"
 
     @commands.command(
@@ -105,6 +109,21 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                     )
                     await ctx.trigger_typing()
                     await ctx.send(embed=embed)
+
+    @commands.command(name="reinquote", description="Random Rein Quote")
+    async def random_rein_quote(self, ctx):
+        await ctx.trigger_typing()
+        embed = Embed(
+            color=random.randint(0, 0xFFFFFF),
+        )
+        embed.add_field(
+            name="Random Rein Quote:",
+            value=random.choice(list(self.rein_quotes)),
+            inline=True,
+        )
+        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed_message = await ctx.send(embed=embed)
+        await embed_message.add_reaction(random_emoji())
 
 
 def setup(client):
