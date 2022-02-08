@@ -61,6 +61,10 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param guess: Used to store the user's guess.
         :return: an embed message
         """
+        if not ctx.channel.guild.id == self.client.main_guild.id:
+            # Don't allow guesses messages on servers other than the main server
+            return
+
         if not str(guess).lower().startswith("l"):
             embed = Embed(title="Guess not allowed!", color=self.error_color)
             await ctx.trigger_typing()
@@ -113,6 +117,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param ctx: Used to pass the context of the command.
         :return: the current amount of guesses in the database.
         """
+        if not ctx.channel.guild.id == self.client.main_guild.id:
+            # Don't allow guesses messages on servers other than the main server
+            return
         await ctx.trigger_typing()
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
@@ -133,7 +140,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param ctx: Used to get the message author and channel.
         :return: the report.
         """
-        await ctx.trigger_typing()
+        if not ctx.channel.guild.id == self.client.main_guild.id:
+            # Don't allow guesses messages on servers other than the main server
+            return
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
@@ -141,6 +150,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         share = FileSharer(f"{report.filename}")
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.share())
+        await ctx.trigger_typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
@@ -154,6 +164,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param ctx: Used to access the context of the command.
         :return: a random hint from the hints dictionary.
         """
+        if not ctx.channel.guild.id == self.client.main_guild.id:
+            # Don't allow guesses messages on servers other than the main server
+            return
         embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
@@ -175,6 +188,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param guess_id: Used to specify the ID of the guess that is to be deleted.
         :return: the embed message that is sent to the channel.
         """
+        if not ctx.channel.guild.id == self.client.main_guild.id:
+            # Don't allow guesses messages on servers other than the main server
+            return
         await ctx.trigger_typing()
         if not self.client.user_is_superuser(ctx.author):
             embed = Embed(
