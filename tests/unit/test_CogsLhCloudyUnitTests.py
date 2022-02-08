@@ -35,8 +35,6 @@ class CogsLhCloudyTests(unittest.IsolatedAsyncioTestCase):
 
         :param self: Used to access the class variables and methods.
         :param mocked_context: Used to mock the context of the command.
-        :return: the following:.
-        :doc-author: Trelent
         """
         print("Running test_shouldReturnOneFrame_when1FrameCommandCalled")
 
