@@ -17,3 +17,4 @@ class Settings(BaseSettings):
     superusers: list = os.getenv("superusers")
     main_guild: int = os.getenv("main_guild")
     sentry_dsn: str = os.getenv("SENTRY_DSN")
+    tenor_api_key: str = os.getenv("TENOR_API_KEY")
