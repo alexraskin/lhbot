@@ -258,6 +258,11 @@ async def shatter_execute(ctx, target_user):
     :param target_user: User that is being shattered.
     :return: a discord embed.
     """
+    if target_user == "@127122091139923968":
+        await ctx.trigger_typing()
+        await ctx.send("Cloudy cannot be shattered... nt nt")
+        return
+
     if target_user == None or target_user == "":
         await ctx.trigger_typing()
         await ctx.send(
