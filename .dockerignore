@@ -3,3 +3,9 @@ example.config.json
 README.md
 .pylintrc
 .github/
+.gitignore
+.gitattributes
+poetry.lock
+pyproject.toml
+Procfile
+runtime.txt

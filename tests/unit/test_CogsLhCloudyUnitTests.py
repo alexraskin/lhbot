@@ -5,7 +5,6 @@ from unittest.mock import AsyncMock, patch
 
 from discord.ext.commands import Context
 
-
 from bot.cogs.lhcloudy import one_frame_execute
 
 

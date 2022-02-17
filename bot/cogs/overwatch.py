@@ -2,9 +2,8 @@ import random
 
 from discord import Embed
 from discord.ext import commands
-
-from utils.reinquotes import quotes
 from utils.emojis import random_emoji
+from utils.reinquotes import quotes
 
 
 class OverwatchAPI(commands.Cog, name="Overwatch"):
