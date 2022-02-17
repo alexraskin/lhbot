@@ -1,5 +1,7 @@
 import sys
 from urllib.parse import quote_plus
+import random
+import json
 
 import discord
 from aiohttp import ContentTypeError
@@ -15,6 +17,7 @@ conf = Settings()
 class Gif(commands.Cog, name="Gif"):
     def __init__(self, client):
         self.client = client
+        self.base_url = "https://g.tenor.com/v1/"
 
     async def tenor_share_search(self, query: str, gif_id: int) -> bool:
         """
@@ -29,7 +32,7 @@ class Gif(commands.Cog, name="Gif"):
         """
         try:
             async with self.client.session.get(
-                f"https://g.tenor.com/v1/registershare?key={conf.tenor_api_key}&id={gif_id}&locale=en_US&q={quote_plus(query)}"
+                f"{self.base_url}registershare?key={conf.tenor_api_key}&id={gif_id}&locale=en_US&q={quote_plus(query)}"
             ) as r:
                 if r.status != 200:
                     return False
@@ -50,46 +53,51 @@ class Gif(commands.Cog, name="Gif"):
     async def gif(self, ctx, *, search=None):
         """
         The gif function is used to search for a gif on Tenor using the API.
-        It takes in a string as an argument and searches Tenor for that string.
-        If there is no string passed to the function, it will return a random gif
-        If it finds any results, it will return the first result from Tenor's API.
-
-        :param self: Used to access the bot itself.
-        :param ctx: Used to send messages back to the user.
-        :param *: Used to grab all the arguments after the command.
-        :param search: Used to search for the gifs.
-        :return: the gif url.
-
-        :doc-author: Trelent
+        It takes in a string as an argument and a return gif from the Tenor API.
+        
+        :param self: Used to access variables that belongs to the class.
+        :param ctx: Used to access the bot's commands and send messages.
+        :param *: Used to pass in unlimited amount of arguments.
+        :param search=None: Used to pass the search term to the function.
+        :return: the url of the gif, which is then used to embed it in the message.
         """
-        q = [search if search else ""]
+        gif_list = []
+        query = [search if search else ""]
         try:
             async with self.client.session.get(
-                f"https://g.tenor.com/v1/random?key={conf.tenor_api_key}&q={q}&locale=en_US&contentfilter=low&media_filter=basic&ar_range=standard&limit=1"
+                f"{self.base_url}search?key={conf.tenor_api_key}&q={query}&media_filter=basic&contentfilter=low&locale=en_US&ar_range=standard&limit=30"
             ) as r:
                 if r.status == 200:
-                    data = await r.json()
-                    if data["results"]:
-                        await self.tenor_share_search(search, data["results"][0]["id"])
-                        embed = discord.Embed(
-                            title=f'{data["results"][0]["content_description"]}',
-                            url=data["results"][0]["url"],
-                            color=0x00FF00,
+                    data = await r.content.read()
+                    payload = json.loads(data)
+                    for media in payload["results"]:
+                        url = media["media"][0]["gif"]["url"]
+                        id = media["id"]
+                        title = media["content_description"]
+                        gif_list.append(
+                            {
+                                "url": url,
+                                "id": id,
+                                "title": title,
+                            }
                         )
-                        embed.set_image(
-                            url=data["results"][0]["media"][0]["gif"]["url"]
-                        )
-                        await ctx.send(embed=embed)
-                    else:
-                        await ctx.send("No gifs found")
+                    r_gif = random.choice(gif_list)
+                    await self.tenor_share_search(search, r_gif["id"])
+                    embed = discord.Embed(
+                        title=r_gif["title"],
+                        url=r_gif["url"],
+                        color=0x00FF00,
+                    )
+                    embed.set_image(url=r_gif["url"])
+                    await ctx.send(embed=embed)
                 else:
-                    await ctx.send("No gifs found")
+                    await ctx.send("No GIF found")
         except ContentTypeError as e:
             capture_exception(e)
-            await ctx.send("No gifs found")
+            await ctx.send("No GIF found")
         except Exception as e:
             capture_exception(e)
-            await ctx.send("No gifs found")
+            await ctx.send("No GIF found")
 
 
 def setup(client):
