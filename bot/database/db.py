@@ -1,7 +1,6 @@
 from functools import lru_cache
 
 import motor.motor_asyncio
-
 from config import Settings
 
 

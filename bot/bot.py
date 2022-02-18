@@ -4,13 +4,13 @@ import random
 from functools import lru_cache
 
 import discord
+import discordhealthcheck
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
+from config import Settings
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from sentry_sdk import capture_exception
-
-from config import Settings
 from utils.clear_dir import _clear_dir
 
 
@@ -37,6 +37,7 @@ class LhBot(Bot):
         :return: a new instance of the Session class.
         """
         super().__init__(*args, **options)
+        self.healthcheck_server = discordhealthcheck.start(self)
         self.session = None
 
     async def start(self, *args, **kwargs):
@@ -61,6 +62,7 @@ class LhBot(Bot):
         :param self: Used to access the class attributes.
         :return: the aiohttp.
         """
+        self.healthcheck_server.close()
         await self.session.close()
         await super().close()
 

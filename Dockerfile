@@ -2,10 +2,12 @@ FROM python:3.10.2-slim-buster
 
 LABEL MAINTAINER="alexraskin"
 
-RUN pip install pipenv
+RUN pip install --upgrade pip
 
 COPY ./ /
 
-RUN pipenv install --system --deploy
+RUN pip install -r requirements.txt
 
-CMD ["python3", "bot.py"]
+HEALTHCHECK CMD discordhealthcheck || exit 1
+
+CMD ["python3", "bot/bot.py"]

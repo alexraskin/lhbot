@@ -1,7 +1,7 @@
+import json
+import random
 import sys
 from urllib.parse import quote_plus
-import random
-import json
 
 import discord
 from aiohttp import ContentTypeError
@@ -53,8 +53,8 @@ class Gif(commands.Cog, name="Gif"):
     async def gif(self, ctx, *, search=None):
         """
         The gif function is used to search for a gif on Tenor using the API.
-        It takes in a string as an argument and a return gif from the Tenor API.
-        
+        It takes in a string as an argument and a return a random gif from the Tenor API.
+
         :param self: Used to access variables that belongs to the class.
         :param ctx: Used to access the bot's commands and send messages.
         :param *: Used to pass in unlimited amount of arguments.

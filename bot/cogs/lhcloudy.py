@@ -1,5 +1,5 @@
-import sys
 import datetime
+import sys
 
 from discord import Embed
 from discord.ext import commands

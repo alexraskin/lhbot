@@ -17,6 +17,7 @@ python-dotenv = "^0.19.2"
 sentry-sdk = "^1.5.4"
 pytest-cov = "^3.0.0"
 pytest = "^7.0.0"
+discordhealthcheck = "^0.0.8"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
