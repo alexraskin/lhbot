@@ -37,8 +37,10 @@ class LhBot(Bot):
         :return: a new instance of the Session class.
         """
         super().__init__(*args, **options)
-        self.healthcheck_server = discordhealthcheck.start(self)
         self.session = None
+        self.healthcheck_server = discordhealthcheck.start(self)
+        self.user_agent = f"{conf.bot_name}/{conf.bot_version} ({platform.system()})"
+        self.headers = {"User-Agent": self.user_agent}
 
     async def start(self, *args, **kwargs):
         """
@@ -52,7 +54,9 @@ class LhBot(Bot):
         :param **kwargs: Used to pass a keyworded, variable-length argument list.
         :return: ClientSession object.
         """
-        self.session = ClientSession(timeout=ClientTimeout(total=30))
+        self.session = ClientSession(
+            timeout=ClientTimeout(total=30), headers=self.headers
+        )
         await super().start(conf.bot_token, *args, **kwargs)
 
     async def close(self):

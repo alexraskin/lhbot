@@ -17,4 +17,6 @@ class Settings(BaseSettings):
     superusers: list = os.getenv("superusers")
     main_guild: int = os.getenv("main_guild")
     sentry_dsn: str = os.getenv("SENTRY_DSN")
-    tenor_api_key: str = os.getenv("TENOR_API_KEY")
+    giphy_api_key: str = os.getenv("GIPHY_API_KEY")
+    bot_name: str = os.getenv("BOT_NAME")
+    bot_version: str = "0.1.0"
