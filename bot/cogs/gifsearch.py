@@ -40,7 +40,6 @@ class Gif(commands.Cog, name="Gif"):
                 if response.status == 200:
                     data = await response.json()
                     embed = discord.Embed(
-                        title=data["data"]["title"],
                         url=data["data"]["images"]["downsized_large"]["url"],
                         color=0x00FF00,
                     )
@@ -52,11 +51,9 @@ class Gif(commands.Cog, name="Gif"):
                 else:
                     await ctx.send("No GIF found")
         except ContentTypeError as e:
-            print(e)
             capture_exception(e)
             await ctx.send("No GIF found")
         except Exception as e:
-            print(e)
             capture_exception(e)
             await ctx.send("No GIF found")
 
