@@ -1,6 +1,5 @@
 import sys
 from typing import Union
-from urllib.parse import quote_plus
 
 import discord
 from aiohttp import ContentTypeError
@@ -33,15 +32,11 @@ class Gif(commands.Cog, name="Gif"):
             return False
 
     @commands.command(name="gif", aliases=["gifsearch", "randomgif"])
-    async def gif(self, ctx, *, search=None):
-        query = [search if search else ""]
-        url = (
-            f"{self.base_url}gifs/random?api_key="
-            + f"{conf.giphy_api_key}&tag={quote_plus(query)}&rating=r"
-            + f"&random_id={await self.get_random_giphy_user_id()}"
-        )
+    async def gif(self, ctx, *, search=""):
         try:
-            async with self.client.session.get(url) as response:
+            async with self.client.session.get(
+                f"{self.base_url}gifs/random?api_key={conf.giphy_api_key}&tag={search}&rating=r&random_id={await self.get_random_giphy_user_id()}"
+            ) as response:
                 if response.status == 200:
                     data = await response.json()
                     embed = discord.Embed(
@@ -57,9 +52,11 @@ class Gif(commands.Cog, name="Gif"):
                 else:
                     await ctx.send("No GIF found")
         except ContentTypeError as e:
+            print(e)
             capture_exception(e)
             await ctx.send("No GIF found")
         except Exception as e:
+            print(e)
             capture_exception(e)
             await ctx.send("No GIF found")
 
