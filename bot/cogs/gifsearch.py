@@ -18,12 +18,22 @@ class Gif(commands.Cog, name="Gif"):
         self.base_url = "https://api.giphy.com/v1/"
 
     async def get_random_giphy_user_id(self) -> Union[str, bool]:
+        """
+        The get_random_giphy_user_id function is used to get a random user ID from the Giphy API.
+        It returns either a string or False, depending on whether it was able to retrieve an ID or not.
+        
+        :param self: Used to access the class attributes.
+        :return: a random user id from the Giphy API.
+        """
         try:
             async with self.session.get(
                 f"{self.base_url}randomid?api_key={conf.giphy_api_key}"
             ) as response:
-                data = await response.json()
-                return str(data["data"]["random_id"])
+                if response.status != 200:
+                    return False
+                else:
+                    data = await response.json()
+                    return str(data["data"]["random_id"])
         except ContentTypeError as e:
             capture_exception(e)
             return False
@@ -32,7 +42,18 @@ class Gif(commands.Cog, name="Gif"):
             return False
 
     @commands.command(name="gif", aliases=["gifsearch", "randomgif"])
-    async def gif(self, ctx, *, search=""):
+    async def get_random_gif(self, ctx, *, search=""):
+        """
+        The get_random_gif function is a helper function that retrieves a random gif from the Giphy API.
+        It takes in an optional search parameter which will be used to filter the results of the query.
+        The get_random_gif function returns an embed object containing a link to the image and its source.
+        
+        :param self: Used to access variables that belongs to the class.
+        :param ctx: Used to get the context of where the command was called.
+        :param *: Used to pass in a list of arguments to the function.
+        :param search="": Used to search for a specific keyword.
+        :return: a random gif from the giphy api.
+        """
         try:
             async with self.client.session.get(
                 f"{self.base_url}gifs/random?api_key={conf.giphy_api_key}&tag={search}&rating=r&random_id={await self.get_random_giphy_user_id()}"
