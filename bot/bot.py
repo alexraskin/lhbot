@@ -237,5 +237,5 @@ async def on_command_completion(ctx):
     )
 
 
-client.run()
+client.run(reconnect=True)
 print("LhBot has exited")
