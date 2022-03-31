@@ -6,7 +6,7 @@ from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
 
-import discord
+from discord import Embed, DMChannel
 from aiohttp import ContentTypeError
 from discord.ext import commands
 from sentry_sdk import capture_exception
@@ -84,7 +84,7 @@ class General(commands.Cog, name="General"):
                 )
                 return
 
-            embed = discord.Embed(description=answer["AbstractText"], color=0x2ECC71)
+            embed = Embed(description=answer["AbstractText"], color=0x2ECC71)
 
             if answer["Image"]:
                 embed.set_image(url=f'https://api.duckduckgo.com{answer["Image"]}')
@@ -161,7 +161,7 @@ async def info_execute(ctx):
     :param ctx: Used to get the context of where the command was called.
     :return: an embed with the bot's information.
     """
-    embed = discord.Embed(description="LhBot", color=0x42F56C)
+    embed = Embed(description="LhBot", color=0x42F56C)
     embed.set_author(name="Bot Information")
     embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
     embed.add_field(name="Prefix:", value="!", inline=True)
@@ -184,7 +184,7 @@ async def ping_execute(ctx, latency):
     :param latency: Latency of the bot.
     :return: a discord embed.
     """
-    embed = discord.Embed(
+    embed = Embed(
         title="🏓 Pong!",
         description=f"The bot latency is {latency}ms.",
         color=0x42F56C,
@@ -222,7 +222,7 @@ async def on_message_execute(message):
     if message.author.bot:
         return
 
-    if isinstance(message.channel, discord.DMChannel):
+    if isinstance(message.channel, DMChannel):
         return
 
     if re.search(r"(?i)^(?:hi|what\'s up|yo|hey|hello) lhbot", message.content):
@@ -258,9 +258,18 @@ async def shatter_execute(ctx, target_user):
     :param target_user: User that is being shattered.
     :return: a discord embed.
     """
-    if target_user == "@127122091139923968":
+    lh_cloudy_list = ["@127122091139923968", "LhCloudy", "lhcloudy", "cloudy"]
+    lh_cloudy_block_list = [
+        "Blocked.. cloudy is immune to your shatter!",
+        "LhCloudy is immune to your shatter!",
+        "Blocked - MTD",
+        "ez block... L + ratio",
+        "sr peak check?"
+        ]
+
+    if target_user in lh_cloudy_list:
         await ctx.trigger_typing()
-        await ctx.send("Cloudy cannot be shattered... nt nt")
+        await ctx.send(random.choice(list(lh_cloudy_block_list)))
         return
 
     if target_user == None or target_user == "":
@@ -279,7 +288,7 @@ async def shatter_execute(ctx, target_user):
     roll_shatter = random.randint(0, 100)
     did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
 
-    embed = discord.Embed(
+    embed = Embed(
         title="Shatter!",
         description=f"Your shatter {did_shatter} {target_user}.",
         color=0x42F56C,
