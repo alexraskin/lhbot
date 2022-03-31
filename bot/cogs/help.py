@@ -6,7 +6,7 @@ from discord.ext.commands import DefaultHelpCommand, HelpCommand
 
 
 class myHelpCommand(HelpCommand):
-    def __init__(self, **options):
+    def __init__(self, **options) -> None:
         """
         The __init__ function is used to initialize the class.
         It's called when an instance of a class is created,
@@ -66,7 +66,6 @@ class myHelpCommand(HelpCommand):
 
             :param command: Used to access the command that was called.
             :return: the cog of the command.
-
             """
             cog = command.cog
             return cog.qualified_name + ":" if cog is not None else "Help:"

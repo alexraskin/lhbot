@@ -48,7 +48,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             self.guess_list.append(_helper(guess)["guess"])
 
     @commands.command(name="lhguess")
-    async def lh_guess(self, ctx, *, guess):
+    async def lh_guess(self, ctx, *, guess) -> Embed:
         """
         The lh_guess function is used to add a guess to the database.
         It takes in a string as an argument and adds it to the database.
@@ -107,7 +107,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhcount")
-    async def guess_count(self, ctx):
+    async def guess_count(self, ctx) -> Embed:
         """
         The guess_count function is used to display the current amount of guesses in the database.
         It does this by creating a list of all guesses and then counting them.
@@ -129,7 +129,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhreport")
-    async def run_lh_report(self, ctx):
+    async def run_lh_report(self, ctx) -> Embed:
         """
         The run_lh_report function specifically generates a PDF report of all guesses made by the user.
         The report is generated using the PdfReport class and is stored in a file named after the author of
@@ -154,7 +154,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhhint", aliases=["hint"])
-    async def lh_hints(self, ctx):
+    async def lh_hints(self, ctx) -> Embed:
         """
         The lh_hints function is used to send a random hint about the meaning of LH.
         It's called by typing !lh_hints in discord chat.
@@ -175,7 +175,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         await embed_message.add_reaction(random_emoji())
 
     @commands.command(name="lhdelete", aliases=["deleteguess"], hidden=True)
-    async def lh_delete(self, ctx, *, guess_id):
+    async def lh_delete(self, ctx, *, guess_id) -> Embed:
         """
         The lh_delete function is used to delete a specific guess from the database.
         It takes in a string of the guess id and deletes it from the database. It also
