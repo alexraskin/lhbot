@@ -13,7 +13,7 @@ conf = settings()
 
 
 class FileSharer:
-    def __init__(self, filepath, api_key=conf.filestack_api_key):
+    def __init__(self, filepath: str, api_key: str = conf.filestack_api_key):
         """
         The __init__ function is the constructor for a class. It sets up or "initializes" the object.
 
@@ -26,7 +26,7 @@ class FileSharer:
         self.filepath = filepath
         self.api_key = api_key
 
-    def share(self):
+    def share(self) -> str:
         """
         The share function creates a new filelink object that is then used to share the file with other users.
         The function takes in the api key and uses it to create a client object, which is then used to create a new

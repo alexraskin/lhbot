@@ -1,7 +1,7 @@
 import sys
 from typing import Union
 
-import discord
+from discord import Embed
 from aiohttp import ContentTypeError
 from discord.ext import commands
 from sentry_sdk import capture_exception
@@ -13,7 +13,7 @@ conf = Settings()
 
 
 class Gif(commands.Cog, name="Gif"):
-    def __init__(self, client):
+    def __init__(self, client) -> None:
         self.client = client
         self.base_url = "https://api.giphy.com/v1/"
 
@@ -42,7 +42,7 @@ class Gif(commands.Cog, name="Gif"):
             return False
 
     @commands.command(name="gif", aliases=["gifsearch", "randomgif"])
-    async def get_random_gif(self, ctx, *, search=""):
+    async def get_random_gif(self, ctx, *, search="") -> Embed:
         """
         The get_random_gif function is a helper function that retrieves a random gif from the Giphy API.
         It takes in an optional search parameter which will be used to filter the results of the query.
@@ -60,7 +60,7 @@ class Gif(commands.Cog, name="Gif"):
             ) as response:
                 if response.status == 200:
                     data = await response.json()
-                    embed = discord.Embed(
+                    embed = Embed(
                         url=data["data"]["images"]["downsized_large"]["url"],
                         color=0x00FF00,
                     )

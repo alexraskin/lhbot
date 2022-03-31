@@ -18,7 +18,7 @@ class PdfReport:
         self.filename = filename
         self.guesses = guesses
 
-    def generate(self):
+    def generate(self) -> FPDF:
         """
         The generate function creates a PDF file with the guesses from the user.
 

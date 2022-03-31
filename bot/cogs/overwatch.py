@@ -29,7 +29,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         aliases=["stats", "profile"],
         description="?owstats pc us Jay3#11894",
     )
-    async def get_overwatch_profile(self, ctx, *, info=None):
+    async def get_overwatch_profile(self, ctx, *, info=None) -> Embed:
         """
         The get overwatch profile command retrieves the Overwatch profile of a user.
         It takes in three parameters, which are the context, and two strings.
@@ -110,7 +110,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                     await ctx.send(embed=embed)
 
     @commands.command(name="reinquote", description="Random Rein Quote")
-    async def random_rein_quote(self, ctx):
+    async def random_rein_quote(self, ctx) -> Embed:
         await ctx.trigger_typing()
         embed = Embed(
             color=random.randint(0, 0xFFFFFF),
