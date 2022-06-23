@@ -267,7 +267,7 @@ async def shatter_execute(ctx, target_user):
         "sr peak check?"
         ]
 
-    if target_user in lh_cloudy_list:
+    if target_user.lower() in lh_cloudy_list:
         await ctx.trigger_typing()
         await ctx.send(random.choice(list(lh_cloudy_block_list)))
         return
