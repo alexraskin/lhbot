@@ -21,7 +21,7 @@ class Gif(commands.Cog, name="Gif"):
         """
         The get_random_giphy_user_id function is used to get a random user ID from the Giphy API.
         It returns either a string or False, depending on whether it was able to retrieve an ID or not.
-        
+
         :param self: Used to access the class attributes.
         :return: a random user id from the Giphy API.
         """
@@ -47,7 +47,7 @@ class Gif(commands.Cog, name="Gif"):
         The get_random_gif function is a helper function that retrieves a random gif from the Giphy API.
         It takes in an optional search parameter which will be used to filter the results of the query.
         The get_random_gif function returns an embed object containing a link to the image and its source.
-        
+
         :param self: Used to access variables that belongs to the class.
         :param ctx: Used to get the context of where the command was called.
         :param *: Used to pass in a list of arguments to the function.

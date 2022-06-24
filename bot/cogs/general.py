@@ -258,19 +258,14 @@ async def shatter_execute(ctx, target_user):
     :param target_user: User that is being shattered.
     :return: a discord embed.
     """
-    lh_cloudy_list = ["@127122091139923968", "LhCloudy", "lhcloudy", "cloudy"]
+    lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
     lh_cloudy_block_list = [
         "Blocked.. cloudy is immune to your shatter!",
         "LhCloudy is immune to your shatter!",
         "Blocked - MTD",
         "ez block... L + ratio",
-        "sr peak check?"
-        ]
-
-    if target_user in lh_cloudy_list:
-        await ctx.trigger_typing()
-        await ctx.send(random.choice(list(lh_cloudy_block_list)))
-        return
+        "sr peak check?",
+    ]
 
     if target_user == None or target_user == "":
         await ctx.trigger_typing()
@@ -282,6 +277,11 @@ async def shatter_execute(ctx, target_user):
     if len(target_user) > 500:
         await ctx.trigger_typing()
         await ctx.send("Username is too long!")
+        return
+
+    if target_user.lower() in lh_cloudy_list:
+        await ctx.trigger_typing()
+        await ctx.send(random.choice(list(lh_cloudy_block_list)))
         return
 
     random.seed(dt.utcnow().__str__())
