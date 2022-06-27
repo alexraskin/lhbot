@@ -141,6 +141,10 @@ class General(commands.Cog, name="General"):
         """
         await shatter_execute(ctx, target_user)
 
+    @commands.command(name="Nano Boost", description="Nano Boost")
+    async def nano(self, ctx, target_user=None):
+        await nano_execute(ctx, target_user)
+
 
 def setup(client):
     """
@@ -294,4 +298,24 @@ async def shatter_execute(ctx, target_user):
         color=0x42F56C,
     )
     embed.set_footer(text=f"Requested by {ctx.message.author}")
+    await ctx.send(embed=embed)
+
+
+async def nano_execute(ctx, target_user):
+
+    ana_sayings = ["Nano Boost administered.", "You're powered up, get in there."]
+
+    if target_user == None or target_user == "":
+        return
+
+    if len(target_user) > 500:
+        await ctx.trigger_typing()
+        await ctx.send("Username is too long!")
+        return
+
+    embed = Embed(
+        title="Nano Boost",
+        description=f"{random.choice(list(ana_sayings))} {target_user}",
+        color=0x42F56C,
+    )
     await ctx.send(embed=embed)
