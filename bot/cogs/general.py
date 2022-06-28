@@ -313,9 +313,4 @@ async def nano_execute(ctx, target_user):
         await ctx.send("Username is too long!")
         return
 
-    embed = Embed(
-        title="Nano Boost",
-        description=f"{random.choice(list(ana_sayings))} {target_user}",
-        color=0x42F56C,
-    )
-    await ctx.send(embed=embed)
+    await ctx.send(f"{random.choice(list(ana_sayings))} {target_user}")
