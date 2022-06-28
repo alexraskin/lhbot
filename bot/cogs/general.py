@@ -2,12 +2,13 @@ import platform
 import random
 import re
 import sys
+import asyncio
 from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
 
-from discord import Embed, DMChannel
 from aiohttp import ContentTypeError
+from discord import DMChannel, Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
 
@@ -140,6 +141,14 @@ class General(commands.Cog, name="General"):
         :param target_user=None: Used to specify the user to be targeted.
         """
         await shatter_execute(ctx, target_user)
+
+    @commands.command(name="nano", description="Nano Boost")
+    async def nano(self, ctx, target_user=None):
+        await nano_execute(ctx, target_user)
+    
+    @commands.command(name="lamp", description="Bap Lamp")
+    async def lamp(self, ctx):
+        await lamp_execute(ctx)
 
 
 def setup(client):
@@ -295,3 +304,40 @@ async def shatter_execute(ctx, target_user):
     )
     embed.set_footer(text=f"Requested by {ctx.message.author}")
     await ctx.send(embed=embed)
+
+
+async def nano_execute(ctx, target_user):
+
+    nano_boost_sayings = [
+        "Nano Boost administered",
+        "You're powered up, get in there",
+        "Why would you nano a purple 50 hp Reinhardt?"
+        ]
+
+    if len(target_user) > 500:
+        await ctx.trigger_typing()
+        await ctx.send("Username is too long!")
+        return
+
+    await ctx.send(f"{random.choice(list(nano_boost_sayings))} {target_user}")
+
+
+async def lamp_execute(ctx):
+    lamp_sayings = [
+        "Get in the Immortality Field",
+        "Step inside, stay alive",
+        "Get inside!",
+        "Get in here!"
+        ]
+    lamp_answers = [
+        "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW",
+        "You lamped a Mercy Main and now she wants to duo ;)",
+        "Immortality bubble's down",
+        "Immortality field destroyed!",
+        "Immortality field down",
+        "Immortality field's down. Watch yourself!"
+        ]
+    
+    await ctx.send(f"{random.choice(list(lamp_sayings))}")
+    await asyncio.sleep(2)
+    await ctx.send(f"{random.choice(list(lamp_answers))}")
