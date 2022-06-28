@@ -305,7 +305,7 @@ async def nano_execute(ctx, target_user):
 
     nano_boost_sayings = ["Nano Boost administered", "You're powered up, get in there"]
 
-    if target_user == ctx.message.author:
+    if target_user == ctx.author:
         await ctx.trigger_typing()
         await ctx.send("You can't nano yourself!")
         return
