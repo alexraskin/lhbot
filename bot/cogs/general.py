@@ -308,7 +308,11 @@ async def shatter_execute(ctx, target_user):
 
 async def nano_execute(ctx, target_user):
 
-    nano_boost_sayings = ["Nano Boost administered", "You're powered up, get in there"]
+    nano_boost_sayings = [
+        "Nano Boost administered",
+        "You're powered up, get in there",
+        "Why would you nano a purple 50 hp Reinhardt?"
+        ]
 
     if len(target_user) > 500:
         await ctx.trigger_typing()
@@ -333,11 +337,6 @@ async def lamp_execute(ctx):
         "Immortality field down",
         "Immortality field's down. Watch yourself!"
         ]
-    
-    if len(target_user) > 500:
-        await ctx.trigger_typing()
-        await ctx.send("Username is too long!")
-        return
     
     await ctx.send(f"{random.choice(list(lamp_sayings))}")
     await sleep(1)
