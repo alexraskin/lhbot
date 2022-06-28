@@ -5,6 +5,7 @@ import sys
 from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
+from time import sleep
 
 from aiohttp import ContentTypeError
 from discord import DMChannel, Embed
@@ -144,6 +145,10 @@ class General(commands.Cog, name="General"):
     @commands.command(name="nano", description="Nano Boost")
     async def nano(self, ctx, target_user=None):
         await nano_execute(ctx, target_user)
+    
+    @commands.command(name="lamp", description="Bap Lamp")
+    async def lamp(self, ctx):
+        await lamp_execute(ctx)
 
 
 def setup(client):
@@ -305,12 +310,6 @@ async def nano_execute(ctx, target_user):
 
     nano_boost_sayings = ["Nano Boost administered", "You're powered up, get in there"]
 
-    if target_user == ctx.message.author.id or ctx.message.author.name or ctx.message.author.id:
-        print(ctx.message.author, ctx.message.author.id, ctx.message.author.name)
-        await ctx.trigger_typing()
-        await ctx.send("You can't nano yourself!")
-        return
-
     if len(target_user) > 500:
         await ctx.trigger_typing()
         await ctx.send("Username is too long!")
@@ -319,5 +318,27 @@ async def nano_execute(ctx, target_user):
     await ctx.send(f"{random.choice(list(nano_boost_sayings))} {target_user}")
 
 
-async def lamp_execute():
-    pass
+async def lamp_execute(ctx):
+    lamp_sayings = [
+        "Get in the Immortality Field",
+        "Step inside, stay alive",
+        "Get inside!",
+        "Get in here!"
+        ]
+    lamp_answers = [
+        "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW",
+        "You lamped a Mercy Main and now she wants to duo ;)",
+        "Immortality bubble's down",
+        "Immortality field destroyed!",
+        "Immortality field down",
+        "Immortality field's down. Watch yourself!"
+        ]
+    
+    if len(target_user) > 500:
+        await ctx.trigger_typing()
+        await ctx.send("Username is too long!")
+        return
+    
+    await ctx.send(f"{random.choice(list(lamp_sayings))}")
+    await sleep(1)
+    await ctx.send(f"{random.choice(list(lamp_answers))}")
