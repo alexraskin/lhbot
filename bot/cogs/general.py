@@ -339,5 +339,5 @@ async def lamp_execute(ctx):
         ]
     
     await ctx.send(f"{random.choice(list(lamp_sayings))}")
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     await ctx.send(f"{random.choice(list(lamp_answers))}")
