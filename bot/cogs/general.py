@@ -2,10 +2,10 @@ import platform
 import random
 import re
 import sys
+import asyncio
 from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
-from time import sleep
 
 from aiohttp import ContentTypeError
 from discord import DMChannel, Embed
@@ -339,5 +339,5 @@ async def lamp_execute(ctx):
         ]
     
     await ctx.send(f"{random.choice(list(lamp_sayings))}")
-    await sleep(1)
+    await asyncio.sleep(1)
     await ctx.send(f"{random.choice(list(lamp_answers))}")
