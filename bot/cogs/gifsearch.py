@@ -1,8 +1,8 @@
 import sys
 from typing import Union
 
-from discord import Embed
 from aiohttp import ContentTypeError
+from discord import Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
 
