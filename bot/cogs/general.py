@@ -6,8 +6,8 @@ from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
 
-from discord import Embed, DMChannel
 from aiohttp import ContentTypeError
+from discord import DMChannel, Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
 
@@ -141,7 +141,7 @@ class General(commands.Cog, name="General"):
         """
         await shatter_execute(ctx, target_user)
 
-    @commands.command(name="Nano Boost", description="Nano Boost")
+    @commands.command(name="nano", description="Nano Boost")
     async def nano(self, ctx, target_user=None):
         await nano_execute(ctx, target_user)
 
