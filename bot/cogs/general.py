@@ -29,7 +29,7 @@ class General(commands.Cog, name="General"):
         :return: the object of the class.
         """
         self.client = client
-    
+
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
         await info_execute(ctx)
