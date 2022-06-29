@@ -202,7 +202,7 @@ async def ping_execute(ctx, latency):
     await ctx.send(embed=embed)
 
 
-def get_year_string():
+def get_year_string() -> str:
     """
     The get_year_string function is used to get the current year and then
     calculate the percentage of time that has passed in relation to the total
@@ -217,6 +217,17 @@ def get_year_string():
     year_start = dt(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
     return f"For your information, the year is {year_percent:.1f}% over!"
+
+
+def get_time_string() -> str:
+    """
+    The get_time_string function returns a string containing the current time in the format:
+        &quot;YYYY-MM-DD HH:MM&quot;
+    
+    
+    :return: The current time in the form of a string
+    """
+    return dt.utcnow().__str__()
 
 
 async def on_message_execute(message):
@@ -293,7 +304,7 @@ async def shatter_execute(ctx, target_user):
         await ctx.send(random.choice(list(lh_cloudy_block_list)))
         return
 
-    random.seed(dt.utcnow().__str__())
+    random.seed(get_time_string())
     roll_shatter = random.randint(0, 100)
     did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
 
@@ -307,6 +318,13 @@ async def shatter_execute(ctx, target_user):
 
 
 async def nano_execute(ctx, target_user):
+    """
+    target_user is a string that contains the username of who you
+
+    :param ctx: Access the context of where the command was called
+    :param target_user: Determine the user that is being targeted by the nano boost
+    :return: One of the sayings in the nano_boost_sayings list
+    """
 
     nano_boost_sayings = [
         "Nano Boost administered",
@@ -323,6 +341,14 @@ async def nano_execute(ctx, target_user):
 
 
 async def lamp_execute(ctx):
+    """
+    The lamp_execute function is a function that is called when the user types !lamp.
+    It will randomly choose one of four lamp_sayings and send it to the channel, then wait 2 seconds before sending another message.
+    
+    
+    :param ctx: Access the message that invoked the command
+    :return: The result of the lamp_sayings list
+    """
     lamp_sayings = [
         "Get in the Immortality Field",
         "Step inside, stay alive",
@@ -337,7 +363,7 @@ async def lamp_execute(ctx):
         "Immortality field down",
         "Immortality field's down. Watch yourself!"
         ]
-    
+    random.seed(get_time_string())
     await ctx.send(f"{random.choice(list(lamp_sayings))}")
     await asyncio.sleep(2)
     await ctx.send(f"{random.choice(list(lamp_answers))}")
