@@ -1,9 +1,9 @@
 import os
 
 
-def _clear_dir(directory: str, ext: str) -> bool:
+def clean_cache(directory: str, ext: str) -> bool:
     """
-    The _clear_dir function specifically clears the directory of all files with
+    The clean_cache function specifically clears the directory of all files with
     the specified extension.
 
     :param directory:str: Used to specify the directory that is to be cleared.
