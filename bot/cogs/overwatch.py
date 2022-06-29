@@ -194,9 +194,9 @@ async def shatter_execute(ctx, target_user):
         color=random.randint(0, 0xFFFFFF),
     )
     embed.set_author(
-                    name="Shatter!",
-                    icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
-                )
+        name="Shatter!",
+        icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
+    )
     embed.set_footer(text=f"Requested by {ctx.message.author.name}")
     await ctx.send(embed=embed)
 
@@ -229,9 +229,9 @@ async def nano_execute(ctx, target_user=None):
         color=random.randint(0, 0xFFFFFF),
     )
     embed.set_author(
-                    name="Nano Boost!",
-                    icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
-                )
+        name="Nano Boost!",
+        icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
+    )
     embed.set_footer(text=f"Requested by {ctx.message.author.name}")
     await ctx.send(embed=embed)
 

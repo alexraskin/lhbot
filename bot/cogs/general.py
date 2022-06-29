@@ -142,7 +142,10 @@ async def info_execute(ctx):
     :return: an embed with the bot's information.
     """
     embed = Embed(description="LhBot", color=0x42F56C)
-    embed.set_author(name="Bot Information")
+    embed.set_author(
+        name="Bot Information",
+        icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
+    )
     embed.add_field(
         name="Owners:", value=str("reinfrog#1738, PayMeToThrow#2129"), inline=True
     )
