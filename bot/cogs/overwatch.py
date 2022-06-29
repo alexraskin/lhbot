@@ -190,15 +190,18 @@ async def shatter_execute(ctx, target_user):
     did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
 
     embed = Embed(
-        title="Shatter!",
         description=f"Your shatter {did_shatter} {target_user}.",
-        color=0x42F56C,
+        color=random.randint(0, 0xFFFFFF),
     )
-    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    embed.set_author(
+                    name="Shatter!",
+                    icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
+                )
+    embed.set_footer(text=f"Requested by {ctx.message.author.name}")
     await ctx.send(embed=embed)
 
 
-async def nano_execute(ctx, target_user):
+async def nano_execute(ctx, target_user=None):
     """
     target_user is a string that contains the username of who you
 
@@ -212,13 +215,25 @@ async def nano_execute(ctx, target_user):
         "You're powered up, get in there",
         "Why would you nano a purple 50 hp Reinhardt?",
     ]
+    if target_user == None or target_user == "":
+        return
 
     if len(target_user) > 500:
         await ctx.trigger_typing()
         await ctx.send("Username is too long!")
         return
+
     random.seed(get_time_string())
-    await ctx.send(f"{random.choice(list(nano_boost_sayings))} {target_user}")
+    embed = Embed(
+        description=f"{random.choice(list(nano_boost_sayings))} {target_user}",
+        color=random.randint(0, 0xFFFFFF),
+    )
+    embed.set_author(
+                    name="Nano Boost!",
+                    icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
+                )
+    embed.set_footer(text=f"Requested by {ctx.message.author.name}")
+    await ctx.send(embed=embed)
 
 
 async def lamp_execute(ctx):
