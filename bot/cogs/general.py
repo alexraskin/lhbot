@@ -1,9 +1,6 @@
 import platform
-import random
 import re
 import sys
-import asyncio
-from datetime import datetime as dt
 from inspect import getsourcelines
 from urllib.parse import quote_plus
 
@@ -11,6 +8,7 @@ from aiohttp import ContentTypeError
 from discord import DMChannel, Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
+from utils.bot_utils import get_year_string
 
 sys.path.append("../bot")
 from config import Settings
@@ -36,6 +34,7 @@ class General(commands.Cog, name="General"):
     async def info(self, ctx):
         await info_execute(ctx)
 
+    @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="ping")
     async def ping(self, ctx):
         await ping_execute(ctx, round(self.client.latency * 1000))
@@ -44,6 +43,7 @@ class General(commands.Cog, name="General"):
     async def on_message(self, message):
         await on_message_execute(message)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="search", aliases=["lmgtfy", "duck", "duckduckgo", "google"])
     async def search(self, ctx, query=None):
         """
@@ -103,6 +103,7 @@ class General(commands.Cog, name="General"):
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
+    @commands.cooldown(1, 60, commands.BucketType.user)
     @commands.command(name="inspect", hidden=True)
     async def inspect(self, ctx, *, command_name: str):
         """
@@ -131,36 +132,6 @@ class General(commands.Cog, name="General"):
         await ctx.trigger_typing()
         await ctx.send(url + f"```python\n{sanitized}\n```")
 
-    @commands.command(name="shatter")
-    async def shatter(self, ctx, target_user=None):
-        """
-        Shatter another user in the server!
-
-        :param self: Used to access the class attributes and methods.
-        :param ctx: Used to get the current context of where the command was called.
-        :param target_user=None: Used to specify the user to be targeted.
-        """
-        await shatter_execute(ctx, target_user)
-
-    @commands.command(name="nano", description="Nano Boost")
-    async def nano(self, ctx, target_user=None):
-        await nano_execute(ctx, target_user)
-    
-    @commands.command(name="lamp", description="Bap Lamp")
-    async def lamp(self, ctx):
-        await lamp_execute(ctx)
-
-
-def setup(client):
-    """
-    The setup function is used to register the commands that will be used in the bot.
-    This function is run when you load a cog, and it allows you to use commands in your cogs.
-
-    :param client: Used to pass in the client object.
-    :return: a dictionary that contains the following keys:.
-    """
-    client.add_cog(General(client))
-
 
 async def info_execute(ctx):
     """
@@ -171,9 +142,14 @@ async def info_execute(ctx):
     :return: an embed with the bot's information.
     """
     embed = Embed(description="LhBot", color=0x42F56C)
-    embed.set_author(name="Bot Information")
-    embed.add_field(name="Owner:", value="reinfrog#1738", inline=True)
-    embed.add_field(name="Prefix:", value="!", inline=True)
+    embed.set_author(
+        name="Bot Information",
+        icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
+    )
+    embed.add_field(
+        name="Owners:", value=str("reinfrog#1738, PayMeToThrow#2129"), inline=True
+    )
+    embed.add_field(name="Prefix:", value=conf.bot_prefix, inline=True)
     embed.add_field(
         name="Python Version:", value=f"{platform.python_version()}", inline=True
     )
@@ -200,34 +176,6 @@ async def ping_execute(ctx, latency):
     )
     embed.set_footer(text=f"Requested by {ctx.message.author}")
     await ctx.send(embed=embed)
-
-
-def get_year_string() -> str:
-    """
-    The get_year_string function is used to get the current year and then
-    calculate the percentage of time that has passed in relation to the total
-    number of days in a year. This is done by taking today's date, adding one
-    year and subtracting today's date from that new date. Then dividing this
-    difference by 365 (the number of days in a year) and multiplying it by 100.
-
-    :return: the percentage of the current year that has elapsed.
-    """
-    now = dt.utcnow()
-    year_end = dt(now.year + 1, 1, 1)
-    year_start = dt(now.year, 1, 1)
-    year_percent = (now - year_start) / (year_end - year_start) * 100
-    return f"For your information, the year is {year_percent:.1f}% over!"
-
-
-def get_time_string() -> str:
-    """
-    The get_time_string function returns a string containing the current time in the format:
-        &quot;YYYY-MM-DD HH:MM&quot;
-    
-    
-    :return: The current time in the form of a string
-    """
-    return dt.utcnow().__str__()
 
 
 async def on_message_execute(message):
@@ -267,103 +215,19 @@ async def on_message_execute(message):
     ):
         await message.channel.send("42")
 
+    if re.search(
+        r"(?i)^lhbot(?:,? )?(?:is|are) (?:you|it) (?:a|an) (?:bot|robot)",
+        message.content,
+    ):
+        await message.channel.send("I am a bot, not a human.")
 
-async def shatter_execute(ctx, target_user):
+
+def setup(client):
     """
-    The sahtter function is used to shatter another user in chat.
-    It returns a message determining if your shatter was blocked or not.
-        - 25% chance to hit shatter
+    The setup function is used to register the commands that will be used in the bot.
+    This function is run when you load a cog, and it allows you to use commands in your cogs.
 
-    :param ctx: Used to get the context of where the command was called.
-    :param target_user: User that is being shattered.
-    :return: a discord embed.
+    :param client: Used to pass in the client object.
+    :return: a dictionary that contains the following keys:.
     """
-    lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
-    lh_cloudy_block_list = [
-        "Blocked.. cloudy is immune to your shatter!",
-        "LhCloudy is immune to your shatter!",
-        "Blocked - MTD",
-        "ez block... L + ratio",
-        "sr peak check?",
-    ]
-
-    if target_user == None or target_user == "":
-        await ctx.trigger_typing()
-        await ctx.send(
-            "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
-        )
-        return
-
-    if len(target_user) > 500:
-        await ctx.trigger_typing()
-        await ctx.send("Username is too long!")
-        return
-
-    if target_user.lower() in lh_cloudy_list:
-        await ctx.trigger_typing()
-        await ctx.send(random.choice(list(lh_cloudy_block_list)))
-        return
-
-    random.seed(get_time_string())
-    roll_shatter = random.randint(0, 100)
-    did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
-
-    embed = Embed(
-        title="Shatter!",
-        description=f"Your shatter {did_shatter} {target_user}.",
-        color=0x42F56C,
-    )
-    embed.set_footer(text=f"Requested by {ctx.message.author}")
-    await ctx.send(embed=embed)
-
-
-async def nano_execute(ctx, target_user):
-    """
-    target_user is a string that contains the username of who you
-
-    :param ctx: Access the context of where the command was called
-    :param target_user: Determine the user that is being targeted by the nano boost
-    :return: One of the sayings in the nano_boost_sayings list
-    """
-
-    nano_boost_sayings = [
-        "Nano Boost administered",
-        "You're powered up, get in there",
-        "Why would you nano a purple 50 hp Reinhardt?"
-        ]
-
-    if len(target_user) > 500:
-        await ctx.trigger_typing()
-        await ctx.send("Username is too long!")
-        return
-    random.seed(get_time_string())
-    await ctx.send(f"{random.choice(list(nano_boost_sayings))} {target_user}")
-
-
-async def lamp_execute(ctx):
-    """
-    The lamp_execute function is a function that is called when the user types !lamp.
-    It will randomly choose one of four lamp_sayings and send it to the channel, then wait 2 seconds before sending another message.
-    
-    
-    :param ctx: Access the message that invoked the command
-    :return: The result of the lamp_sayings list
-    """
-    lamp_sayings = [
-        "Get in the Immortality Field",
-        "Step inside, stay alive",
-        "Get inside!",
-        "Get in here!"
-        ]
-    lamp_answers = [
-        "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW",
-        "You lamped a Mercy Main and now she wants to duo ;)",
-        "Immortality bubble's down",
-        "Immortality field destroyed!",
-        "Immortality field down",
-        "Immortality field's down. Watch yourself!"
-        ]
-    random.seed(get_time_string())
-    await ctx.send(f"{random.choice(list(lamp_sayings))}")
-    await asyncio.sleep(2)
-    await ctx.send(f"{random.choice(list(lamp_answers))}")
+    client.add_cog(General(client))

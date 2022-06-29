@@ -47,6 +47,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         async for guess in collection.find():
             self.guess_list.append(_helper(guess)["guess"])
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="lhguess")
     async def lh_guess(self, ctx, *, guess) -> Embed:
         """
@@ -106,6 +107,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction(random_emoji())
 
+    @commands.cooldown(1, 60, commands.BucketType.user)
     @commands.command(name="lhcount")
     async def guess_count(self, ctx) -> Embed:
         """
@@ -128,6 +130,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
+    @commands.cooldown(1, 60, commands.BucketType.user)
     @commands.command(name="lhreport")
     async def run_lh_report(self, ctx) -> Embed:
         """
@@ -174,6 +177,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
+    @commands.cooldown(1, 60, commands.BucketType.user)
     @commands.command(name="lhdelete", aliases=["deleteguess"], hidden=True)
     async def lh_delete(self, ctx, *, guess_id) -> Embed:
         """

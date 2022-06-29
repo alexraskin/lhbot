@@ -5,9 +5,9 @@ from unittest.mock import AsyncMock, patch
 
 from discord.ext.commands import Context
 
-from bot.cogs.general import (get_year_string, info_execute,
-                              on_message_execute, ping_execute,
+from bot.cogs.general import (info_execute, on_message_execute, ping_execute,
                               shatter_execute)
+from bot.utils.bot_utils import get_year_string
 
 
 class ChannelTestClass:

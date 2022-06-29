@@ -41,6 +41,7 @@ class Gif(commands.Cog, name="Gif"):
             capture_exception(e)
             return False
 
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="gif", aliases=["gifsearch", "randomgif"])
     async def get_random_gif(self, ctx, *, search="") -> Embed:
         """
