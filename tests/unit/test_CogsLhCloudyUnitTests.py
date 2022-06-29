@@ -1,7 +1,7 @@
 import sys
 import unittest
 import unittest.mock
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 from discord.ext.commands import Context
 
