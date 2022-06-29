@@ -11,7 +11,7 @@ from config import Settings
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from sentry_sdk import capture_exception
-from utils.clear_dir import _clear_dir
+from utils.clear_dir import clean_cache
 
 
 @lru_cache()
@@ -156,7 +156,7 @@ async def clean_dir():
 
     :return: bool
     """
-    _clear_dir("./bot/files", ".pdf")
+    clean_cache("./bot/files", ".pdf")
 
 
 @client.event
@@ -217,6 +217,14 @@ async def on_message(message):
     if isinstance(message.channel, discord.DMChannel):
         return
     await client.process_commands(message)
+
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"Command on cooldown, retry in {round(error.retry_after)} seconds!"
+        )
 
 
 @client.event

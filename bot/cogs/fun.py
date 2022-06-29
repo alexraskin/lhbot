@@ -81,6 +81,7 @@ class Fun(commands.Cog, name="Fun"):
                 "Chuck not found, currently evading GPS in Texas!"
             )
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="cat", aliases=["catpic", "catto"])
     async def cat(self, ctx):
         """
@@ -95,6 +96,7 @@ class Fun(commands.Cog, name="Fun"):
             cat_photo = cat["file"]
             await ctx.send(cat_photo)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="dog", aliases=["dogpic", "doggo"])
     async def dog(self, ctx):
         """
@@ -110,6 +112,7 @@ class Fun(commands.Cog, name="Fun"):
 
             await ctx.send(dog_photo)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="meme", aliases=["memer"])
     async def get_meme(self, ctx):
         """
@@ -127,6 +130,7 @@ class Fun(commands.Cog, name="Fun"):
 
             await ctx.send(meme)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="kanye", aliases=["kw", "kanyewest"])
     async def get_kayne_west(self, ctx):
 
@@ -147,6 +151,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="catfact", aliases=["cf"])
     async def random_cat_fact(self, ctx):
         """
@@ -172,6 +177,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="joke", aliases=["dadjoke"])
     async def random_joke(self, ctx):
         """
@@ -215,6 +221,7 @@ class Fun(commands.Cog, name="Fun"):
             embed.add_field(name="Quote:", value=quote, inline=True)
             await ctx.send(embed=embed)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="dogfact", aliases=["df"])
     async def random_dog_fact(self, ctx):
         """
