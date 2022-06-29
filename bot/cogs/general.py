@@ -336,7 +336,7 @@ async def nano_execute(ctx, target_user):
         await ctx.trigger_typing()
         await ctx.send("Username is too long!")
         return
-
+    random.seed(get_time_string())
     await ctx.send(f"{random.choice(list(nano_boost_sayings))} {target_user}")
 
 
