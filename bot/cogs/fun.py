@@ -1,14 +1,16 @@
 import random
 import sys
-from typing import Union
 from functools import lru_cache
+from typing import Union
 
 from discord import Embed
 from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
+from utils.bot_utils import get_time_string
 
 sys.path.append("../bot")
 from config import Settings
+
 
 @lru_cache()
 def settings():
@@ -32,7 +34,7 @@ class Fun(commands.Cog, name="Fun"):
         self.client = client
         self.load_chuck_http_codes.start()
         self.headers = {"Accept": "application/json"}
-    
+
     async def fetch_url(self, url: str) -> Union[dict, None]:
         """
         The fetch_url function is used to fetch the url and return the response.
@@ -84,7 +86,9 @@ class Fun(commands.Cog, name="Fun"):
                 raise commands.BadArgument(
                     f'Invalid category - please pick from:\n{", ".join(self.chuck_categories)}'
                 )
-        response = await self.fetch_url("https://api.chucknorris.io/jokes/random?category={category}")
+        response = await self.fetch_url(
+            "https://api.chucknorris.io/jokes/random?category={category}"
+        )
         if response is None:
             raise commands.BadArgument("Hold up partner, still locating Chuck!")
         else:
@@ -94,9 +98,7 @@ class Fun(commands.Cog, name="Fun"):
                 name="Chuck Norris fun fact...",
                 icon_url=f"https://assets.chucknorris.host/img/avatar/chuck-norris.png",
             )
-            embed.set_footer(
-                text=f"Category: {category} - https://api.chucknorris.io"
-            )
+            embed.set_footer(text=f"Category: {category} - https://api.chucknorris.io")
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
@@ -166,13 +168,11 @@ class Fun(commands.Cog, name="Fun"):
         else:
             quote = response["quote"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
-            embed.add_field(
-                name="Kayne West once said:", value=f'{quote}', inline=True
+            embed.add_field(name="Kayne West once said:", value=f"{quote}", inline=True)
+            embed.set_image(
+                url="https://c.tenor.com/73vhftW9zYMAAAAC/kanye-west-blink.gif"
             )
-            embed.set_image(url="https://c.tenor.com/73vhftW9zYMAAAAC/kanye-west-blink.gif")
-            embed.set_footer(
-                text=f"https://api.kanye.rest"
-            )
+            embed.set_footer(text=f"https://api.kanye.rest")
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -198,9 +198,7 @@ class Fun(commands.Cog, name="Fun"):
                 value=str(fact).strip("[]").strip("'"),
                 inline=True,
             )
-            embed.set_footer(
-                text=f"https://meowfacts.herokuapp.com/"
-            )
+            embed.set_footer(text=f"https://meowfacts.herokuapp.com/")
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -220,9 +218,7 @@ class Fun(commands.Cog, name="Fun"):
             joke = response["joke"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Random Dad Joke", value=joke, inline=True)
-            embed.set_footer(
-                text=f"https://icanhazdadjoke.com/"
-            )
+            embed.set_footer(text=f"https://icanhazdadjoke.com/")
             await ctx.trigger_typing()
             await ctx.send(embed=embed)
 
@@ -259,7 +255,9 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to access the context of where the command was called.
         :return: discord embed
         """
-        response = await self.fetch_url("https://dog-fact-api.herokuapp.com/api/v1/resources/dogs?number=1")
+        response = await self.fetch_url(
+            "https://dog-fact-api.herokuapp.com/api/v1/resources/dogs?number=1"
+        )
         if response is None:
             raise commands.BadArgument("Could not find a dog fact!")
         else:
@@ -286,8 +284,36 @@ class Fun(commands.Cog, name="Fun"):
                 icon_url=f"https://i.gyazo.com/97cd0059f957bf80d01672bdfe258357.png",
             )
             embed.add_field(name="Quote:", value=quote, inline=True)
-            embed.set_image(url="https://c.tenor.com/DDIYEFpaAboAAAAC/taylor-swift-dance.gif")
+            embed.set_image(
+                url="https://c.tenor.com/DDIYEFpaAboAAAAC/taylor-swift-dance.gif"
+            )
             embed.set_footer(text=f"https://taylorswiftapi.herokuapp.com")
+            await ctx.send(embed=embed)
+
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.command(name="waifu", aliases=["getwaifu"])
+    async def random_waifu(self, ctx, category: str = None):
+        """
+        The random_waifu function retrieves a random waifu from the Waifu API and embeds it in an Embed object.
+
+        :param self: Used to access the client, which is used to access the bot's commands.
+        :param ctx: Used to access the context of where the command was called.
+        :param category: The category of waifu to get.
+        :return: discord embed
+        """
+        random.seed(get_time_string())
+        categories = ["waifu", "neko", "shinobu", "megumin", "bully", "cuddle"]
+        if category not in categories:
+            category = random.choice(categories)
+        response = await self.fetch_url(f"https://api.waifu.pics/sfw/{category}")
+        if response is None:
+            raise commands.BadArgument("Could not find a waifu!")
+        else:
+            await ctx.trigger_typing()
+            url = response["url"]
+            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed.set_image(url=url)
+            embed.set_footer(text=f"https://api.waifu.pics/sfw/{category}")
             await ctx.send(embed=embed)
 
 
