@@ -139,6 +139,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         """
         await shatter_execute(ctx, target_user)
 
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="nano", description="Nano Boost")
     async def nano(self, ctx, target_user=None):
         await nano_execute(ctx, target_user)
@@ -215,6 +216,7 @@ async def nano_execute(ctx, target_user=None):
         "You're powered up, get in there",
         "Why would you nano a purple 50 hp Reinhardt?",
     ]
+
     if target_user == None or target_user == "":
         return
 
@@ -236,7 +238,7 @@ async def nano_execute(ctx, target_user=None):
     await ctx.send(embed=embed)
 
 
-async def lamp_execute(ctx):
+async def lamp_execute(ctx, target_user):
     """
     The lamp_execute function is a function that is called when the user types !lamp.
     It will randomly choose one of four lamp_sayings and send it to the channel, then wait 2 seconds before sending another message.
