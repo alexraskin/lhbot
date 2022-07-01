@@ -243,10 +243,8 @@ class Fun(commands.Cog, name="Fun"):
             anime = response["anime"]
             character = response["character"]
             quote = str(response["quote"]).strip("[").strip("]")
-            embed = Embed(title="Random Anime Quote", color=random.randint(0, 0xFFFFFF))
-            embed.add_field(name="Anime:", value=anime, inline=True)
-            embed.add_field(name="Character:", value=character, inline=True)
-            embed.add_field(name="Quote:", value=quote, inline=True)
+            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed.add_field(name="Quote", value=quote, inline=True)
             embed.set_footer(text=f"https://animechan.herokuapp.com/api/random")
             await ctx.send(embed=embed)
 
