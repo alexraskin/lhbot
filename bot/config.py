@@ -20,3 +20,5 @@ class Settings(BaseSettings):
     giphy_api_key: str = os.getenv("GIPHY_API_KEY")
     bot_name: str = os.getenv("BOT_NAME")
     bot_version: str = "0.1.0"
+    aws_access_key: str = os.getenv("AWS_ACCESS_KEY")
+    aws_secret_access_key: str = os.getenv("AWS_SECRET_ACCESS_KEY")
