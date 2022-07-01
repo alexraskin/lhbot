@@ -77,20 +77,23 @@ class Fun(commands.Cog, name="Fun"):
         :return: a random chuck norris fact from the API.
         """
         if not hasattr(self, "chuck_categories"):
-            raise commands.BadArgument("Hold up partner, still locating Chuck!")
+            await ctx.send("Hold up partner, still locating Chuck!")
+            return
 
         if category is None:
             category = random.choice(self.chuck_categories)
         else:
             if category not in self.chuck_categories:
-                raise commands.BadArgument(
+                await ctx.send(
                     f'Invalid category - please pick from:\n{", ".join(self.chuck_categories)}'
                 )
+                return
         response = await self.fetch_url(
             "https://api.chucknorris.io/jokes/random?category={category}"
         )
         if response is None:
-            raise commands.BadArgument("Hold up partner, still locating Chuck!")
+            await ctx.send("Hold up partner, still locating Chuck!")
+            return
         else:
             chuck = response["value"]
             embed = Embed(description=chuck, color=random.randint(0, 0xFFFFFF))
@@ -114,7 +117,8 @@ class Fun(commands.Cog, name="Fun"):
         """
         response = await self.fetch_url("https://aws.random.cat/meow")
         if response is None:
-            raise commands.BadArgument("Could not find a cat!")
+            await ctx.send("Could not find a cat!")
+            return
         else:
             await ctx.send(response["file"])
 
@@ -130,7 +134,8 @@ class Fun(commands.Cog, name="Fun"):
         """
         response = await self.fetch_url("https://random.dog/woof.json")
         if response is None:
-            raise commands.BadArgument("Could not find a dog!")
+            await ctx.send("Could not find a dog!")
+            return
         else:
             await ctx.send(response["url"])
 
@@ -146,7 +151,8 @@ class Fun(commands.Cog, name="Fun"):
         """
         response = await self.fetch_url("https://meme-api.herokuapp.com/gimme")
         if response is None:
-            raise commands.BadArgument("Could not find a meme!")
+            await ctx.send("Could not find a meme!")
+            return
         else:
             await ctx.send(response["url"])
 
@@ -164,7 +170,8 @@ class Fun(commands.Cog, name="Fun"):
         response = await self.fetch_url("https://api.kanye.rest")
         await ctx.trigger_typing()
         if response is None:
-            raise commands.BadArgument("Kayne is busy!")
+            await ctx.send("Kanye is busy!")
+            return
         else:
             quote = response["quote"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
@@ -189,7 +196,8 @@ class Fun(commands.Cog, name="Fun"):
         response = await self.fetch_url("https://meowfacts.herokuapp.com/")
         await ctx.trigger_typing()
         if response is None:
-            raise commands.BadArgument("Could not find a cat fact!")
+            await ctx.send("Could not find a cat fact!")
+            return
         else:
             fact = response["data"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
@@ -213,7 +221,8 @@ class Fun(commands.Cog, name="Fun"):
         """
         response = await self.fetch_url("https://icanhazdadjoke.com/")
         if response is None:
-            raise commands.BadArgument("Could not find a joke!")
+            await ctx.send("Could not find a joke!")
+            return
         else:
             joke = response["joke"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
@@ -233,11 +242,10 @@ class Fun(commands.Cog, name="Fun"):
         """
         response = await self.fetch_url("https://animechan.herokuapp.com/api/random")
         if response is None:
-            raise commands.BadArgument("Could not find an anime quote!")
+            await ctx.send("Could not find an anime quote!")
+            return
         else:
             await ctx.trigger_typing()
-            anime = response["anime"]
-            character = response["character"]
             quote = str(response["quote"]).strip("[").strip("]")
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Quote", value=quote, inline=True)
@@ -259,7 +267,8 @@ class Fun(commands.Cog, name="Fun"):
             "https://dog-fact-api.herokuapp.com/api/v1/resources/dogs?number=1"
         )
         if response is None:
-            raise commands.BadArgument("Could not find a dog fact!")
+            await ctx.send("Could not find a dog fact!")
+            return
         else:
             await ctx.trigger_typing()
             fact = response[0]["fact"]
@@ -274,7 +283,8 @@ class Fun(commands.Cog, name="Fun"):
         """ """
         response = await self.fetch_url("https://taylorswiftapi.herokuapp.com/get")
         if response is None:
-            raise commands.BadArgument("Problem getting a Taylor Swift quote!")
+            await ctx.send("Problem getting a Taylor Swift quote!")
+            return
         else:
             await ctx.trigger_typing()
             quote = response["quote"]
@@ -303,11 +313,18 @@ class Fun(commands.Cog, name="Fun"):
         """
         random.seed(get_time_string())
         categories = ["waifu", "neko", "shinobu", "megumin", "bully", "cuddle"]
-        if category not in categories:
+        if category is None:
             category = random.choice(categories)
+        else:
+            if category not in categories:
+                await ctx.send(
+                    f'Invalid category - please pick from:\n{", ".join(categories)}'
+                )
+                return
         response = await self.fetch_url(f"https://api.waifu.pics/sfw/{category}")
         if response is None:
-            raise commands.BadArgument("Could not find a waifu!")
+            await ctx.send("No waifu for you!")
+            return
         else:
             await ctx.trigger_typing()
             url = response["url"]
