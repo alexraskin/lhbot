@@ -11,10 +11,12 @@ jobs:
         - name: GithubRelease
         - uses: ncipollo/release-action@v1
 
+        - name: terraform setup
         - uses: hashicorp/setup-terraform@v2
           with:
             path: infrastructure/terraform/
           env:
+            TF_VAR_code_url: ${{ steps.GithubRelease.outputs.url }}
             HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
             HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
