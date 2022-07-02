@@ -83,6 +83,6 @@ resource "heroku_app_webhook" "lhbot" {
 }
 
 resource "heroku_collaborator" "lhbot" {
-    app_id = heroku_app.lhbot.id
-    email = var.collaborator_email
+  app_id = heroku_app.lhbot.id
+  email  = var.collaborator_email
 }
