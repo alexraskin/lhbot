@@ -9,7 +9,14 @@ jobs:
     permissions:
       contents: write
     steps:
+    - name: GithubRelease
     - uses: actions/checkout@v2
     - uses: ncipollo/release-action@v1
       with:
         tag: '1.1'
+
+    - name: Echo Something
+    - run: |
+        echo ${{ steps.run_tests.outputs.}}
+        echo $(echo ${GITHUB_SHA} | cut -c1-8)
+
