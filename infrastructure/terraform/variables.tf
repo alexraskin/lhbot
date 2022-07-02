@@ -1,6 +1,21 @@
+variable "heroku_email" {
+  type = string
+}
+
+
+variable "heroku_api_key" {
+  type = string
+}
+
+
 variable "app_name" {
   type = string
 }
+
+variable "app_region" {
+  type = string
+}
+
 
 variable "app_quantity" {
   default     = 1
