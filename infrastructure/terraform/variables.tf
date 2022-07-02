@@ -36,3 +36,8 @@ variable "dyno_size" {
   type        = string
   description = "Size of dyno"
 }
+
+variable "webhook_url" {
+  type        = string
+  description = "URL to the webhook"
+}
