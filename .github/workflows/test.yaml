@@ -16,9 +16,7 @@ jobs:
       with:
         tag: '1.1'
     
-    - uses: mathiasvr/command-output@v1
-    - name: Echo Something
-    - run: |
-        echo ${{ steps.release.outputs.url }}
-        echo $(echo ${GITHUB_SHA} | cut -c1-8)
+    - run: echo ${{ steps.release.outputs.url }}
+    - run: echo $(echo ${GITHUB_SHA} | cut -c1-8)
+       
 
