@@ -79,3 +79,8 @@ resource "heroku_app_webhook" "lhbot" {
   url     = var.webhook_url
   include = ["api:release"]
 }
+
+resource "heroku_collaborator" "lhbot" {
+    app_id = heroku_app.lhbot.id
+    email = var.collaborator_email
+}

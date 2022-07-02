@@ -41,3 +41,7 @@ variable "webhook_url" {
   type        = string
   description = "URL to the webhook"
 }
+
+variable "collaborator_email" {
+  type = string
+}
