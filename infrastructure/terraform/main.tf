@@ -10,7 +10,6 @@ terraform {
 
 provider "heroku" {}
 
-
 locals {
   app_region = "us"
   heroku_enviorment_vars = {
@@ -46,6 +45,8 @@ resource "heroku_build" "lhbot" {
     url     = var.source_code_url
     version = var.app_version
   }
+
+  buildpacks = ["heroku/python"]
 
   lifecycle {
     create_before_destroy = true
