@@ -146,9 +146,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param ctx: Used to get the message author and channel.
         :return: the report.
         """
-        # if not ctx.channel.guild.id == self.client.main_guild.id:
-        #     # Don't allow guesses messages on servers other than the main server
-        #     return
+        if not ctx.channel.guild.id == self.client.main_guild.id:
+            # Don't allow guesses messages on servers other than the main server
+            return
         print("report ran")
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
