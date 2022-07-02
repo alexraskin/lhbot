@@ -1,19 +1,23 @@
 variable "heroku_email" {
   type = string
+  default = "Heroku account email"
 }
 
 
 variable "heroku_api_key" {
   type = string
+  description = "Heroku API Key"
 }
 
 
 variable "app_name" {
   type = string
+  description = "The name of the Heroku app"
 }
 
 variable "app_region" {
   type = string
+  description = "The region to deploy the app to"
 }
 
 
@@ -59,4 +63,5 @@ variable "webhook_url" {
 
 variable "collaborator_email" {
   type = string
+  description = "Email of the collaborator"
 }
