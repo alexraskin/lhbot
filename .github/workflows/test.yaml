@@ -11,30 +11,30 @@ jobs:
         - name: GithubRelease
         - uses: ncipollo/release-action@v1
 
-        - name: terraform setup
-        - uses: hashicorp/setup-terraform@v2
-          with:
-            path: infrastructure/terraform/
-          env:
-            TF_VAR_code_url: ${{ steps.GithubRelease.outputs.url }}
-            HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        # - uses: hashicorp/setup-terraform@v2
+        # - name: terraform setup
+        #   with:
+        #     path: infrastructure/terraform/
+        #   env:
+        #     TF_VAR_code_url: ${{ steps.GithubRelease.outputs.url }}
+        #     HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+        #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-        - name: Terraform fmt
-          id: fmt
-          run: terraform fmt -check
-          continue-on-error: true
+        # - name: Terraform fmt
+        #   id: fmt
+        #   run: terraform fmt -check
+        #   continue-on-error: true
 
-        - name: Terraform Init
-          id: init
-          run: terraform init
+        # - name: Terraform Init
+        #   id: init
+        #   run: terraform init
 
-        - name: Terraform Validate
-          id: validate
-          run: terraform validate -no-color
+        # - name: Terraform Validate
+        #   id: validate
+        #   run: terraform validate -no-color
         
-        - name: Terraform Plan
-          id: plan
-          run: terraform plan -no-color
-          continue-on-error: true
+        # - name: Terraform Plan
+        #   id: plan
+        #   run: terraform plan -no-color
+        #   continue-on-error: true
 
