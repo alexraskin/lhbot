@@ -12,6 +12,5 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: GithubRelease
     - uses: actions/checkout@v2
     - uses: ncipollo/release-action@v1
