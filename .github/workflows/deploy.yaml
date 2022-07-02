@@ -1,0 +1,41 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+  deploy:
+    name: Deploy Site
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    
+    - name: GithubRelease
+    - uses: ncipollo/release-action@v1
+
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v2
+      env:
+         HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+    
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
