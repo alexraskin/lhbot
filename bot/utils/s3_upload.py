@@ -1,6 +1,6 @@
 import os
 from functools import lru_cache
-from typing import Union, Optional
+from typing import Optional, Union
 
 import boto3
 import botocore

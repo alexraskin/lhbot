@@ -46,10 +46,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         self.guess_list = []
         async for guess in collection.find():
             data = helper(guess)
-            self.guess_list.append({
-                "guess": data['guess'],
-                "guessedBy": data['guessedBy']
-                })
+            self.guess_list.append(
+                {"guess": data["guess"], "guessedBy": data["guessedBy"]}
+            )
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="lhguess")
