@@ -12,11 +12,13 @@ jobs:
     - name: GithubRelease
     - uses: actions/checkout@v2
     - uses: ncipollo/release-action@v1
+    - id: release
       with:
         tag: '1.1'
-
+    
+    - uses: mathiasvr/command-output@v1
     - name: Echo Something
     - run: |
-        echo ${{ steps.run_tests.outputs.}}
+        echo ${{ steps.release.outputs.url }}
         echo $(echo ${GITHUB_SHA} | cut -c1-8)
 
