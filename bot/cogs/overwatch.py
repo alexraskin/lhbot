@@ -146,7 +146,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="lamp", description="Bap Lamp")
-    async def lamp(self, ctx):
+    async def lamp(self, ctx, target_user=None):
         lamp_sayings = [
             "Get in the Immortality Field",
             "Step inside, stay alive",
@@ -154,9 +154,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Get in here!",
         ]
         lamp_answers = [
-            str(
-                "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW"
-            ),
+            "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW",
             "You lamped a Mercy Main and now she wants to duo ;)",
             "Immortality bubble's down",
             "Immortality field destroyed!",
@@ -164,20 +162,19 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Immortality field's down. Watch yourself!",
         ]
         random.seed(get_time_string())
-        embed = Embed(f"{random.choice(list(lamp_sayings))}")
+        embed = Embed(f"{random.choice(list(lamp_sayings))} {target_user}", color=0xFF0000)
         print("start")
-        embed_answer = Embed(f"{random.choice(list(lamp_answers))}")
-        message = await ctx.send(embed=embed)
-        print("before sleep")
-        await asyncio.sleep(2)
-        print("after sleep")
-        await message.edit(embed=embed_answer)
+        embed_answer = Embed(f"{random.choice(list(lamp_answers))} {target_user}", color=0xFF0000)
+        message = await ctx.send("hi")
+        # print("before sleep")
+        # await asyncio.sleep(2)
+        # print("after sleep")
+        # await message.edit(embed=embed_answer)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="boop", description="Boop")
     async def boop(self, ctx, target_user):
-        pass
-
+        await boop_execute(ctx, target_user)
 
 
 async def shatter_execute(ctx, target_user):
