@@ -1,6 +1,9 @@
 name: Releases
 
-on: [push]
+on: 
+  push:
+    tags:
+    - '*'
 
 jobs:
 
@@ -12,11 +15,3 @@ jobs:
     - name: GithubRelease
     - uses: actions/checkout@v2
     - uses: ncipollo/release-action@v1
-    - id: release
-      with:
-        tag: '1.1'
-    
-    - run: echo ${{ steps.release.outputs.url }}
-    - run: echo $(echo ${GITHUB_SHA} | cut -c1-8)
-       
-
