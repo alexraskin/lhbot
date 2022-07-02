@@ -5,7 +5,10 @@ from discord import Embed
 from discord.ext import commands
 
 sys.path.append("../bot/")
+from config import Settings
 from utils.emojis import random_emoji
+
+conf = Settings()
 
 
 class LhCloudy(commands.Cog, name="LhCloudy"):
@@ -20,11 +23,21 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         """
         self.client = client
 
-    @commands.command(name="1frame")
+    @commands.group(invoke_without_command=True)
+    async def twitch(self, ctx):
+        """
+        The twitch command is used to get the latest Cloudy twitch commands
+        """
+        if ctx.invoked_subcommand is None:
+            await ctx.send(
+                f"Please use `{conf.bot_prefix}twitch help` to see the list of commands."
+            )
+
+    @twitch.command(name="1frame")
     async def one_frame(self, ctx):
         await one_frame_execute(ctx)
 
-    @commands.command(name="360")
+    @twitch.command(name="360")
     async def three_sixty(self, ctx):
         """
         The three_sixty function specifically plays the 360 clip from the streamer, and then sends a message with that link.
@@ -39,7 +52,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="ball")
+    @twitch.command(name="ball")
     async def ball(self, ctx):
         """
         The ball function is a function that sends an image of the ball. It does this by sending the url of the image to discord.
@@ -54,7 +67,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="bhop")
+    @twitch.command(name="bhop")
     async def bhop(self, ctx):
         """
         The bhop function specifically sends a message with the url of the clip.
@@ -64,12 +77,12 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         :return: a url to the youtube video that is posted on the twitch clip website.
 
         """
-        url = "https://www.twitch.tv/lhcloudy27/clip/ToughAttractiveHerbsBlargNaut-GvSHZicwk7Sjs13X"
+        url = "https://www.twitch.tv/twitch27/clip/ToughAttractiveHerbsBlargNaut-GvSHZicwk7Sjs13X"
         await ctx.trigger_typing()
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="lhfurry")
+    @twitch.command(name="lhfurry")
     async def lhfurry(self, ctx):
         """
         :param self: Used to store data that is used by the bot.
@@ -81,7 +94,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="bhop2")
+    @twitch.command(name="bhop2")
     async def bhop_two(self, ctx):
         """
         The bhop_two function specifically sends a message with the url of the clip.
@@ -96,7 +109,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="climb")
+    @twitch.command(name="climb")
     async def climb(self, ctx):
         """
         The climb function specifically accomplishes
@@ -116,7 +129,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="code", aliases=["workshop"])
+    @twitch.command(name="code", aliases=["workshop"])
     async def code(self, ctx):
         """
         The code function specifically creates a message that displays the code for my bot.
@@ -132,7 +145,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="dva")
+    @twitch.command(name="dva")
     async def dva(self, ctx):
         """
         The dva function specifically sends the url of a clip from D.Va on Overwatch.
@@ -146,7 +159,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="dva2")
+    @twitch.command(name="dva2")
     async def dva_two(self, ctx):
         """
         The dva_two function specifically sends a message with the url of the clip.
@@ -160,7 +173,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="dva3")
+    @twitch.command(name="dva3")
     async def dva_three(self, ctx):
         """
         The dva_three function specifically sends a message containing the url of the clip.
@@ -174,7 +187,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="egirl")
+    @twitch.command(name="egirl")
     async def egirl(self, ctx):
         """
         The egirl function specifically accomplishes the following:
@@ -192,7 +205,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         await message.add_reaction("👈")
         await message.add_reaction("😌")
 
-    @commands.command(name="firestrike")
+    @twitch.command(name="firestrike")
     async def fire_strike(self, ctx):
         """
         The fire_strike function specifically sends a message with the url of the clip.
@@ -206,7 +219,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="genji")
+    @twitch.command(name="genji")
     async def genji(self, ctx):
         """
         The genji function specifically sends a message with the url of the clip.
@@ -220,7 +233,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="hanzo")
+    @twitch.command(name="hanzo")
     async def hanzo(self, ctx):
         """
         The hanzo function specifically sends a message with the url of the clip.
@@ -234,7 +247,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="hype")
+    @twitch.command(name="hype")
     async def hype(self, ctx):
         """
         The hype function is used to send a message
@@ -252,7 +265,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="instagram")
+    @twitch.command(name="instagram")
     async def instagram(self, ctx):
         """
         The instagram function specifically posts the link to my Instagram page.
@@ -266,7 +279,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="lucio")
+    @twitch.command(name="lucio")
     async def lucio(self, ctx):
         """
         The lucio function specifically plays the lucio clip from a twitch stream.
@@ -280,7 +293,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="mercy")
+    @twitch.command(name="mercy")
     async def mercy(self, ctx):
         """
         :param self: Used to access the attributes and methods of your cog, as well as any other variables that.
@@ -292,7 +305,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="pokiw")
+    @twitch.command(name="pokiw")
     async def pokiw(self, ctx):
         """
         The pokiw function specifically sends a message with the link to the pokiw image on imgur.
@@ -306,7 +319,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="pokiw2")
+    @twitch.command(name="pokiw2")
     async def pokiw_two(self, ctx):
         """
         The pokiw_two function specifically sends a message with the url of the clip.
@@ -320,7 +333,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="rollout")
+    @twitch.command(name="rollout")
     async def rollout(self, ctx):
         """
         The rollout function specifically sends a message with the url of the clip.
@@ -334,7 +347,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="sniper")
+    @twitch.command(name="sniper")
     async def sniper(self, ctx):
         """
         The sniper function is a function that sends the sniper clip from the game Overwatch.
@@ -349,7 +362,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="soldier")
+    @twitch.command(name="soldier")
     async def soldier(self, ctx):
         """
         The soldier function specifically sends a message with the url of an image of a soldier.
@@ -363,7 +376,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="speed")
+    @twitch.command(name="speed")
     async def speed(self, ctx):
         """
         The speed function is a function that will send the user a message with text.
@@ -377,7 +390,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="spotify")
+    @twitch.command(name="spotify")
     async def spotify(self, ctx):
         """
         The spotify function specifically links to the spotify playlist that I have created for this server.
@@ -392,7 +405,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="playlist")
+    @twitch.command(name="playlist")
     async def playlist(self, ctx):
         """
         The playlist function specifically sends a message with the link to the playlist.
@@ -406,7 +419,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="srpeak")
+    @twitch.command(name="srpeak")
     async def srpeak(self, ctx):
         """
         The srpeak function specifically sends a message with text
@@ -429,7 +442,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="stairs")
+    @twitch.command(name="stairs")
     async def stair(self, ctx):
         """
         :param self: Used to access the bot's attributes.
@@ -441,7 +454,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="strength")
+    @twitch.command(name="strength")
     async def strength(self, ctx):
         """
         :param self: Used to reference the class itself.
@@ -457,7 +470,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="tips")
+    @twitch.command(name="tips")
     async def tips(self, ctx):
         """
         :param self: Used to access the class attributes.
@@ -469,7 +482,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="twitter")
+    @twitch.command(name="twitter")
     async def twitter(self, ctx):
         """
         :param self: Used to access the attributes and methods in the class.
@@ -481,7 +494,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="tracer")
+    @twitch.command(name="tracer")
     async def tracer(self, ctx):
         """
         :param self: Used to access the bot's attributes.
@@ -493,7 +506,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="volskaya")
+    @twitch.command(name="volskaya")
     async def volskaya(self, ctx):
         """
         The volskaya function specifically sends a message with the url of the clip.
@@ -507,7 +520,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="wallbang")
+    @twitch.command(name="wallbang")
     async def wallbang(self, ctx):
         """
         The wallbang function specifically sends a message with the link to the wallbang clip of lhcloudy27 on twitch.
@@ -522,7 +535,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="widow")
+    @twitch.command(name="widow")
     async def widow(self, ctx):
         """
         :param self: Used to access the attributes and methods of your cog.
@@ -534,7 +547,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="youtube")
+    @twitch.command(name="youtube")
     async def youtube(self, ctx):
         """
         :param self: Used to access the bot's attributes.
@@ -546,7 +559,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="zarya")
+    @twitch.command(name="zarya")
     async def zarya(self, ctx):
         """
         The zarya function specifically plays a clip of Zarya from Overwatch.
@@ -561,7 +574,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="zarya2")
+    @twitch.command(name="zarya2")
     async def zarya_two(self, ctx):
         """
         The zarya_two function specifically sends a message with the url of the clip.
@@ -575,7 +588,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="age", aliases=["oldman"])
+    @twitch.command(name="age", aliases=["oldman"])
     async def age(self, ctx):
         """
         The age function specifically calculates the age of the user and sends it to discord.
@@ -592,7 +605,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(age_years)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="backlane")
+    @twitch.command(name="backlane")
     async def backlane(self, ctx):
         """
         :param self: Used to access the attributes and methods of your cog, as well as any other cogs which are loaded.
@@ -604,7 +617,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="chair")
+    @twitch.command(name="chair")
     async def chair(self, ctx):
         """
         The chair function specifically tells the user what the chair is and where to buy it.
@@ -618,7 +631,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="cloudycree")
+    @twitch.command(name="cloudycree")
     async def cloudycree(self, ctx):
         """
         The cloudycree function specifically posts the link to the clip of cloudycree's stream.
@@ -633,7 +646,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(url)
         await message.add_reaction(random_emoji())
 
-    @commands.command(name="from")
+    @twitch.command(name="from")
     async def from_(self, ctx):
         """
         :param self: Used to access the attributes and methods of the class in which it is used.
@@ -645,7 +658,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         message = await ctx.send(text)
         await message.add_reaction(random_emoji())
 
-    @commands.command(
+    @twitch.command(
         name="links",
         aliases=["urls"],
     )
@@ -687,4 +700,4 @@ async def one_frame_execute(ctx):
     url = "https://www.twitch.tv/lhcloudy27/clip/AbstruseKindRuffFutureMan-dLWae-FGvNag2jtK"
     await ctx.trigger_typing()
     message = await ctx.send(url)
-    # await message.add_reaction(random_emoji())
+    await message.add_reaction(random_emoji())
