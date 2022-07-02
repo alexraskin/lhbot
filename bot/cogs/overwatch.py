@@ -147,6 +147,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="lamp", description="Bap Lamp")
     async def lamp(self, ctx, target_user=None):
+        random.seed(get_time_string())
         lamp_sayings = [
             "Get in the Immortality Field",
             "Step inside, stay alive",
@@ -154,27 +155,39 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Get in here!",
         ]
         lamp_answers = [
-            "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW",
+            str(
+                "Congratulations, you lamped Cloudy's dead corpse, now he's flaming you on stream LULW"
+            ),
             "You lamped a Mercy Main and now she wants to duo ;)",
             "Immortality bubble's down",
             "Immortality field destroyed!",
             "Immortality field down",
             "Immortality field's down. Watch yourself!",
         ]
-        random.seed(get_time_string())
-        embed = Embed(f"{random.choice(list(lamp_sayings))} {target_user}", color=0xFF0000)
-        print("start")
-        embed_answer = Embed(f"{random.choice(list(lamp_answers))} {target_user}", color=0xFF0000)
-        message = await ctx.send("hi")
-        # print("before sleep")
-        # await asyncio.sleep(2)
-        # print("after sleep")
-        # await message.edit(embed=embed_answer)
+        await ctx.trigger_typing()
+        await ctx.send(random.choice(lamp_sayings))
+        await asyncio.sleep(2)
+        await ctx.send(random.choice(lamp_answers))
 
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="boop", description="Boop")
-    async def boop(self, ctx, target_user):
-        await boop_execute(ctx, target_user)
+    @commands.command(name="boop", description="Boop!")
+    async def boop(self, ctx, target_user=None):
+        boop_sayings = [
+            "That was the sound of science",
+            "I could do this with my eyes closed",
+            "I'm feeling some good vibrations",
+            "When the music hits, you feel no pain",
+            "Ah, garoto",
+            "Hah! Too good",
+            "Haha! Served",
+            "Whoo! Check yourself", 
+            "Get back",
+            "Push off", 
+            "Step to this",
+        ]
+        random.seed(get_time_string())
+        await ctx.trigger_typing()
+        await ctx.send(f"{random.choice(list(boop_sayings))}, {target_user}")
 
 
 async def shatter_execute(ctx, target_user):
@@ -195,7 +208,7 @@ async def shatter_execute(ctx, target_user):
         "ez block... L + ratio",
         "sr peak check?",
     ]
-
+    await ctx.trigger_typing()
     if target_user == None or target_user == "":
         await ctx.trigger_typing()
         await ctx.send(
@@ -247,6 +260,7 @@ async def nano_execute(ctx, target_user=None):
     if target_user == None or target_user == "":
         return
 
+    await ctx.trigger_typing()
     if len(target_user) > 500:
         await ctx.trigger_typing()
         await ctx.send("Username is too long!")
@@ -260,32 +274,6 @@ async def nano_execute(ctx, target_user=None):
     embed.set_author(
         name="Nano Boost!",
         icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
-    )
-    embed.set_footer(text=f"Requested by {ctx.message.author.name}")
-    await ctx.send(embed=embed)
-
-
-async def boop_execute(ctx, target_user):
-    boop_sayings = [
-        "That was the sound of science",
-        "I could do this with my eyes closed",
-        "I'm feeling some good vibrations!",
-        "When the music hits, you feel no pain",
-        "Ah, garoto",
-        "Hah! Too good",
-        "Haha! Served",
-        "Whoo! Check yourself" "Get back!",
-        "Push off" "Step to this!",
-    ]
-    random.seed(get_time_string())
-    print("boop")
-    embed = Embed(
-        url=f"{random.choice(list(boop_sayings))}, {target_user}",
-        color=random.randint(0, 0xFFFFFF),
-    )
-    embed.set_author(
-        name="Boop!",
-        icon_url=f"https://i.gyazo.com/66428bd9712dd96c00cd801f292acfc9.jpg",
     )
     embed.set_footer(text=f"Requested by {ctx.message.author.name}")
     await ctx.send(embed=embed)
