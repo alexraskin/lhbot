@@ -8,8 +8,8 @@ from utils.banwords import banned_words
 from utils.emojis import random_emoji
 from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
-from utils.return_helper import _helper
-from utils.uploader import FileSharer
+from utils.return_helper import helper
+from utils.s3_upload import S3Upload
 
 database = db_client.lhbot
 
@@ -45,7 +45,11 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         self.guess_list = []
         async for guess in collection.find():
-            self.guess_list.append(_helper(guess)["guess"])
+            data = helper(guess)
+            self.guess_list.append({
+                "guess": data['guess'],
+                "guessedBy": data['guessedBy']
+                })
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="lhguess")
@@ -95,7 +99,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             }
             new_guess = await collection.insert_one(guess_dict)
             return_guess = await collection.find_one({"_id": new_guess.inserted_id})
-            pretty_return = _helper(return_guess)
+            pretty_return = helper(return_guess)
             embed = Embed(color=self.success_color)
             embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
             embed.add_field(name="LhGuess:", value=pretty_return["guess"], inline=True)
@@ -130,7 +134,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(name="lhreport")
     async def run_lh_report(self, ctx) -> Embed:
         """
@@ -142,16 +146,20 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :param ctx: Used to get the message author and channel.
         :return: the report.
         """
-        if not ctx.channel.guild.id == self.client.main_guild.id:
-            # Don't allow guesses messages on servers other than the main server
-            return
+        # if not ctx.channel.guild.id == self.client.main_guild.id:
+        #     # Don't allow guesses messages on servers other than the main server
+        #     return
+        print("report ran")
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
+        print(report.filename)
         report.generate()
-        share = FileSharer(f"{report.filename}")
+        share = S3Upload(report.filename)
+        share.upload()
+        print(share)
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
-        embed.add_field(name="PDF Link:", value=share.share())
+        embed.add_field(name="PDF Link:", value=share.get_url())
         await ctx.trigger_typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
@@ -177,7 +185,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(name="lhdelete", aliases=["deleteguess"], hidden=True)
     async def lh_delete(self, ctx, *, guess_id) -> Embed:
         """
