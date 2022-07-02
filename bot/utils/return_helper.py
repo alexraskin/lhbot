@@ -1,4 +1,4 @@
-def _helper(mongo_return) -> dict:
+def helper(mongo_return) -> dict:
     """
     The _helper function takes the mongo_return and returns a dictionary with the id, guess, and time.
 

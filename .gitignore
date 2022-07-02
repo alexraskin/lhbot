@@ -126,3 +126,5 @@ dmypy.json
 
 config.json
 *.pdf
+*.tfvars
+.terraform
