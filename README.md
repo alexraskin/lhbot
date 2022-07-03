@@ -4,7 +4,7 @@
     <img width="33%" src="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png">
 </p>
 
-PFP Credit: https://twitter.com/PetraYle
+[Profile Picture Credit](https://twitter.com/PetraYle)
 
 ![GitHub](https://img.shields.io/github/license/alexraskin/lhbot)
 ![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
@@ -13,7 +13,7 @@ PFP Credit: https://twitter.com/PetraYle
 
 ---
 ### What is LhBot?
-If you follow LhCloudy on twitch, you will know that he will not share what Lh stands for in his name. I decided to write a discord bot that keeps track of everyone's guesses in his discord, plus a bunch of other fun things. It is mainly used in his discord server, but you can also use it in your own server.
+If you follow LhCloudy on twitch, you will know, that he will not share what Lh stands for in his name. I decided to write a discord bot, that keeps track of everyone's guesses in his discord, plus a bunch of other fun things. It is mainly used in his discord server, but you can also use it in your own server. Please create an issue if you have any questions.
 
 ---
 ### Connect with LhCloudy
@@ -61,4 +61,3 @@ We tried to make some tests for the bot. It is not perfect, but it is better tha
 - `cd tests`  
   
 - `poetry run pytest`
-___
