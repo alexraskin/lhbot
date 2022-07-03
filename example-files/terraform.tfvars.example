@@ -1,0 +1,39 @@
+heroku_email = ""
+
+heroku_api_key = ""
+
+app_region = ""
+
+app_name = ""
+
+source_code_url = ""
+
+app_version = ""
+
+heroku_stack = ""
+
+dyno_type = ""
+
+dyno_size = ""
+
+webhook_url = ""
+
+heroku_enviorment_vars = {
+  "BOT_NAME"              = ""
+  "BOT_PREFIX"            = ""
+  "BOT_TOKEN"             = ""
+  "APPLICATION_ID"        = ""
+  "DATABASE_URL"          = ""
+  "SENTRY_DSN"            = ""
+  "main_guild"            = ""
+  "owners"                = ""
+  "superusers"            = ""
+  "admin_roles"           = ""
+  "GIPHY_API_KEY"         = ""
+  "AWS_ACCESS_KEY"        = ""
+  "AWS_SECRET_ACCESS_KEY" = ""
+  "AWS_REGION"            = ""
+  "S3_BUCKET_NAME"        = ""
+}
+
+collaborator_email = ""
