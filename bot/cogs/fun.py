@@ -240,7 +240,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed that has the anime, character and quote of a random anime.
         """
-        response = await self.fetch_url("https://animechan.herokuapp.com/api/random")
+        response = await self.fetch_url("https://animechan.vercel.app/api/random")
         if response is None:
             await ctx.send("Could not find an anime quote!")
             return
@@ -249,7 +249,7 @@ class Fun(commands.Cog, name="Fun"):
             quote = str(response["quote"]).strip("[").strip("]")
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Quote", value=quote, inline=True)
-            embed.set_footer(text=f"https://animechan.herokuapp.com/api/random")
+            embed.set_footer(text=f"https://animechan.vercel.app/api/random")
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
