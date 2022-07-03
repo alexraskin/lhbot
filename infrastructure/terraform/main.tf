@@ -29,6 +29,8 @@ resource "heroku_build" "lhbot" {
     version = var.app_version
   }
 
+  buildpacks = ["heroku/python"]
+
   lifecycle {
     create_before_destroy = true
   }

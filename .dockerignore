@@ -9,3 +9,4 @@ poetry.lock
 pyproject.toml
 Procfile
 runtime.txt
+infrastructure/terraform/
