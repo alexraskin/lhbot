@@ -18,11 +18,8 @@ If you follow LhCloudy on twitch, you will know that he will not share what Lh s
 ---
 ### Connect with LhCloudy
 [Twitch](https://www.twitch.tv/lhcloudy27)
-
 [Twitter](https://twitter.com/LhCloudy)
-
 [Discord](https://discord.com/invite/jd6CZSj8jb)
-
 [Youtube](https://www.youtube.com/channel/UC2CV-HWvIrMO4mUnYtNS-7A)
 
 ---
