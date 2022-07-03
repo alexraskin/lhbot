@@ -13,7 +13,6 @@ provider "heroku" {
   api_key = var.heroku_api_key
 }
 
-
 resource "heroku_app" "lhbot" {
   name                  = var.app_name
   region                = var.app_region
@@ -28,8 +27,6 @@ resource "heroku_build" "lhbot" {
     url     = var.source_code_url
     version = var.app_version
   }
-
-  buildpacks = ["heroku/python"]
 
   lifecycle {
     create_before_destroy = true
