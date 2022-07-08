@@ -3,12 +3,10 @@ variable "heroku_email" {
   default = "Heroku account email"
 }
 
-
 variable "heroku_api_key" {
   type        = string
   description = "Heroku API Key"
 }
-
 
 variable "app_name" {
   type        = string
@@ -64,4 +62,74 @@ variable "webhook_url" {
 variable "collaborator_email" {
   type        = string
   description = "Email of the collaborator"
+}
+
+variable "lhcloudybot_cluster_id" {
+  type        = string
+  description = "Mongodb Atlas cluster ID"
+}
+
+variable "mongodb_cluster_type" {
+  type        = string
+  description = "Mongodb Atlas cluster type"
+}
+
+variable "mongodb_cluster_name" {
+  type        = string
+  description = "Mongodb Atlas cluster name"
+}
+
+variable "mongodb_region" {
+  type        = string
+  description = "Mongodb Atlas region"
+}
+
+variable "database_user" {
+  type        = string
+  description = "Mongodb Atlas database user"
+}
+
+variable "database_password" {
+  type        = string
+  description = "Mongodb Atlas database password"
+}
+
+variable "mongodb_project_id" {
+  type        = string
+  description = "Mongodb Atlas project ID"
+}
+
+variable "mongodbatlas_private_key" {
+  type        = string
+  description = "Mongodb Atlas private key"
+}
+
+variable "mongodbatlas_public_key" {
+  type        = string
+  description = "Mongodb Atlas public key"
+}
+
+variable "sentry_token" {
+  type        = string
+  description = "Sentry token"
+}
+
+variable "sentry_team_name" {
+  type        = string
+  description = "Sentry team name"
+}
+
+variable "sentry_project_name" {
+  type        = string
+  description = "Sentry project name"
+}
+
+variable "sentry_slug" {
+  type        = string
+  description = "Sentry slug"
+}
+
+variable "sentry_organization" {
+  type        = string
+  description = "Sentry organization"
 }
