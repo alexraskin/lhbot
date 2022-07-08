@@ -22,3 +22,7 @@ output "status" {
   value       = heroku_build.lhbot.status
   description = "Application status"
 }
+
+output "cluster_connection_sting" {
+    value = split("//", mongodbatlas_cluster.lhcloudy_cluster.connection_strings.0.standard_srv)[1]
+}
