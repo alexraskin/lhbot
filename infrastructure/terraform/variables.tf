@@ -64,16 +64,6 @@ variable "collaborator_email" {
   description = "Email of the collaborator"
 }
 
-variable "lhcloudybot_cluster_id" {
-  type        = string
-  description = "Mongodb Atlas cluster ID"
-}
-
-variable "mongodb_cluster_type" {
-  type        = string
-  description = "Mongodb Atlas cluster type"
-}
-
 variable "mongodb_cluster_name" {
   type        = string
   description = "Mongodb Atlas cluster name"
@@ -99,6 +89,11 @@ variable "mongodb_project_id" {
   description = "Mongodb Atlas project ID"
 }
 
+variable "mongo_database_name" {
+  type        = string
+  description = "Mongodb Atlas database name"
+}
+
 variable "mongodbatlas_private_key" {
   type        = string
   description = "Mongodb Atlas private key"
@@ -107,6 +102,11 @@ variable "mongodbatlas_private_key" {
 variable "mongodbatlas_public_key" {
   type        = string
   description = "Mongodb Atlas public key"
+}
+
+variable "mongo_auth_database_name" {
+  type        = string
+  description = "Mongodb Atlas auth database name"
 }
 
 variable "sentry_token" {
