@@ -27,9 +27,6 @@ jobs:
         run: |
           tflint
      
-      - name: tfsec
-        run: |
-          tfsec
       - name: Terraform validation
         run: |
           terraform validate

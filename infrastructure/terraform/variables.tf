@@ -133,3 +133,18 @@ variable "sentry_organization" {
   type        = string
   description = "Sentry organization"
 }
+
+variable "lh_bot_s3_bot_config_bucket" {
+  type        = string
+  description = "S3 bucket for the bot config"
+}
+
+variable "lh_bot_s3_terraform_state_bucket" {
+  type        = string
+  description = "S3 bucket for the terraform state"
+}
+
+variable "lh_bot_reports_s3_bucket" {
+  type        = string
+  description = "S3 bucket for the reports"
+}
