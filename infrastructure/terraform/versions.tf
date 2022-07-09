@@ -12,7 +12,10 @@ terraform {
       source  = "jianyuan/sentry"
       version = "0.9.2"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.22.0"
+    }
   }
-
   required_version = ">= 1.0"
 }
