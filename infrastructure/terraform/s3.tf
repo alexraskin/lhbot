@@ -47,7 +47,7 @@ resource "aws_s3_bucket" "lhbot_reports_bucket" {
 
 data "aws_iam_policy_document" "lhbot_bucket_policy" {
   statement {
-    effect     = "Allow"
+    effect = "Allow"
     actions = [
       "s3:PutObject",
       "s3:PutObjectAcl",
