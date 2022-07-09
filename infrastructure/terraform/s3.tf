@@ -19,6 +19,13 @@ resource "aws_s3_bucket" "lhcloudy_bot_config" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "lhcloudy_bot_config_public_access_block" {
+  bucket = aws_s3_bucket.lhcloudy_bot_config.id
+
+  block_public_acls   = true
+  block_public_policy = true
+}
+
 resource "aws_s3_bucket" "terraform_state_lhbot" {
   bucket = var.lh_bot_s3_terraform_state_bucket
   server_side_encryption_configuration {
@@ -33,6 +40,13 @@ resource "aws_s3_bucket" "terraform_state_lhbot" {
     terraform = "true"
     name      = var.lh_bot_s3_terraform_state_bucket
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "terraform_state_lhbot_public_access_block" {
+  bucket = aws_s3_bucket.terraform_state_lhbot.id
+
+  block_public_acls   = true
+  block_public_policy = true
 }
 
 resource "aws_s3_bucket" "lhbot_reports_bucket" {
