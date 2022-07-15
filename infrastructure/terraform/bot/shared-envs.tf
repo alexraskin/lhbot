@@ -1,6 +1,6 @@
 locals {
   heroku_enviorment_vars = {
-    DATABASE_URL      = "mongodb+srv://${var.database_user}:${var.database_password}@${split("//", mongodbatlas_cluster.lhcloudy_cluster.connection_strings.0.standard_srv)[1]}/${var.mongo_database_name}?retryWrites=true&w=majority"
+    DATABASE_URL      = var.heroku_enviorment_vars["DATABASE_URL"]
     BOT_PREFIX        = var.heroku_enviorment_vars["BOT_PREFIX"]
     BOT_TOKEN         = var.heroku_enviorment_vars["BOT_TOKEN"]
     BOT_VERSION       = var.heroku_enviorment_vars["BOT_VERSION"]
