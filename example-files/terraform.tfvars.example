@@ -37,3 +37,37 @@ heroku_enviorment_vars = {
 }
 
 collaborator_email = ""
+
+mongodbatlas_public_key = ""
+
+mongodbatlas_private_key = ""
+
+mongodb_region = ""
+
+database_user = ""
+
+database_password = ""
+
+mongodb_cluster_name = ""
+
+mongo_database_name = ""
+
+mongodb_project_id = ""
+
+mongo_auth_database_name = ""
+
+sentry_token = ""
+
+sentry_team_name = ""
+
+sentry_project_name = ""
+
+sentry_slug = ""
+
+sentry_organization = ""
+
+lh_bot_s3_bot_config_bucket = ""
+
+lh_bot_s3_terraform_state_bucket = ""
+
+lh_bot_reports_s3_bucket = ""
