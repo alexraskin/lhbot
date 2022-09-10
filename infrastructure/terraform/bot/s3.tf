@@ -73,7 +73,7 @@ resource "aws_s3_bucket_policy" "lhbot_bucket_policy" {
 data "aws_iam_policy_document" "lhbot_bucket_policy" {
   statement {
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
     effect = "Allow"
