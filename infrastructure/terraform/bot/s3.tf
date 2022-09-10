@@ -1,21 +1,28 @@
 provider "aws" {
-  profile = "lhcloudybot"
-  region  = "us-east-1"
+  profile = var.aws_profile
+  region  = var.aws_region
+  default_tags {
+    tags = {
+      env       = "lhcloudybot"
+      terraform = "true"
+    }
+  }
 }
 
 resource "aws_s3_bucket" "lhcloudy_bot_config" {
   bucket = var.lh_bot_s3_bot_config_bucket
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
   tags = {
-    terraform = "true"
-    name      = var.lh_bot_s3_bot_config_bucket
+    name = var.lh_bot_s3_bot_config_bucket
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "lhcloudy_bot_config_server_side_encryption" {
+  bucket = aws_s3_bucket.lhcloudy_bot_config.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
   }
 }
 
@@ -28,17 +35,18 @@ resource "aws_s3_bucket_public_access_block" "lhcloudy_bot_config_public_access_
 
 resource "aws_s3_bucket" "terraform_state_lhbot" {
   bucket = var.lh_bot_s3_terraform_state_bucket
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
   tags = {
-    terraform = "true"
-    name      = var.lh_bot_s3_terraform_state_bucket
+    name = var.lh_bot_s3_terraform_state_bucket
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_lhbot_server_side_encryption" {
+  bucket = aws_s3_bucket.terraform_state_lhbot.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
   }
 }
 
@@ -51,16 +59,23 @@ resource "aws_s3_bucket_public_access_block" "terraform_state_lhbot_public_acces
 
 resource "aws_s3_bucket" "lhbot_reports_bucket" {
   bucket = var.lh_bot_reports_s3_bucket
-  policy = data.aws_iam_policy_document.lhbot_bucket_policy.json
 
   tags = {
-    terraform = "true"
-    name      = var.lh_bot_reports_s3_bucket
+    name = var.lh_bot_reports_s3_bucket
   }
+}
+
+resource "aws_s3_bucket_policy" "lhbot_bucket_policy" {
+  bucket = aws_s3_bucket.lhbot_reports_bucket.id
+  policy = data.aws_iam_policy_document.lhbot_bucket_policy.json
 }
 
 data "aws_iam_policy_document" "lhbot_bucket_policy" {
   statement {
+    principals {
+      type        = "Service"
+      identifiers = ["s3.amazonaws.com"]
+    }
     effect = "Allow"
     actions = [
       "s3:PutObject",

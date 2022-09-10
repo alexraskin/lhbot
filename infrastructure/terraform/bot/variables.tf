@@ -1,3 +1,13 @@
+variable "aws_profile" {
+  description = "AWS profile to use"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "AWS region to use"
+  type        = string
+}
+
 variable "heroku_email" {
   type    = string
   default = "Heroku account email"
@@ -17,7 +27,6 @@ variable "app_region" {
   type        = string
   description = "The region to deploy the app to"
 }
-
 
 variable "app_quantity" {
   default     = 1
