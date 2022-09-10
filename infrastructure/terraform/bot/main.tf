@@ -34,11 +34,14 @@ resource "heroku_build" "lhbot" {
 }
 
 resource "heroku_formation" "lhbot" {
-  app_id     = heroku_app.lhbot.id
-  type       = var.dyno_type
-  quantity   = var.app_quantity
-  size       = var.dyno_size
-  depends_on = [heroku_build.lhbot]
+  app_id   = heroku_app.lhbot.id
+  type     = var.dyno_type
+  quantity = var.app_quantity
+  size     = var.dyno_size
+  depends_on = [
+    heroku_build.lhbot,
+    heroku_app_release.lhbot
+  ]
 }
 
 resource "heroku_app_release" "lhbot" {
@@ -60,6 +63,9 @@ resource "heroku_app_webhook" "lhbot" {
   level   = "notify"
   url     = var.webhook_url
   include = ["api:release"]
+  depends_on = [
+    heroku_app.lhbot
+  ]
 }
 
 resource "heroku_collaborator" "lhbot" {
