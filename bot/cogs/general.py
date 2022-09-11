@@ -57,12 +57,12 @@ class General(commands.Cog, name="General"):
         :return: a discord embed object with the following format:.
         """
         if query is None:
-            await ctx.trigger_typing()
+            await ctx.typing()
             await ctx.send("Please enter a search query!")
             return
 
         if len(query) > 500:
-            await ctx.trigger_typing()
+            await ctx.typing()
             await ctx.send("Query size is too long!")
             return
 
@@ -74,12 +74,12 @@ class General(commands.Cog, name="General"):
                 answer = await response.json(content_type="application/x-javascript")
             except ContentTypeError as e:
                 capture_exception(e)
-                await ctx.trigger_typing()
+                await ctx.typing()
                 await ctx.send("Invalid query")
                 return
 
             if (not answer) or (not answer["AbstractText"]):
-                await ctx.trigger_typing()
+                await ctx.typing()
                 await ctx.send(
                     "Couldn't find anything, here's duckduckgo link: "
                     + f"<https://duckduckgo.com/?q={quote_plus(query)}>"
@@ -101,7 +101,7 @@ class General(commands.Cog, name="General"):
                 + f'at {answer["AbstractURL"]}\n'
                 + "Provided By: https://api.duckduckgo.com"
             )
-            await ctx.trigger_typing()
+            await ctx.typing()
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 60, commands.BucketType.user)
@@ -130,7 +130,7 @@ class General(commands.Cog, name="General"):
         sanitized = sauce.replace("`", "\u200B`")
         if len(url) + len(sanitized) > 1950:
             sanitized = sanitized[: 1950 - len(url)] + "\n[...]"
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send(url + f"```python\n{sanitized}\n```")
 
 
