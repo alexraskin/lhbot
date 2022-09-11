@@ -63,7 +63,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                 name="Region of player:", value="us/eu/kr/cn/global", inline=True
             )
             embed.add_field(name="BattleTag of user:", value="Jay3#11894", inline=True)
-            await ctx.trigger_typing()
+            await ctx.typing()
             await ctx.send(embed=embed)
         else:
             platform, region, profile = str(info).split(" ")
@@ -75,10 +75,10 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                         title="Unable to find profile",
                         color=random.randint(0, 0xFFFFFF),
                     )
-                    await ctx.trigger_typing()
+                    await ctx.typing()
                     await ctx.send(embed=embed)
                 if not user_data["private"]:
-                    await ctx.trigger_typing()
+                    await ctx.typing()
                     embed = Embed(color=random.randint(0, 0xFFFFFF))
                     embed.set_author(
                         name=user_data["username"], icon_url=user_data["portrait"]
@@ -109,12 +109,12 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                         name=f'{user_data["username"]} is not a public profile',
                         icon_url=user_data["portrait"],
                     )
-                    await ctx.trigger_typing()
+                    await ctx.typing()
                     await ctx.send(embed=embed)
 
     @commands.command(name="reinquote", description="Random Rein Quote")
     async def random_rein_quote(self, ctx) -> Embed:
-        await ctx.trigger_typing()
+        await ctx.typing()
         embed = Embed(
             color=random.randint(0, 0xFFFFFF),
         )
@@ -164,7 +164,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Immortality field down",
             "Immortality field's down. Watch yourself!",
         ]
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send(random.choice(lamp_sayings))
         await asyncio.sleep(2)
         await ctx.send(random.choice(lamp_answers))
@@ -186,7 +186,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Step to this",
         ]
         random.seed(get_time_string())
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send(f"{random.choice(list(boop_sayings))}, {target_user}")
 
 
@@ -208,21 +208,21 @@ async def shatter_execute(ctx, target_user):
         "ez block... L + ratio",
         "sr peak check?",
     ]
-    await ctx.trigger_typing()
+    await ctx.typing()
     if target_user == None or target_user == "":
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send(
             "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
         )
         return
 
     if len(target_user) > 500:
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send("Username is too long!")
         return
 
     if target_user.lower() in lh_cloudy_list:
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send(random.choice(list(lh_cloudy_block_list)))
         return
 
@@ -260,9 +260,9 @@ async def nano_execute(ctx, target_user=None):
     if target_user == None or target_user == "":
         return
 
-    await ctx.trigger_typing()
+    await ctx.typing()
     if len(target_user) > 500:
-        await ctx.trigger_typing()
+        await ctx.typing()
         await ctx.send("Username is too long!")
         return
 

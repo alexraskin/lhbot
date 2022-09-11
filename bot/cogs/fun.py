@@ -102,7 +102,7 @@ class Fun(commands.Cog, name="Fun"):
                 icon_url=f"https://assets.chucknorris.host/img/avatar/chuck-norris.png",
             )
             embed.set_footer(text=f"Category: {category} - https://api.chucknorris.io")
-            await ctx.trigger_typing()
+            await ctx.typing()
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -168,7 +168,7 @@ class Fun(commands.Cog, name="Fun"):
         :return: a random quote from Kanye West.
         """
         response = await self.fetch_url("https://api.kanye.rest")
-        await ctx.trigger_typing()
+        await ctx.typing()
         if response is None:
             await ctx.send("Kanye is busy!")
             return
@@ -194,7 +194,7 @@ class Fun(commands.Cog, name="Fun"):
         :return: a random cat fact from the MeowFact API.
         """
         response = await self.fetch_url("https://meowfacts.herokuapp.com/")
-        await ctx.trigger_typing()
+        await ctx.typing()
         if response is None:
             await ctx.send("Could not find a cat fact!")
             return
@@ -228,7 +228,7 @@ class Fun(commands.Cog, name="Fun"):
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Random Dad Joke", value=joke, inline=True)
             embed.set_footer(text=f"https://icanhazdadjoke.com/")
-            await ctx.trigger_typing()
+            await ctx.typing()
             await ctx.send(embed=embed)
 
     @commands.command(name="animechan", aliases=["animequote"])
@@ -245,7 +245,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send("Could not find an anime quote!")
             return
         else:
-            await ctx.trigger_typing()
+            await ctx.typing()
             quote = str(response["quote"]).strip("[").strip("]")
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Quote", value=quote, inline=True)
@@ -270,7 +270,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send("Could not find a dog fact!")
             return
         else:
-            await ctx.trigger_typing()
+            await ctx.typing()
             fact = response[0]["fact"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.add_field(name="Random Dog Fact:", value=fact, inline=True)
@@ -286,7 +286,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send("Problem getting a Taylor Swift quote!")
             return
         else:
-            await ctx.trigger_typing()
+            await ctx.typing()
             quote = response["quote"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.set_author(
@@ -326,7 +326,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send("No waifu for you!")
             return
         else:
-            await ctx.trigger_typing()
+            await ctx.typing()
             url = response["url"]
             embed = Embed(color=random.randint(0, 0xFFFFFF))
             embed.set_image(url=url)

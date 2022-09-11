@@ -70,14 +70,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
         if not str(guess).lower().startswith("l"):
             embed = Embed(title="Guess not allowed!", color=self.error_color)
-            await ctx.trigger_typing()
+            await ctx.typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
             return
 
         if str(guess).lower() in self.banned_words_list:
             embed = Embed(title="Guess not allowed!", color=self.error_color)
-            await ctx.trigger_typing()
+            await ctx.typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
             return
@@ -88,7 +88,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 title="This has already been guessed 🚨",
                 description=f"LhGuess: {guess}",
             )
-            await ctx.trigger_typing()
+            await ctx.typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("👎")
         else:
@@ -106,7 +106,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 name="Guessed by:", value=pretty_return["guessedBy"], inline=False
             )
             embed.add_field(name="Guess ID:", value=pretty_return["id"], inline=False)
-            await ctx.trigger_typing()
+            await ctx.typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction(random_emoji())
 
@@ -124,7 +124,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
             return
-        await ctx.trigger_typing()
+        await ctx.typing()
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
@@ -159,7 +159,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         print(share)
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.get_url())
-        await ctx.trigger_typing()
+        await ctx.typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
@@ -180,7 +180,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
         embed.set_footer(text=f"Requested by {ctx.message.author}")
-        await ctx.trigger_typing()
+        await ctx.typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
@@ -201,7 +201,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
             return
-        await ctx.trigger_typing()
+        await ctx.typing()
         if not self.client.user_is_superuser(ctx.author):
             embed = Embed(
                 title="You do not have permisson to run this command!",
