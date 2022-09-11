@@ -279,7 +279,7 @@ async def nano_execute(ctx, target_user=None):
     await ctx.send(embed=embed)
 
 
-def setup(client):
+async def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
@@ -288,4 +288,4 @@ def setup(client):
     :return: a dictionary with the following keys:.
 
     """
-    client.add_cog(OverwatchAPI(client))
+    await client.add_cog(OverwatchAPI(client))

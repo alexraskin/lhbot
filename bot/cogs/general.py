@@ -155,9 +155,6 @@ async def info_execute(ctx):
         name="Python Version:", value=f"{platform.python_version()}", inline=True
     )
     embed.add_field(
-        name="Discord.py Version:", value=f"{discord.__version__}", inline=True
-    )
-    embed.add_field(
         name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
     )
     await ctx.send(embed=embed)
@@ -226,7 +223,7 @@ async def on_message_execute(message):
         await message.channel.send("I am a bot, not a human.")
 
 
-def setup(client):
+async def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
@@ -234,4 +231,4 @@ def setup(client):
     :param client: Used to pass in the client object.
     :return: a dictionary that contains the following keys:.
     """
-    client.add_cog(General(client))
+    await client.add_cog(General(client))

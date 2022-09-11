@@ -244,7 +244,7 @@ class Help(commands.Cog):
         self.client.help_command = myHelpCommand()
 
 
-def setup(client):
+async def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
@@ -253,4 +253,4 @@ def setup(client):
     :return: an instance of the class.
 
     """
-    client.add_cog(Help(client))
+    await client.add_cog(Help(client))
