@@ -192,6 +192,17 @@ async def on_command_error(ctx, error):
         commands.CheckFailure: "You don't have the permissions needed to use this command",
         AttributeError: "It's probably due to a spelling error somewhere",
     }
+
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f'This command is on cool down. Please try again in {round(error.retry_after)} {"second" if round(error.retry_after) <= 1 else "seconds"}.'
+        )
+        return
+
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send(f"Command not found, try `{conf.bot_prefix}help` for a list of available commands.")
+        return
+
     try:
         description = "Error: " + error_message[error]
         await ctx.channel.send(
@@ -203,29 +214,6 @@ async def on_command_error(ctx, error):
         capture_exception(e)
         if isinstance(error, commands.CommandNotFound):
             return
-
-
-@client.event
-async def on_message(message):
-    """
-    The on_message function specifically is what allows the bot to recognize messages and respond accordingly.
-    It also checks if the message was sent in a DM channel, which it ignores.
-
-    :param message: Used to get the message content and other information.
-    :return: a "None" object.
-    """
-    if isinstance(message.channel, discord.DMChannel):
-        return
-    await client.process_commands(message)
-
-
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(
-            f"Command on cooldown, retry in {round(error.retry_after)} seconds!"
-        )
-
 
 @client.event
 async def on_command_completion(ctx):

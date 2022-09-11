@@ -30,6 +30,11 @@ class General(commands.Cog, name="General"):
         """
         self.client = client
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        await on_message_execute(message)
+
+    @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
         await info_execute(ctx)
@@ -38,10 +43,6 @@ class General(commands.Cog, name="General"):
     @commands.command(name="ping")
     async def ping(self, ctx):
         await ping_execute(ctx, round(self.client.latency * 1000))
-
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        await on_message_execute(message)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="search", aliases=["lmgtfy", "duck", "duckduckgo", "google"])
@@ -152,6 +153,9 @@ async def info_execute(ctx):
     embed.add_field(name="Prefix:", value=conf.bot_prefix, inline=True)
     embed.add_field(
         name="Python Version:", value=f"{platform.python_version()}", inline=True
+    )
+    embed.add_field(
+        name="Discord.py Version:", value=f"{discord.__version__}", inline=True
     )
     embed.add_field(
         name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
