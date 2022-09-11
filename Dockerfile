@@ -8,6 +8,4 @@ COPY ./ /
 
 RUN pip install -r requirements.txt
 
-HEALTHCHECK CMD discordhealthcheck || exit 1
-
 CMD ["python3", "bot/bot.py"]

@@ -334,7 +334,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send(embed=embed)
 
 
-def setup(client):
+async def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it allows you to use commands in your cogs.
@@ -343,4 +343,4 @@ def setup(client):
     :return: the client object which is your entry point to the API.
 
     """
-    client.add_cog(Fun(client))
+    await client.add_cog(Fun(client))

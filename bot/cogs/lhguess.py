@@ -235,7 +235,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             return
 
 
-def setup(client):
+async def setup(client):
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it's what makes your commands usable.
@@ -243,4 +243,4 @@ def setup(client):
     :param client: Used to access the client's resources.
     :return: a dictionary of information about the bot and server.
     """
-    client.add_cog(LhGuess(client))
+    await client.add_cog(LhGuess(client))
