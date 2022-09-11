@@ -5,7 +5,6 @@ import random
 from functools import lru_cache
 from os import listdir, path
 
-import discordhealthcheck
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from config import Settings
