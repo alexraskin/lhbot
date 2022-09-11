@@ -180,9 +180,9 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Ah, garoto",
             "Hah! Too good",
             "Haha! Served",
-            "Whoo! Check yourself", 
+            "Whoo! Check yourself",
             "Get back",
-            "Push off", 
+            "Push off",
             "Step to this",
         ]
         random.seed(get_time_string())

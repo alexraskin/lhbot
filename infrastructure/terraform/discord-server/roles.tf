@@ -5,7 +5,6 @@ resource "discord_role" "moderator" {
   color       = data.discord_color.green.dec
   hoist       = true
   mentionable = true
-  position    = 1
 }
 
 resource "discord_role" "memeber" {
@@ -15,7 +14,6 @@ resource "discord_role" "memeber" {
   color       = data.discord_color.blue.dec
   hoist       = true
   mentionable = true
-  position    = 2
 }
 
 data "discord_color" "green" {

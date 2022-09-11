@@ -206,25 +206,17 @@ async def on_command_error(ctx, error):
 
 
 @client.event
-async def on_message(message):
-    """
-    The on_message function specifically is what allows the bot to recognize messages and respond accordingly.
-    It also checks if the message was sent in a DM channel, which it ignores.
-
-    :param message: Used to get the message content and other information.
-    :return: a "None" object.
-    """
-    if isinstance(message.channel, discord.DMChannel):
-        return
-    await client.process_commands(message)
-
-
-@client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(
-            f"Command on cooldown, retry in {round(error.retry_after)} seconds!"
-        )
+        if round(error.retry_after) <= 1:
+            await ctx.send(
+                f"This command is on cool down. Please try again in {round(error.retry_after)} second"
+            )
+        else:
+            await ctx.send(
+                f"This command is on cool down. Please try again in {round(error.retry_after)} seconds"
+            )
+        return
 
 
 @client.event

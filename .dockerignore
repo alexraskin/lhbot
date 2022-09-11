@@ -10,3 +10,9 @@ pyproject.toml
 Procfile
 runtime.txt
 infrastructure/terraform/
+Makefile
+tests/
+setup.sh
+LICENSE
+example-files/
+.vscode/
