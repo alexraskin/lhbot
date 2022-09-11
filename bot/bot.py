@@ -192,6 +192,17 @@ async def on_command_error(ctx, error):
         commands.CheckFailure: "You don't have the permissions needed to use this command",
         AttributeError: "It's probably due to a spelling error somewhere",
     }
+
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f'This command is on cool down. Please try again in {round(error.retry_after)} {"second" if round(error.retry_after) <= 1 else "seconds"}.'
+        )
+        return
+
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send(f"Command not found, try `{conf.bot_prefix}help` for a list of available commands.")
+        return
+
     try:
         description = "Error: " + error_message[error]
         await ctx.channel.send(
@@ -203,21 +214,6 @@ async def on_command_error(ctx, error):
         capture_exception(e)
         if isinstance(error, commands.CommandNotFound):
             return
-
-
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        if round(error.retry_after) <= 1:
-            await ctx.send(
-                f"This command is on cool down. Please try again in {round(error.retry_after)} second"
-            )
-        else:
-            await ctx.send(
-                f"This command is on cool down. Please try again in {round(error.retry_after)} seconds"
-            )
-        return
-
 
 @client.event
 async def on_command_completion(ctx):
