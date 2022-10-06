@@ -5,8 +5,9 @@ from typing import Optional, Union
 import boto3
 import botocore
 from botocore.exceptions import ClientError
-from config import Settings
 from sentry_sdk import capture_exception
+
+from config import Settings
 
 
 @lru_cache()
