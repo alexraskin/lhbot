@@ -34,10 +34,10 @@ A few things you will need:
 
 Take a look in the `/example-files` folder for more information.
 
-The bot will look for all these environment variables [in this file](https://github.com/alexraskin/lhbot/blob/main/infrastructure/terraform/shared-envs.tf)
+The bot will look for all these environment variables [in this file](hhttps://github.com/alexraskin/lhbot/blob/main/infrastructure/terraform/bot/shared-envs.tf)
 
 1. Clone the repository
-2. Change `dir` to `infrastructure/terraform`
+2. Change `dir` to `infrastructure/terraform/bot`
 3. Create a `terraform.tfvars` file
 4. Run `terraform init`
 5. Run `terraform apply`
@@ -53,11 +53,9 @@ Docker
 - `docker run -it lhbot:latest` 
 
 Poetry
-- `poetry install`
-- `poetry run bot/bot.py`
+- `make install`
+- `make run`
 ___
 ### Testing
 We tried to make some tests for the bot. It is not perfect, but it is better than nothing.
-- `cd tests`  
-  
-- `poetry run pytest`
+- `make test`
