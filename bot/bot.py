@@ -27,6 +27,7 @@ sentry_sdk.init(conf.sentry_dsn, traces_sample_rate=1.0)
 
 handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
 
+
 class LhBot(AutoShardedBot):
     def __init__(self, *args, **options):
         """
