@@ -7,17 +7,21 @@ from os import listdir, path
 
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
-from config import Settings
 from discord import AllowedMentions, Color, Embed, Game, Intents, Status
 from discord import __version__ as discord_version
 from discord.ext import commands, tasks
 from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
+
+from config import Settings
 from utils.clear_dir import clean_cache
 
 
 @lru_cache()
 def settings():
+    """
+    Load the settings from the config file.
+    """
     return Settings()
 
 
@@ -29,6 +33,9 @@ handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w"
 
 
 class LhBot(AutoShardedBot):
+    """
+    The Bot class is a subclass of the AutoShardedBot class.
+    """
     def __init__(self, *args, **options):
         """
         The __init__ function is the constructor for a class.
@@ -58,13 +65,13 @@ class LhBot(AutoShardedBot):
 
     async def setup_hook(self):
         print("Loading Extensions:")
-        STARTUP_EXTENSIONS = []
+        startup_extensions = []
         for file in listdir(path.join(path.dirname(__file__), "cogs/")):
             filename, ext = path.splitext(file)
             if ".py" in ext:
-                STARTUP_EXTENSIONS.append(f"cogs.{filename}")
+                startup_extensions.append(f"cogs.{filename}")
 
-        for extension in reversed(STARTUP_EXTENSIONS):
+        for extension in reversed(startup_extensions):
             try:
                 print("loading", extension)
                 await self.load_extension(f"{extension}")
@@ -86,8 +93,8 @@ class LhBot(AutoShardedBot):
         """
         try:
             user_roles = [role.id for role in user.roles]
-        except AttributeError as e:
-            capture_exception(e)
+        except AttributeError as error:
+            capture_exception(error)
             return False
         permitted_roles = conf.admin_roles
         return any(role in permitted_roles for role in user_roles)
@@ -185,7 +192,9 @@ async def on_command_error(ctx, error):
 
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send(
-            f'This command is on cool down. Please try again in {round(error.retry_after)} {"second" if round(error.retry_after) <= 1 else "seconds"}.'
+            "This command is on cool down."
+            + f"Please try again in {round(error.retry_after)}"
+            + f'{"second" if round(error.retry_after) <= 1 else "seconds"}.'
         )
         print(
             f"Executed {executed_command} command in {ctx.guild.name}"
@@ -204,8 +213,9 @@ async def on_command_error(ctx, error):
         await ctx.channel.send(
             embed=Embed(description=description, color=Color.from_rgb(214, 11, 11))
         )
-    except KeyError as e:
-        capture_exception(e)
+    except KeyError as error:
+        logging.error(error)
+        capture_exception(error)
         if isinstance(error, commands.CommandNotFound):
             return
 
@@ -213,7 +223,7 @@ async def on_command_error(ctx, error):
 @client.event
 async def on_command_completion(ctx):
     """
-    The on_command_completion function specifically tracks the commands that are executed in each server.
+    The on_command_completion function tracks the commands that are executed in each server.
     It also prints out the command name and server name to a text file called "command_logs.txt".
 
     :param ctx: Used to access the context of the command.
