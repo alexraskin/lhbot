@@ -5,7 +5,9 @@ import random
 from functools import lru_cache
 from os import listdir, path
 
+
 import sentry_sdk
+import motor.motor_asyncio
 from aiohttp import ClientSession, ClientTimeout
 from discord import AllowedMentions, Color, Embed, Game, Intents, Status
 from discord import __version__ as discord_version
@@ -57,10 +59,12 @@ class LhBot(AutoShardedBot):
         self.session = ClientSession(
             timeout=ClientTimeout(total=30), headers=self.headers
         )
+        self.db_client = motor.motor_asyncio.AsyncIOMotorClient(conf.database_url)
         await super().start(*args, **kwargs)
 
     async def close(self):
         await self.session.close()
+        await self.db_client.close()
         await super().close()
 
     async def setup_hook(self):

@@ -4,17 +4,12 @@ from bson.objectid import ObjectId
 from discord import Embed
 from discord.ext import commands, tasks
 
-from database.db import db_client
 from utils.banwords import banned_words
 from utils.emojis import random_emoji
 from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
 from utils.return_helper import helper
 from utils.s3_upload import S3Upload
-
-database = db_client.lhbot
-
-collection = database.get_collection("lhbot_collection")
 
 
 class LhGuess(commands.Cog, name="LhGuess"):
@@ -33,7 +28,10 @@ class LhGuess(commands.Cog, name="LhGuess"):
         self.hints = lh_hints.split("\n")
         self.error_color = 0xE74C3C
         self.success_color = 0x42F56C
+        self.database = self.client.db_client.lhbot
+        self.collection = self.database.get_collection("lhbot_collection")
         self.load_collection_list.start()
+        
 
     @tasks.loop(seconds=30)
     async def load_collection_list(self):
@@ -45,7 +43,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         :return: a list of all the guesses in the collection.
         """
         self.guess_list = []
-        async for guess in collection.find():
+        async for guess in self.collection.find():
             data = helper(guess)
             self.guess_list.append(
                 {"guess": data["guess"], "guessedBy": data["guessedBy"]}
@@ -83,7 +81,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             await embed_message.add_reaction("❌")
             return
 
-        guessed = await collection.count_documents({"lhguess": str(guess).lower()})
+        guessed = await self.collection.count_documents({"lhguess": str(guess).lower()})
         if guessed > 0:
             embed = Embed(
                 title="This has already been guessed 🚨",
@@ -97,8 +95,8 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 "lhguess": str(guess).lower(),
                 "guessedBy": str(ctx.message.author),
             }
-            new_guess = await collection.insert_one(guess_dict)
-            return_guess = await collection.find_one({"_id": new_guess.inserted_id})
+            new_guess = await self.collection.insert_one(guess_dict)
+            return_guess = await self.collection.find_one({"_id": new_guess.inserted_id})
             pretty_return = helper(return_guess)
             embed = Embed(color=self.success_color)
             embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
@@ -212,7 +210,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
-        guess = await collection.find_one({"_id": ObjectId(guess_id)})
+        guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
 
         if not guess:
             embed = Embed(
@@ -230,7 +228,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 name="Succesfully Deleted LhGuess:", value=guess_id, inline=True
             )
             embed.set_footer(text=f"Requested by {ctx.message.author}")
-            await collection.delete_one({"_id": ObjectId(guess_id)})
+            await self.collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
