@@ -9,7 +9,7 @@ variable "aws_region" {
 }
 
 variable "heroku_email" {
-  type    = string
+  type        = string
   description = "Heroku account email"
 }
 
