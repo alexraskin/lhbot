@@ -95,19 +95,4 @@ data "aws_iam_policy_document" "lhbot_bucket_policy" {
     resources = ["arn:aws:s3:::lhbot",
     "arn:aws:s3:::lhbot/*"]
   }
-
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-    }
-    sid    = "KMSdecrypt"
-    effect = "Allow"
-    actions = [
-      "kms:Decrypt",
-      "kms:Encrypt",
-      "kms:GenerateDataKey",
-    ]
-    resources = ["*"]
-  }
 }
