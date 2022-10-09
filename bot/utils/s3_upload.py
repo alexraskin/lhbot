@@ -5,9 +5,8 @@ from typing import Optional, Union
 import boto3
 import botocore
 from botocore.exceptions import ClientError
-from sentry_sdk import capture_exception
-
 from config import Settings
+from sentry_sdk import capture_exception
 
 
 @lru_cache()
@@ -46,8 +45,8 @@ class S3Upload:
                 object_name,
                 ExtraArgs={"ACL": "public-read"},
             )
-        except ClientError as e:
-            capture_exception(e)
+        except ClientError as error:
+            capture_exception(error)
             return False
         return True
 
@@ -65,6 +64,6 @@ class S3Upload:
                 Params={"Bucket": self.s3_bucket_name, "Key": self.filename},
             )
             return str(object_url)
-        except ClientError as e:
-            capture_exception(e)
+        except ClientError as error:
+            capture_exception(error)
             return False

@@ -3,7 +3,6 @@ import random
 from bson.objectid import ObjectId
 from discord import Embed
 from discord.ext import commands, tasks
-
 from utils.banwords import banned_words
 from utils.emojis import random_emoji
 from utils.generate_pdf import PdfReport
@@ -31,7 +30,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         self.database = self.client.db_client.lhbot
         self.collection = self.database.get_collection("lhbot_collection")
         self.load_collection_list.start()
-        
 
     @tasks.loop(seconds=30)
     async def load_collection_list(self):
@@ -96,7 +94,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 "guessedBy": str(ctx.message.author),
             }
             new_guess = await self.collection.insert_one(guess_dict)
-            return_guess = await self.collection.find_one({"_id": new_guess.inserted_id})
+            return_guess = await self.collection.find_one(
+                {"_id": new_guess.inserted_id}
+            )
             pretty_return = helper(return_guess)
             embed = Embed(color=self.success_color)
             embed.set_author(name="🛡️ LhGuess added to the Database 🔥")
@@ -147,14 +147,13 @@ class LhGuess(commands.Cog, name="LhGuess"):
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
             return
-        print("report ran")
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
         print(report.filename)
         report.generate()
         share = S3Upload(report.filename)
-        share.upload()
+        share.upload_file()
         print(share)
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.get_url())

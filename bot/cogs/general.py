@@ -8,7 +8,6 @@ from aiohttp import ContentTypeError
 from discord import DMChannel, Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
-
 from utils.bot_utils import get_year_string
 
 sys.path.append("../bot")

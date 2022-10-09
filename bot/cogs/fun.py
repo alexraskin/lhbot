@@ -6,7 +6,6 @@ from typing import Union
 from discord import Embed
 from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
-
 from utils.bot_utils import get_time_string
 
 sys.path.append("../bot")

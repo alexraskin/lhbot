@@ -70,6 +70,14 @@ resource "aws_s3_bucket_policy" "lhbot_bucket_policy" {
   policy = data.aws_iam_policy_document.lhbot_bucket_policy.json
 }
 
+resource "aws_s3_bucket_public_access_block" "lhbot_reports_bucket_public_access_block" {
+  bucket = aws_s3_bucket.lhbot_reports_bucket.id
+
+  block_public_acls   = false
+  block_public_policy = false
+}
+
+
 data "aws_iam_policy_document" "lhbot_bucket_policy" {
   statement {
     principals {
@@ -86,5 +94,20 @@ data "aws_iam_policy_document" "lhbot_bucket_policy" {
     ]
     resources = ["arn:aws:s3:::lhbot",
     "arn:aws:s3:::lhbot/*"]
+  }
+
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+    sid    = "KMSdecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+    ]
+    resources = ["*"]
   }
 }

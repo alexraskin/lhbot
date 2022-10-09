@@ -5,17 +5,15 @@ import random
 from functools import lru_cache
 from os import listdir, path
 
-
-import sentry_sdk
 import motor.motor_asyncio
+import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
+from config import Settings
 from discord import AllowedMentions, Color, Embed, Game, Intents, Status
 from discord import __version__ as discord_version
 from discord.ext import commands, tasks
 from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
-
-from config import Settings
 from utils.clear_dir import clean_cache
 
 
@@ -38,6 +36,7 @@ class LhBot(AutoShardedBot):
     """
     The Bot class is a subclass of the AutoShardedBot class.
     """
+
     def __init__(self, *args, **options):
         """
         The __init__ function is the constructor for a class.
@@ -51,6 +50,8 @@ class LhBot(AutoShardedBot):
         """
         super().__init__(*args, **options)
         self.session = None
+        self.db_client = None
+        self.conf = conf
         self.status = Status.online
         self.user_agent = f"{conf.bot_name}/{conf.bot_version} ({platform.system()})"
         self.headers = {"User-Agent": self.user_agent}
@@ -59,12 +60,11 @@ class LhBot(AutoShardedBot):
         self.session = ClientSession(
             timeout=ClientTimeout(total=30), headers=self.headers
         )
-        self.db_client = motor.motor_asyncio.AsyncIOMotorClient(conf.database_url)
+        self.db_client = motor.motor_asyncio.AsyncIOMotorClient(self.conf.database_url)
         await super().start(*args, **kwargs)
 
     async def close(self):
         await self.session.close()
-        await self.db_client.close()
         await super().close()
 
     async def setup_hook(self):
@@ -100,7 +100,7 @@ class LhBot(AutoShardedBot):
         except AttributeError as error:
             capture_exception(error)
             return False
-        permitted_roles = conf.admin_roles
+        permitted_roles = self.conf.admin_roles
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user):
@@ -111,7 +111,7 @@ class LhBot(AutoShardedBot):
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
         """
-        superusers = conf.superusers
+        superusers = self.conf.superusers
         return user.id in superusers
 
 
@@ -197,7 +197,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send(
             "This command is on cool down."
-            + f"Please try again in {round(error.retry_after)}"
+            + f" Please try again in {round(error.retry_after)} "
             + f'{"second" if round(error.retry_after) <= 1 else "seconds"}.'
         )
         print(

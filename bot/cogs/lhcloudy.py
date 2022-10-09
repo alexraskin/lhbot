@@ -5,10 +5,7 @@ from discord import Embed
 from discord.ext import commands
 
 sys.path.append("../bot/")
-from config import Settings
 from utils.emojis import random_emoji
-
-conf = Settings()
 
 
 class LhCloudy(commands.Cog, name="LhCloudy"):
