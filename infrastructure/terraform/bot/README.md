@@ -56,7 +56,6 @@ No modules.
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | The name of the Heroku app | `string` | n/a | yes |
 | <a name="input_app_quantity"></a> [app\_quantity](#input\_app\_quantity) | Number of dynos in your Heroku formation | `number` | `1` | no |
 | <a name="input_app_region"></a> [app\_region](#input\_app\_region) | The region to deploy the app to | `string` | n/a | yes |
-| <a name="input_app_version"></a> [app\_version](#input\_app\_version) | Version of the app | `string` | n/a | yes |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS profile to use | `string` | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use | `string` | n/a | yes |
 | <a name="input_collaborator_email"></a> [collaborator\_email](#input\_collaborator\_email) | Email of the collaborator | `string` | n/a | yes |
@@ -64,6 +63,7 @@ No modules.
 | <a name="input_database_user"></a> [database\_user](#input\_database\_user) | Mongodb Atlas database user | `string` | n/a | yes |
 | <a name="input_dyno_size"></a> [dyno\_size](#input\_dyno\_size) | Size of dyno | `string` | n/a | yes |
 | <a name="input_dyno_type"></a> [dyno\_type](#input\_dyno\_type) | Type of dyno | `string` | n/a | yes |
+| <a name="input_git_version_tag"></a> [git\_version\_tag](#input\_git\_version\_tag) | Git version tag to deploy | `string` | n/a | yes |
 | <a name="input_heroku_api_key"></a> [heroku\_api\_key](#input\_heroku\_api\_key) | Heroku API Key | `string` | n/a | yes |
 | <a name="input_heroku_email"></a> [heroku\_email](#input\_heroku\_email) | Heroku account email | `string` | n/a | yes |
 | <a name="input_heroku_enviorment_vars"></a> [heroku\_enviorment\_vars](#input\_heroku\_enviorment\_vars) | Environment variables for Heroku app | `map(string)` | n/a | yes |
@@ -83,7 +83,6 @@ No modules.
 | <a name="input_sentry_slug"></a> [sentry\_slug](#input\_sentry\_slug) | Sentry slug | `string` | n/a | yes |
 | <a name="input_sentry_team_name"></a> [sentry\_team\_name](#input\_sentry\_team\_name) | Sentry team name | `string` | n/a | yes |
 | <a name="input_sentry_token"></a> [sentry\_token](#input\_sentry\_token) | Sentry token | `string` | n/a | yes |
-| <a name="input_source_code_url"></a> [source\_code\_url](#input\_source\_code\_url) | URL to the source code | `string` | n/a | yes |
 | <a name="input_webhook_url"></a> [webhook\_url](#input\_webhook\_url) | URL to the webhook | `string` | n/a | yes |
 
 ## Outputs

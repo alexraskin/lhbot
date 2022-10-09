@@ -13,6 +13,10 @@ provider "heroku" {
   api_key = var.heroku_api_key
 }
 
+locals {
+  source_code_url = "https://github.com/alexraskin/lhbot/archive/refs/tags/${var.git_version_tag}.tar.gz"
+}
+
 resource "heroku_app" "lhbot" {
   name                  = var.app_name
   region                = var.app_region
@@ -24,8 +28,8 @@ resource "heroku_build" "lhbot" {
   app_id = heroku_app.lhbot.id
 
   source {
-    url     = var.source_code_url
-    version = var.app_version
+    url     = local.source_code_url
+    version = var.git_version_tag
   }
 
   lifecycle {
@@ -51,7 +55,7 @@ resource "heroku_app_release" "lhbot" {
 
 resource "heroku_slug" "lhbot" {
   app_id   = heroku_app.lhbot.id
-  file_url = var.source_code_url
+  file_url = local.source_code_url
 
   process_types = {
     worker = "python bot/bot.py"
