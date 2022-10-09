@@ -3,6 +3,7 @@
 .PHONY: install
 .PHONY: test
 .PHONY: terraform-fmt
+.PHONY: pre-commit
 
 style:
 	black .
@@ -20,3 +21,6 @@ install:
 
 terraform-fmt:
 	terraform fmt -recursive
+
+pre-commit:
+	pre-commit run --all

@@ -9,8 +9,8 @@ variable "aws_region" {
 }
 
 variable "heroku_email" {
-  type    = string
-  default = "Heroku account email"
+  type        = string
+  description = "Heroku account email"
 }
 
 variable "heroku_api_key" {

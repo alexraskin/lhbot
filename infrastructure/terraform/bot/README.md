@@ -65,7 +65,7 @@ No modules.
 | <a name="input_dyno_size"></a> [dyno\_size](#input\_dyno\_size) | Size of dyno | `string` | n/a | yes |
 | <a name="input_dyno_type"></a> [dyno\_type](#input\_dyno\_type) | Type of dyno | `string` | n/a | yes |
 | <a name="input_heroku_api_key"></a> [heroku\_api\_key](#input\_heroku\_api\_key) | Heroku API Key | `string` | n/a | yes |
-| <a name="input_heroku_email"></a> [heroku\_email](#input\_heroku\_email) | n/a | `string` | `"Heroku account email"` | no |
+| <a name="input_heroku_email"></a> [heroku\_email](#input\_heroku\_email) | Heroku account email | `string` | n/a | yes |
 | <a name="input_heroku_enviorment_vars"></a> [heroku\_enviorment\_vars](#input\_heroku\_enviorment\_vars) | Environment variables for Heroku app | `map(string)` | n/a | yes |
 | <a name="input_heroku_stack"></a> [heroku\_stack](#input\_heroku\_stack) | Stack for your Heroku app | `string` | n/a | yes |
 | <a name="input_lh_bot_reports_s3_bucket"></a> [lh\_bot\_reports\_s3\_bucket](#input\_lh\_bot\_reports\_s3\_bucket) | S3 bucket for the reports | `string` | n/a | yes |
