@@ -1,5 +1,3 @@
-import sys
-from functools import lru_cache
 from typing import Union
 
 from aiohttp import ContentTypeError
@@ -7,16 +5,7 @@ from discord import Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
 
-sys.path.append("../bot")
-from config import Settings
 
-
-@lru_cache()
-def settings():
-    return Settings()
-
-
-conf = settings()
 
 
 class Gif(commands.Cog, name="Gif"):

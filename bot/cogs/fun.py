@@ -1,24 +1,10 @@
 import random
-import sys
-from functools import lru_cache
 from typing import Union
 
 from discord import Embed
 from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
 from utils.bot_utils import get_time_string
-
-sys.path.append("../bot")
-from config import Settings
-
-
-@lru_cache()
-def settings():
-    return Settings()
-
-
-conf = settings()
-
 
 class Fun(commands.Cog, name="Fun"):
     def __init__(self, client):
@@ -279,7 +265,7 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="tswift", aliases=["ts", "taylor", "taylorswift"])
-    async def random_taylor_swift_quote(self, ctx):
+    async def random_taylor_swift_quote(self, ctx) -> Embed:
         """ """
         response = await self.fetch_url("https://taylorswiftapi.herokuapp.com/get")
         if response is None:

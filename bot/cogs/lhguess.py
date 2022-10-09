@@ -12,7 +12,7 @@ from utils.s3_upload import S3Upload
 
 
 class LhGuess(commands.Cog, name="LhGuess"):
-    def __init__(self, client):
+    def __init__(self, client) -> None:
         """
         The __init__ function is used to initialize the class. It's called when an instance of a class is created, and it
         creates space in memory for the new object. In this case, it creates space for self (the bot) and then initializes
@@ -32,7 +32,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         self.load_collection_list.start()
 
     @tasks.loop(seconds=30)
-    async def load_collection_list(self):
+    async def load_collection_list(self) -> list:
         """
         The load_collection_list function specifically loads the collection list from the database and stores it in a variable.
         It then iterates through each guess in the collection and appends them to a list.
@@ -150,11 +150,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
-        print(report.filename)
         report.generate()
         share = S3Upload(report.filename)
         share.upload_file()
-        print(share)
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.get_url())
         await ctx.typing()
@@ -233,7 +231,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             return
 
 
-async def setup(client):
+async def setup(client) -> None:
     """
     The setup function is used to register the commands that will be used in the bot.
     This function is run when you load a cog, and it's what makes your commands usable.
