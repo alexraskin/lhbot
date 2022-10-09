@@ -6,8 +6,6 @@ from discord.ext import commands
 from sentry_sdk import capture_exception
 
 
-
-
 class Gif(commands.Cog, name="Gif"):
     def __init__(self, client) -> None:
         self.client = client
@@ -23,7 +21,7 @@ class Gif(commands.Cog, name="Gif"):
         """
         try:
             async with self.session.get(
-                f"{self.base_url}randomid?api_key={self.client.conf.giphy_api_key}"
+                f"{self.base_url}randomid?api_key={self.client.config.giphy_api_key}"
             ) as response:
                 if response.status != 200:
                     return False
@@ -53,7 +51,7 @@ class Gif(commands.Cog, name="Gif"):
         """
         try:
             async with self.client.session.get(
-                f"{self.base_url}gifs/random?api_key={self.client.conf.giphy_api_key}"
+                f"{self.base_url}gifs/random?api_key={self.client.config.giphy_api_key}"
                 + f"&tag={search}&rating=r&random_id={await self.get_random_giphy_user_id()}"
             ) as response:
                 if response.status == 200:

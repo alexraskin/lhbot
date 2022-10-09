@@ -24,9 +24,10 @@ def settings():
     """
     return Settings()
 
-conf = settings()
 
-sentry_sdk.init(conf.sentry_dsn, traces_sample_rate=1.0)
+config = settings()
+
+sentry_sdk.init(config.sentry_dsn, traces_sample_rate=1.0)
 
 
 class LhBot(AutoShardedBot):
@@ -48,16 +49,20 @@ class LhBot(AutoShardedBot):
         super().__init__(*args, **options)
         self.session = None
         self.db_client = None
-        self.conf = conf
+        self.config = config
         self.status = Status.online
-        self.user_agent = f"{conf.bot_name}/{conf.bot_version}:{platform.system()}"
+        self.user_agent = (
+            f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
+        )
         self.headers = {"User-Agent": self.user_agent}
 
     async def start(self, *args, **kwargs) -> None:
         self.session = ClientSession(
             timeout=ClientTimeout(total=30), headers=self.headers
         )
-        self.db_client = motor.motor_asyncio.AsyncIOMotorClient(self.conf.database_url)
+        self.db_client = motor.motor_asyncio.AsyncIOMotorClient(
+            self.config.database_url
+        )
         await super().start(*args, **kwargs)
 
     async def close(self) -> None:
@@ -97,7 +102,7 @@ class LhBot(AutoShardedBot):
         except AttributeError as error:
             capture_exception(error)
             return False
-        permitted_roles = self.conf.admin_roles
+        permitted_roles = self.config.admin_roles
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user) -> bool:
@@ -108,12 +113,12 @@ class LhBot(AutoShardedBot):
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
         """
-        superusers = self.conf.superusers
+        superusers = self.config.superusers
         return user.id in superusers
 
 
 client = LhBot(
-    command_prefix=conf.bot_prefix,
+    command_prefix=config.bot_prefix,
     description="Hi I am LhBot!",
     max_messages=15000,
     intents=Intents.all(),
@@ -134,11 +139,11 @@ async def status_task() -> None:
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{conf.bot_prefix}help",
-        f"{conf.bot_prefix}info",
-        f"{conf.bot_prefix}dog",
-        f"{conf.bot_prefix}cat",
-        f"{conf.bot_prefix}meme",
+        f"{config.bot_prefix}help",
+        f"{config.bot_prefix}info",
+        f"{config.bot_prefix}dog",
+        f"{config.bot_prefix}cat",
+        f"{config.bot_prefix}meme",
     ]
     await client.change_presence(activity=Game(random.choice(statuses)))
 
@@ -163,7 +168,7 @@ async def on_ready() -> bool:
 
     :return: a string with the details of our main guild.
     """
-    main_id = conf.main_guild
+    main_id = config.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     logging.info(f"{client.user.name} started successfully")
     status_task.start()
@@ -200,7 +205,7 @@ async def on_command_error(ctx, error) -> None:
 
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(
-            f"Command not found, try `{conf.bot_prefix}help` for a list of available commands."
+            f"Command not found, try `{config.bot_prefix}help` for a list of available commands."
         )
         return
 
@@ -233,5 +238,5 @@ async def on_command_completion(ctx):
     )
 
 
-client.run(token=conf.bot_token, reconnect=True, log_handler=None)
+client.run(token=config.bot_token, reconnect=True, log_handler=None)
 logging.info("LhBot has exited")

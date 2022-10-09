@@ -8,7 +8,7 @@ from utils.emojis import random_emoji
 from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
 from utils.return_helper import helper
-from utils.s3_upload import S3Upload
+from utils.s3_client import S3Upload
 
 
 class LhGuess(commands.Cog, name="LhGuess"):

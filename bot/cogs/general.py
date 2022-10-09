@@ -10,11 +10,6 @@ from discord.ext import commands
 from sentry_sdk import capture_exception
 from utils.bot_utils import get_year_string
 
-sys.path.append("../bot")
-from config import Settings
-
-conf = Settings()
-
 
 class General(commands.Cog, name="General"):
     def __init__(self, client):
@@ -36,8 +31,32 @@ class General(commands.Cog, name="General"):
 
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="info", aliases=["botinfo"])
-    async def info(self, ctx):
-        await info_execute(ctx)
+    async def info_execute(self, ctx):
+        """
+        The info function specifically tells the user about the bot,
+        and gives them a link to the github page.
+
+        :param ctx: Used to get the context of where the command was called.
+        :return: an embed with the bot's information.
+        """
+        embed = Embed(description="LhBot", color=0x42F56C)
+        embed.set_author(
+            name="Bot Information",
+            icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
+        )
+        embed.add_field(
+            name="Owners:", value=str("reinfrog#1738, PayMeToThrow#2129"), inline=True
+        )
+        embed.add_field(
+            name="Prefix:", value=self.client.config.bot_prefix, inline=True
+        )
+        embed.add_field(
+            name="Python Version:", value=f"{platform.python_version()}", inline=True
+        )
+        embed.add_field(
+            name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
+        )
+        await ctx.send(embed=embed)
 
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="ping")
@@ -132,32 +151,6 @@ class General(commands.Cog, name="General"):
             sanitized = sanitized[: 1950 - len(url)] + "\n[...]"
         await ctx.typing()
         await ctx.send(url + f"```python\n{sanitized}\n```")
-
-
-async def info_execute(ctx):
-    """
-    The info function specifically tells the user about the bot,
-    and gives them a link to the github page.
-
-    :param ctx: Used to get the context of where the command was called.
-    :return: an embed with the bot's information.
-    """
-    embed = Embed(description="LhBot", color=0x42F56C)
-    embed.set_author(
-        name="Bot Information",
-        icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
-    )
-    embed.add_field(
-        name="Owners:", value=str("reinfrog#1738, PayMeToThrow#2129"), inline=True
-    )
-    embed.add_field(name="Prefix:", value=conf.bot_prefix, inline=True)
-    embed.add_field(
-        name="Python Version:", value=f"{platform.python_version()}", inline=True
-    )
-    embed.add_field(
-        name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
-    )
-    await ctx.send(embed=embed)
 
 
 async def ping_execute(ctx, latency):
