@@ -1,20 +1,20 @@
 import logging
-import os
 import platform
 import random
 from functools import lru_cache
 from os import listdir, path
 
+import motor.motor_asyncio
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
+from config import Settings
 from discord import AllowedMentions, Color, Embed, Game, Intents, Status
-from discord import __version__ as discord_version
 from discord.ext import commands, tasks
 from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
-
-from config import Settings
 from utils.clear_dir import clean_cache
+
+logging.basicConfig(level=logging.INFO)
 
 
 @lru_cache()
@@ -25,18 +25,17 @@ def settings():
     return Settings()
 
 
-conf = settings()
+config = settings()
 
-sentry_sdk.init(conf.sentry_dsn, traces_sample_rate=1.0)
-
-handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
+sentry_sdk.init(config.sentry_dsn, traces_sample_rate=1.0)
 
 
 class LhBot(AutoShardedBot):
     """
     The Bot class is a subclass of the AutoShardedBot class.
     """
-    def __init__(self, *args, **options):
+
+    def __init__(self, *args, **options) -> None:
         """
         The __init__ function is the constructor for a class.
         It is called when an instance of a class is created.
@@ -49,22 +48,29 @@ class LhBot(AutoShardedBot):
         """
         super().__init__(*args, **options)
         self.session = None
+        self.db_client = None
+        self.config = config
         self.status = Status.online
-        self.user_agent = f"{conf.bot_name}/{conf.bot_version} ({platform.system()})"
+        self.user_agent = (
+            f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
+        )
         self.headers = {"User-Agent": self.user_agent}
 
-    async def start(self, *args, **kwargs):
+    async def start(self, *args, **kwargs) -> None:
         self.session = ClientSession(
             timeout=ClientTimeout(total=30), headers=self.headers
         )
+        self.db_client = motor.motor_asyncio.AsyncIOMotorClient(
+            self.config.database_url
+        )
         await super().start(*args, **kwargs)
 
-    async def close(self):
+    async def close(self) -> None:
         await self.session.close()
         await super().close()
 
-    async def setup_hook(self):
-        print("Loading Extensions:")
+    async def setup_hook(self) -> None:
+        logging.info("Loading Extensions:")
         startup_extensions = []
         for file in listdir(path.join(path.dirname(__file__), "cogs/")):
             filename, ext = path.splitext(file)
@@ -73,14 +79,14 @@ class LhBot(AutoShardedBot):
 
         for extension in reversed(startup_extensions):
             try:
-                print("loading", extension)
+                logging.info(f"Loading: {extension}")
                 await self.load_extension(f"{extension}")
             except Exception as error:
                 capture_exception(error)
                 exc = f"{type(error).__name__}: {error}"
-                print(f"Failed to load extension {extension}\n{exc}")
+                logging.error(f"Failed to load extension {extension}\n{exc}")
 
-    def user_is_admin(self, user):
+    def user_is_admin(self, user) -> bool:
         """
         The user_is_admin function specifically checks
         if the user has a role that is in the permitted_roles list.
@@ -96,10 +102,10 @@ class LhBot(AutoShardedBot):
         except AttributeError as error:
             capture_exception(error)
             return False
-        permitted_roles = conf.admin_roles
+        permitted_roles = self.config.admin_roles
         return any(role in permitted_roles for role in user_roles)
 
-    def user_is_superuser(self, user):
+    def user_is_superuser(self, user) -> bool:
         """
         The user_is_superuser function specifically checks if the user is a superuser.
 
@@ -107,12 +113,12 @@ class LhBot(AutoShardedBot):
         :param user: Used to check if the user is a superuser.
         :return: True if the user is a superuser and False otherwise.
         """
-        superusers = conf.superusers
+        superusers = self.config.superusers
         return user.id in superusers
 
 
 client = LhBot(
-    command_prefix=conf.bot_prefix,
+    command_prefix=config.bot_prefix,
     description="Hi I am LhBot!",
     max_messages=15000,
     intents=Intents.all(),
@@ -121,7 +127,7 @@ client = LhBot(
 
 
 @tasks.loop(minutes=1.0)
-async def status_task():
+async def status_task() -> None:
     """
     The status_task function is a loop that will run every 60 seconds.
     It will randomly select one of the statuses from the list
@@ -133,17 +139,17 @@ async def status_task():
         "Overwatch",
         "Overwatch 2",
         "Diffing LhCloudy",
-        f"{conf.bot_prefix}help",
-        f"{conf.bot_prefix}info",
-        f"{conf.bot_prefix}dog",
-        f"{conf.bot_prefix}cat",
-        f"{conf.bot_prefix}meme",
+        f"{config.bot_prefix}help",
+        f"{config.bot_prefix}info",
+        f"{config.bot_prefix}dog",
+        f"{config.bot_prefix}cat",
+        f"{config.bot_prefix}meme",
     ]
     await client.change_presence(activity=Game(random.choice(statuses)))
 
 
 @tasks.loop(minutes=60)
-async def clean_dir():
+async def clean_dir() -> None:
     """
     The clean_dir function is used to clean the directory of all files that are not
     .py, .txt or .json files.
@@ -154,7 +160,7 @@ async def clean_dir():
 
 
 @client.event
-async def on_ready():
+async def on_ready() -> bool:
     """
     The on_ready function specifically accomplishes the following:
         - Sets up a status task that changes the bot's status every 60 seconds.
@@ -162,21 +168,16 @@ async def on_ready():
 
     :return: a string with the details of our main guild.
     """
-    main_id = conf.main_guild
+    main_id = config.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
-    print(f"Discord.py API version: {discord_version}")
-    print(f"Python version: {platform.python_version()}")
-    print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
-    print("-------------------")
-    print("\nMain guild:", client.main_guild.name)
-    print(f"\n{client.user.name} started successfully")
+    logging.info(f"{client.user.name} started successfully")
     status_task.start()
     clean_dir.start()
     return True
 
 
 @client.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx, error) -> None:
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
@@ -193,10 +194,10 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send(
             "This command is on cool down."
-            + f"Please try again in {round(error.retry_after)}"
+            + f" Please try again in {round(error.retry_after)} "
             + f'{"second" if round(error.retry_after) <= 1 else "seconds"}.'
         )
-        print(
+        logging.info(
             f"Executed {executed_command} command in {ctx.guild.name}"
             + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
         )
@@ -204,7 +205,7 @@ async def on_command_error(ctx, error):
 
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(
-            f"Command not found, try `{conf.bot_prefix}help` for a list of available commands."
+            f"Command not found, try `{config.bot_prefix}help` for a list of available commands."
         )
         return
 
@@ -224,7 +225,6 @@ async def on_command_error(ctx, error):
 async def on_command_completion(ctx):
     """
     The on_command_completion function tracks the commands that are executed in each server.
-    It also prints out the command name and server name to a text file called "command_logs.txt".
 
     :param ctx: Used to access the context of the command.
     :return: a string of the executed command.
@@ -232,11 +232,11 @@ async def on_command_completion(ctx):
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
-    print(
+    logging.error(
         f"Executed {executed_command} command in {ctx.guild.name}"
         + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
 
 
-client.run(token=conf.bot_token, reconnect=True, log_handler=handler)
-print("LhBot has exited")
+client.run(token=config.bot_token, reconnect=True, log_handler=None)
+logging.info("LhBot has exited")

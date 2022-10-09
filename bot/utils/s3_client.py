@@ -1,13 +1,12 @@
+import logging
 import os
 from functools import lru_cache
 from typing import Optional, Union
 
 import boto3
-import botocore
 from botocore.exceptions import ClientError
-from sentry_sdk import capture_exception
-
 from config import Settings
+from sentry_sdk import capture_exception
 
 
 @lru_cache()
@@ -22,12 +21,10 @@ class S3Upload:
     def __init__(self, filename: str) -> None:
         self.filename = filename
         self.s3_bucket_name = conf.s3_bucket_name
-        self.config = botocore.client.Config(signature_version=botocore.UNSIGNED)
         self.client = boto3.client(
             "s3",
             aws_access_key_id=conf.aws_access_key,
             aws_secret_access_key=conf.aws_secret_access_key,
-            config=self.config,
         )
 
     def upload_file(self, object_name: Optional[str] = None) -> bool:
@@ -46,8 +43,9 @@ class S3Upload:
                 object_name,
                 ExtraArgs={"ACL": "public-read"},
             )
-        except ClientError as e:
-            capture_exception(e)
+        except ClientError as error:
+            logging.error(error)
+            capture_exception(error)
             return False
         return True
 
@@ -64,7 +62,8 @@ class S3Upload:
                 ExpiresIn=0,
                 Params={"Bucket": self.s3_bucket_name, "Key": self.filename},
             )
-            return str(object_url)
-        except ClientError as e:
-            capture_exception(e)
+            return str(object_url[0 : object_url.index("?")])
+        except ClientError as error:
+            logging.error(error)
+            capture_exception(error)
             return False

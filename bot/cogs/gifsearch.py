@@ -1,22 +1,9 @@
-import sys
-from functools import lru_cache
 from typing import Union
 
 from aiohttp import ContentTypeError
 from discord import Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
-
-sys.path.append("../bot")
-from config import Settings
-
-
-@lru_cache()
-def settings():
-    return Settings()
-
-
-conf = settings()
 
 
 class Gif(commands.Cog, name="Gif"):
@@ -34,7 +21,7 @@ class Gif(commands.Cog, name="Gif"):
         """
         try:
             async with self.session.get(
-                f"{self.base_url}randomid?api_key={conf.giphy_api_key}"
+                f"{self.base_url}randomid?api_key={self.client.config.giphy_api_key}"
             ) as response:
                 if response.status != 200:
                     return False
@@ -64,7 +51,8 @@ class Gif(commands.Cog, name="Gif"):
         """
         try:
             async with self.client.session.get(
-                f"{self.base_url}gifs/random?api_key={conf.giphy_api_key}&tag={search}&rating=r&random_id={await self.get_random_giphy_user_id()}"
+                f"{self.base_url}gifs/random?api_key={self.client.config.giphy_api_key}"
+                + f"&tag={search}&rating=r&random_id={await self.get_random_giphy_user_id()}"
             ) as response:
                 if response.status == 200:
                     data = await response.json()
@@ -75,15 +63,15 @@ class Gif(commands.Cog, name="Gif"):
                     embed.set_image(
                         url=data["data"]["images"]["downsized_large"]["url"]
                     )
-                    embed.set_footer(text=" Powered By GIPHY")
+                    embed.set_footer(text="Powered By GIPHY")
                     await ctx.send(embed=embed)
                 else:
                     await ctx.send("No GIF found")
-        except ContentTypeError as e:
-            capture_exception(e)
+        except ContentTypeError as error:
+            capture_exception(error)
             await ctx.send("No GIF found")
-        except Exception as e:
-            capture_exception(e)
+        except Exception as error:
+            capture_exception(error)
             await ctx.send("No GIF found")
 
 

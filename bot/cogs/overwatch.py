@@ -3,7 +3,6 @@ import random
 
 from discord import Embed
 from discord.ext import commands
-
 from utils.bot_utils import get_time_string
 from utils.emojis import random_emoji
 from utils.reinquotes import quotes

@@ -33,7 +33,7 @@ class PdfReport:
 
         pdf.set_font(family="Times", size=12)
         for guess in self.guesses:
+            guess = guess["guess"].encode("latin-1", "replace").decode("latin-1")
             pdf.multi_cell(w=100, h=20, txt=guess, border=0, align="C")
-
-        os.chdir("bot/files")
+        os.chdir("./bot/files")
         pdf.output(self.filename)

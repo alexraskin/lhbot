@@ -5,10 +5,7 @@ from discord import Embed
 from discord.ext import commands
 
 sys.path.append("../bot/")
-from config import Settings
 from utils.emojis import random_emoji
-
-conf = Settings()
 
 
 class LhCloudy(commands.Cog, name="LhCloudy"):
@@ -30,7 +27,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         """
         if ctx.invoked_subcommand is None:
             await ctx.send(
-                f"Please use `{conf.bot_prefix}twitch help` to see the list of commands."
+                f"Please use `{self.client.config.bot_prefix}twitch help` to see the list of commands."
             )
 
     @twitch.command(name="1frame")
