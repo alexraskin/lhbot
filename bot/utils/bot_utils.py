@@ -20,10 +20,7 @@ def get_year_string() -> str:
 
 def get_time_string() -> str:
     """
-    The get_time_string function returns a string containing the current time in the format:
-        &quot;YYYY-MM-DD HH:MM&quot;
-
-
+    The get_time_string function is used to get the current time
     :return: The current time in the form of a string
     """
     return dt.utcnow().__str__()

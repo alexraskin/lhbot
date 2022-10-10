@@ -1,18 +1,20 @@
-from os import listdir
-from discord.ext import commands
 import logging
+from os import listdir
 
-class Management(commands.Cog, name='Management'):
+from discord.ext import commands
+
+
+class Management(commands.Cog, name="Management"):
     def __init__(self, client):
         self.client = client
 
     async def user_check(self, ctx):
         return self.client.user_is_superuser(ctx.author)
-    
+
     @commands.Cog.listener()
     async def on_ready(self):
         self.cog_crawl()
-    
+
     def cog_crawl(self):
         self.extension_targets = []
         for self.cog in listdir("./bot/cogs"):
@@ -21,14 +23,14 @@ class Management(commands.Cog, name='Management'):
         return self.extension_targets
 
     @commands.command(
-        name='reload',
-        brief='Reload bot extension',
-        description='Reload bot extension\n\nExample: lhbot reload cogs.stats',
+        name="reload",
+        brief="Reload bot extension",
+        description="Reload bot extension\n\nExample: lhbot reload cogs.stats",
         hidden=True,
-        aliases=['re']
+        aliases=["re"],
     )
     async def reload_extension(self, ctx, extension) -> None:
-        try: 
+        try:
             if f"cogs.{extension}" in self.extension_targets:
                 await self.client.reload_extension(f"cogs.{extension}")
                 await ctx.send(f"```Reloaded [{extension}] cog```")

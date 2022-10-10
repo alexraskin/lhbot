@@ -86,7 +86,6 @@ class LhBot(AutoShardedBot):
                 exc = f"{type(error).__name__}: {error}"
                 logging.error(f"Failed to load extension {extension}\n{exc}")
 
-
     def user_is_admin(self, user) -> bool:
         """
         The user_is_admin function specifically checks
