@@ -209,12 +209,6 @@ async def on_message_execute(message):
     ):
         await message.channel.send("42")
 
-    if re.search(
-        r"(?i)^lhbot(?:,? )?(?:is|are) (?:you|it) (?:a|an) (?:bot|robot)",
-        message.content,
-    ):
-        await message.channel.send("I am a bot, not a human.")
-
 
 async def setup(client):
     """

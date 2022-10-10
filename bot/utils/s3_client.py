@@ -9,23 +9,36 @@ from config import Settings
 from sentry_sdk import capture_exception
 
 
-@lru_cache()
-def settings():
-    return Settings()
-
-
-conf = settings()
-
-
 class S3Upload:
+    """
+    S3Upload is a class that contains all the methods to upload,
+    delete and get a presigned url for a file.
+    Parameters:
+        filename: str: The name of the file to upload
+    """
+
     def __init__(self, filename: str) -> None:
         self.filename = filename
-        self.s3_bucket_name = conf.s3_bucket_name
+        self.conf = self.settings()
+        self.s3_bucket_name = self.conf.s3_bucket_name
         self.client = boto3.client(
             "s3",
-            aws_access_key_id=conf.aws_access_key,
-            aws_secret_access_key=conf.aws_secret_access_key,
+            aws_access_key_id=self.conf.aws_access_key,
+            aws_secret_access_key=self.conf.aws_secret_access_key,
         )
+
+    @lru_cache()
+    def settings(self) -> Settings:
+        """
+        The settings function is a property that returns the Settings object.
+        It's a convenience function to make it easy to access the settings without
+        having to import them everywhere.  This way, we can use the settings in places
+        where we don't want/need to use an entire module.
+
+        :param self: Access variables that belongs to the class
+        :return: An instance of the settings class
+        """
+        return Settings()
 
     def upload_file(self, object_name: Optional[str] = None) -> bool:
         """
@@ -67,3 +80,18 @@ class S3Upload:
             logging.error(error)
             capture_exception(error)
             return False
+
+    def delete_file(self) -> bool:
+        """
+        The delete_file function deletes a file from an S3 bucket.
+
+        :param self: Access variables that belongs to the class
+        :return: Boolean value if the file was deleted or not
+        """
+        try:
+            self.client.delete_object(Bucket=self.s3_bucket_name, Key=self.filename)
+        except ClientError as error:
+            logging.error(error)
+            capture_exception(error)
+            return False
+        return True

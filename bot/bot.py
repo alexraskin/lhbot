@@ -232,7 +232,7 @@ async def on_command_completion(ctx):
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
-    logging.error(
+    logging.info(
         f"Executed {executed_command} command in {ctx.guild.name}"
         + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
