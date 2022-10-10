@@ -1,6 +1,5 @@
 import platform
 import re
-import sys
 from inspect import getsourcelines
 from urllib.parse import quote_plus
 
@@ -8,17 +7,13 @@ from aiohttp import ContentTypeError
 from discord import DMChannel, Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
-from utils.bot_utils import get_year_string
+from utils.bot_utils import get_year_string, get_year_round, progress_bar
 
 
 class General(commands.Cog, name="General"):
     def __init__(self, client):
         """
-        The __init__ function is the constructor for a class.
-        It is called when an instance of a class is created.
-        It allows the newly created object to have
-        some attributes that are specified at creation time.
-
+        General commands
         :param self: Used to refer to the object itself.
         :param client: Used to pass the client object to the class.
         :return: the object of the class.
@@ -62,6 +57,26 @@ class General(commands.Cog, name="General"):
     @commands.command(name="ping")
     async def ping(self, ctx):
         await ping_execute(ctx, round(self.client.latency * 1000))
+    
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.command(name="year", aliases=["yearprogress"])
+    async def year_execute(self, ctx):
+        """
+        The year function tells the user how much of the current year has passed.
+
+        :param ctx: Used to get the context of where the command was called.
+        :return: an embed with the percentage of the year that has passed.
+        """
+        embed = Embed(color=0x42F56C)
+        embed.set_author(
+            name="Year Progress",
+            icon_url="https://i.gyazo.com/2337aea13741b92b623794161f86fe59.png",
+        )
+        embed.add_field(
+            name="Progress:",
+            value=progress_bar(get_year_round()), inline=True
+        )
+        await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="search", aliases=["lmgtfy", "duck", "duckduckgo", "google"])
@@ -208,6 +223,15 @@ async def on_message_execute(message):
         message.content,
     ):
         await message.channel.send("42")
+    
+    def progress_bar(percent):
+        bar_filled = '▓'
+        bar_empty = '░'
+        length = 15
+
+        progress_bar = bar_filled * int((percent / (100. / length)))
+        progress_bar += bar_empty * (length - len(progress_bar))
+        return f'{progress_bar} {percent:.1f}%'
 
 
 async def setup(client):
