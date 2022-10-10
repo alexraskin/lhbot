@@ -15,7 +15,7 @@ def get_year_string() -> str:
     year_end = dt(now.year + 1, 1, 1)
     year_start = dt(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
-    return  f"{year_percent:.1f}"
+    return  f"For your information, the year is {year_percent:.1f}% over!"
 
 def get_year_round() -> str:
     now = dt.utcnow()

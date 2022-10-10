@@ -1,4 +1,3 @@
-from ast import alias
 import platform
 import re
 from inspect import getsourcelines
