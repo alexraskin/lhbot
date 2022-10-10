@@ -1,9 +1,8 @@
 import random
-from typing import Union
+import re
 
 from discord import Embed
 from discord.ext import commands, tasks
-from sentry_sdk import capture_exception
 from utils.bot_utils import get_time_string
 
 
@@ -22,21 +21,6 @@ class Fun(commands.Cog, name="Fun"):
         self.load_chuck_http_codes.start()
         self.headers = {"Accept": "application/json"}
 
-    async def fetch_url(self, url: str) -> Union[dict, None]:
-        """
-        The fetch_url function is used to fetch the url and return the response.
-
-        :param url: url to get
-        :return: the response from the url.
-        """
-        try:
-            async with self.client.session.get(url, headers=self.headers) as response:
-                response = await response.json()
-                return response
-        except BaseException as error:
-            capture_exception(error)
-            return None
-
     @tasks.loop(count=1)
     async def load_chuck_http_codes(self):
         """
@@ -46,8 +30,9 @@ class Fun(commands.Cog, name="Fun"):
         :param self: Used to store the bot object.
         :return: a list of categories.
         """
-        response = await self.fetch_url("https://api.chucknorris.io/jokes/categories")
-        self.chuck_categories = [x for x in response if x != "explicit"]
+        response = await self.client.session.get("https://api.chucknorris.io/jokes/categories")
+        categories = await response.json()
+        self.chuck_categories = [x for x in categories if x != "explicit"]
 
     @commands.command(name="chucknorris", aliases=["chuck", "cn"])
     async def chucknorris(self, ctx, category: str = None):
@@ -57,7 +42,6 @@ class Fun(commands.Cog, name="Fun"):
             -   "animal"
             -   "career"
             -   "celebrity"
-
         :param self: Used to access attributes of the class.
         :param ctx: Used to get the channel and user that sent the command.
         :param category:str=None: Used to determine if the user has specified a category or not.
@@ -72,16 +56,17 @@ class Fun(commands.Cog, name="Fun"):
         else:
             if category not in self.chuck_categories:
                 await ctx.send(
-                    f'Invalid category - please pick from:\n{", ".join(self.chuck_categories)}'
+                    f'```Invalid category - please pick from:\n{", ".join(self.chuck_categories)}```'
                 )
                 return
-        response = await self.fetch_url(
-            "https://api.chucknorris.io/jokes/random?category={category}"
+        response = await self.client.session.get(
+            f"https://api.chucknorris.io/jokes/random?category={category}"
         )
         if response is None:
             await ctx.send("Hold up partner, still locating Chuck!")
             return
         else:
+            response = await response.json()
             chuck = response["value"]
             embed = Embed(description=chuck, color=random.randint(0, 0xFFFFFF))
             embed.set_author(
@@ -102,7 +87,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: a random cat picture from the random.
         """
-        response = await self.fetch_url("https://aws.random.cat/meow")
+        response = await self.client.session.get("https://aws.random.cat/meow")
         if response is None:
             await ctx.send("Could not find a cat!")
             return
@@ -119,7 +104,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the channel and author of the message.
         :return: a dog picture in the form of a url.
         """
-        response = await self.fetch_url("https://random.dog/woof.json")
+        response = await self.client.session.get("https://random.dog/woof.json")
         if response is None:
             await ctx.send("Could not find a dog!")
             return
@@ -136,7 +121,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to access the context of where the command was called.
         :return: the link to the meme from reddit.
         """
-        response = await self.fetch_url("https://meme-api.herokuapp.com/gimme")
+        response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
         if response is None:
             await ctx.send("Could not find a meme!")
             return
@@ -154,7 +139,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: a random quote from Kanye West.
         """
-        response = await self.fetch_url("https://api.kanye.rest")
+        response = await self.client.session.get("https://api.kanye.rest")
         await ctx.typing()
         if response is None:
             await ctx.send("Kanye is busy!")
@@ -180,8 +165,9 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: a random cat fact from the MeowFact API.
         """
-        response = await self.fetch_url("https://meowfacts.herokuapp.com/")
+        response = await self.client.session.get("https://meowfacts.herokuapp.com/")
         await ctx.typing()
+        response = await response.json()
         if response is None:
             await ctx.send("Could not find a cat fact!")
             return
@@ -206,7 +192,8 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: the joke from the icnhazdadjoke.
         """
-        response = await self.fetch_url("https://icanhazdadjoke.com/")
+        response = await self.client.session.get("https://icanhazdadjoke.com/")
+        response = await response.json()
         if response is None:
             await ctx.send("Could not find a joke!")
             return
@@ -227,7 +214,8 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed that has the anime, character and quote of a random anime.
         """
-        response = await self.fetch_url("https://animechan.vercel.app/api/random")
+        response = await self.client.session.get("https://animechan.vercel.app/api/random")
+        response = await response.json()
         if response is None:
             await ctx.send("Could not find an anime quote!")
             return
@@ -250,9 +238,10 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to access the context of where the command was called.
         :return: discord embed
         """
-        response = await self.fetch_url(
+        response = await self.client.session.get(
             "https://dog-fact-api.herokuapp.com/api/v1/resources/dogs?number=1"
         )
+        response = await response.json()
         if response is None:
             await ctx.send("Could not find a dog fact!")
             return
@@ -268,7 +257,8 @@ class Fun(commands.Cog, name="Fun"):
     @commands.command(name="tswift", aliases=["ts", "taylor", "taylorswift"])
     async def random_taylor_swift_quote(self, ctx) -> Embed:
         """ """
-        response = await self.fetch_url("https://taylorswiftapi.herokuapp.com/get")
+        response = await self.client.session.get("https://taylorswiftapi.herokuapp.com/get")
+        response = await response.json()
         if response is None:
             await ctx.send("Problem getting a Taylor Swift quote!")
             return
@@ -308,7 +298,8 @@ class Fun(commands.Cog, name="Fun"):
                     f'Invalid category - please pick from:\n{", ".join(categories)}'
                 )
                 return
-        response = await self.fetch_url(f"https://api.waifu.pics/sfw/{category}")
+        response = await self.client.session.get(f"https://api.waifu.pics/sfw/{category}")
+        response = await response.json()
         if response is None:
             await ctx.send("No waifu for you!")
             return

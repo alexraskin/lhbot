@@ -18,6 +18,11 @@ def get_year_string() -> str:
     return  f"For your information, the year is {year_percent:.1f}% over!"
 
 def get_year_round() -> str:
+    """
+    The get_year_round function returns the current year's percentage of completion.
+    
+    :return: The percentage of the year that has passed
+    """
     now = dt.utcnow()
     year_end = dt(now.year + 1, 1, 1)
     year_start = dt(now.year, 1, 1)
