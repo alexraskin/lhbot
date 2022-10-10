@@ -86,6 +86,7 @@ class LhBot(AutoShardedBot):
                 exc = f"{type(error).__name__}: {error}"
                 logging.error(f"Failed to load extension {extension}\n{exc}")
 
+
     def user_is_admin(self, user) -> bool:
         """
         The user_is_admin function specifically checks
@@ -232,7 +233,7 @@ async def on_command_completion(ctx):
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
-    logging.error(
+    logging.info(
         f"Executed {executed_command} command in {ctx.guild.name}"
         + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
