@@ -7,6 +7,7 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.22.0 |
+| <a name="requirement_github"></a> [github](#requirement\_github) | 5.3.0 |
 | <a name="requirement_heroku"></a> [heroku](#requirement\_heroku) | ~> 5.1 |
 | <a name="requirement_mongodbatlas"></a> [mongodbatlas](#requirement\_mongodbatlas) | 1.4.1 |
 | <a name="requirement_sentry"></a> [sentry](#requirement\_sentry) | 0.9.2 |
@@ -16,6 +17,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.22.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 5.3.0 |
 | <a name="provider_heroku"></a> [heroku](#provider\_heroku) | 5.1.0 |
 | <a name="provider_mongodbatlas"></a> [mongodbatlas](#provider\_mongodbatlas) | 1.4.1 |
 | <a name="provider_sentry"></a> [sentry](#provider\_sentry) | 0.9.2 |
@@ -37,6 +39,17 @@ No modules.
 | [aws_s3_bucket_public_access_block.terraform_state_lhbot_public_access_block](https://registry.terraform.io/providers/hashicorp/aws/4.22.0/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.lhcloudy_bot_config_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/4.22.0/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.terraform_state_lhbot_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/4.22.0/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [github_actions_secret.git_version_tag](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_api_key](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_app_name](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_app_region](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_dyno_size](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_dyno_type](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_email](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.heroku_stack](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.lhbot_github_actions_secret](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.mongodbatlas_private_key](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
+| [github_actions_secret.mongodbatlas_public_key](https://registry.terraform.io/providers/integrations/github/5.3.0/docs/resources/actions_secret) | resource |
 | [heroku_app.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app) | resource |
 | [heroku_app_release.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app_release) | resource |
 | [heroku_app_webhook.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app_webhook) | resource |
@@ -64,6 +77,7 @@ No modules.
 | <a name="input_dyno_size"></a> [dyno\_size](#input\_dyno\_size) | Size of dyno | `string` | n/a | yes |
 | <a name="input_dyno_type"></a> [dyno\_type](#input\_dyno\_type) | Type of dyno | `string` | n/a | yes |
 | <a name="input_git_version_tag"></a> [git\_version\_tag](#input\_git\_version\_tag) | Git version tag to deploy | `string` | n/a | yes |
+| <a name="input_github_token"></a> [github\_token](#input\_github\_token) | Github token | `string` | n/a | yes |
 | <a name="input_heroku_api_key"></a> [heroku\_api\_key](#input\_heroku\_api\_key) | Heroku API Key | `string` | n/a | yes |
 | <a name="input_heroku_email"></a> [heroku\_email](#input\_heroku\_email) | Heroku account email | `string` | n/a | yes |
 | <a name="input_heroku_enviorment_vars"></a> [heroku\_enviorment\_vars](#input\_heroku\_enviorment\_vars) | Environment variables for Heroku app | `map(string)` | n/a | yes |
