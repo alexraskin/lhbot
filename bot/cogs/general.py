@@ -70,7 +70,7 @@ class General(commands.Cog, name="General"):
         embed = Embed(color=0x42F56C)
         embed.set_author(
             name="Year Progress",
-            icon_url="https://i.gyazo.com/2337aea13741b92b623794161f86fe59.png",
+            icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
         )
         embed.add_field(
             name="Progress:",
@@ -223,15 +223,6 @@ async def on_message_execute(message):
         message.content,
     ):
         await message.channel.send("42")
-    
-    def progress_bar(percent):
-        bar_filled = '▓'
-        bar_empty = '░'
-        length = 15
-
-        progress_bar = bar_filled * int((percent / (100. / length)))
-        progress_bar += bar_empty * (length - len(progress_bar))
-        return f'{progress_bar} {percent:.1f}%'
 
 
 async def setup(client):
