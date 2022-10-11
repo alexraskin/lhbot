@@ -67,6 +67,7 @@ class General(commands.Cog, name="General"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed with the percentage of the year that has passed.
         """
+        await ctx.typing()
         embed = Embed(color=0x42F56C)
         embed.set_author(
             name="Year Progress",
