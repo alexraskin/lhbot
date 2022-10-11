@@ -35,14 +35,14 @@ resource "github_actions_secret" "heroku_api_key" {
 
 resource "github_actions_secret" "heroku_app_name" {
   repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_app_name"
-  plaintext_value = var.heroku_app_name
+  secret_name     = "TF_VAR_app_name"
+  plaintext_value = var.app_name
 }
 
 resource "github_actions_secret" "heroku_app_region" {
   repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_app_region"
-  plaintext_value = var.heroku_app_region
+  secret_name     = "TF_VAR_app_region"
+  plaintext_value = var.app_region
 }
 
 resource "github_actions_secret" "heroku_stack" {
@@ -53,37 +53,18 @@ resource "github_actions_secret" "heroku_stack" {
 
 resource "github_actions_secret" "heroku_dyno_type" {
   repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_dyno_type"
-  plaintext_value = var.heroku_dyno_type
+  secret_name     = "TF_VAR_dyno_type"
+  plaintext_value = var.dyno_type
 }
 
 resource "github_actions_secret" "heroku_dyno_size" {
   repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_dyno_size"
-  plaintext_value = var.heroku_dyno_size
+  secret_name     = "TF_VAR_dyno_size"
+  plaintext_value = var.dyno_size
 }
 
-resource "github_actions_secret" "heroku_app_quantity" {
+resource "github_actions_secret" "git_version_tag" {
   repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_app_quantity"
-  plaintext_value = var.heroku_app_quantity
+  secret_name     = "TF_VAR_git_version_tag"
+  plaintext_value = var.git_version_tag
 }
-
-resource "github_actions_secret" "heroku_git_version_tag" {
-  repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_git_version_tag"
-  plaintext_value = var.heroku_git_version_tag
-}
-
-resource "github_actions_secret" "heroku_mongodbatlas_cluster_name" {
-  repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_mongodbatlas_cluster_name"
-  plaintext_value = var.heroku_mongodbatlas_cluster_name
-}
-
-resource "github_actions_secret" "heroku_mongodbatlas_database_name" {
-  repository      = "lhbot"
-  secret_name     = "TF_VAR_heroku_mongodbatlas_database_name"
-  plaintext_value = var.heroku_mongodbatlas_database_name
-}
-
