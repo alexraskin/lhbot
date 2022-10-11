@@ -46,7 +46,8 @@ provider "registry.terraform.io/heroku/heroku" {
 }
 
 provider "registry.terraform.io/integrations/github" {
-  version = "5.3.0"
+  version     = "5.3.0"
+  constraints = "5.3.0"
   hashes = [
     "h1:pFsKVGjnvAUu9Scqkk3W0EdjEXtgkTz2qxKYMMA/Bww=",
     "zh:1ad22c2d5b02f16ff6281e471be93d9e33f102020e7d88b2a86fd97b7f2c3728",

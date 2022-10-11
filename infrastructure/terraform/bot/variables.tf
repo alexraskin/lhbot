@@ -152,3 +152,8 @@ variable "lh_bot_reports_s3_bucket" {
   type        = string
   description = "S3 bucket for the reports"
 }
+
+variable "github_token" {
+  type        = string
+  description = "Github token"
+}
