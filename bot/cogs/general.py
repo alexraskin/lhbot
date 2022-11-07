@@ -57,7 +57,7 @@ class General(commands.Cog, name="General"):
     @commands.command(name="ping")
     async def ping(self, ctx):
         await ping_execute(ctx, round(self.client.latency * 1000))
-    
+
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="year", aliases=["yearprogress"])
     async def year_execute(self, ctx):
@@ -74,8 +74,7 @@ class General(commands.Cog, name="General"):
             icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
         )
         embed.add_field(
-            name="Progress:",
-            value=progress_bar(get_year_round()), inline=True
+            name="Progress:", value=progress_bar(get_year_round()), inline=True
         )
         await ctx.send(embed=embed)
 

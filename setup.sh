@@ -21,7 +21,7 @@ fi
 
 BUCKET_NAME="lhcloudybot-config"
 
-export AWS_PROFILE="lhcloudybot"
+export AWS_PROFILE="default"
 
 while [ "$1" != "" ]; do
     case $1 in

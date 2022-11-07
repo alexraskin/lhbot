@@ -222,7 +222,7 @@ async def on_command_error(ctx, error) -> None:
 
 
 @client.event
-async def on_command_completion(ctx):
+async def on_command_completion(ctx) -> None:
     """
     The on_command_completion function tracks the commands that are executed in each server.
 
