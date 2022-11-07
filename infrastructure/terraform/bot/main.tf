@@ -4,7 +4,7 @@ terraform {
     key     = "terraform.tfstate"
     encrypt = true
     region  = "us-east-1"
-    profile = "lhcloudybot"
+    profile = "default"
   }
 }
 
@@ -14,7 +14,8 @@ provider "heroku" {
 }
 
 locals {
-  source_code_url = "https://github.com/alexraskin/lhbot/archive/refs/tags/${var.git_version_tag}.tar.gz"
+  latest_tag = jsondecode(data.http.github_tag.response_body)[0].name
+  source_code_url = "https://github.com/alexraskin/lhbot/archive/refs/tags/${local.latest_tag}.tar.gz"
 }
 
 resource "heroku_app" "lhbot" {
