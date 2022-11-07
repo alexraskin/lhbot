@@ -14,7 +14,7 @@ provider "heroku" {
 }
 
 locals {
-  latest_tag = jsondecode(data.http.github_tag.response_body)[0].name
+  latest_tag      = jsondecode(data.http.github_tag.response_body)[0].name
   source_code_url = "https://github.com/alexraskin/lhbot/archive/refs/tags/${local.latest_tag}.tar.gz"
 }
 

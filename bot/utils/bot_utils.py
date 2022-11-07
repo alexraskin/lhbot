@@ -15,12 +15,13 @@ def get_year_string() -> str:
     year_end = dt(now.year + 1, 1, 1)
     year_start = dt(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
-    return  f"For your information, the year is {year_percent:.1f}% over!"
+    return f"For your information, the year is {year_percent:.1f}% over!"
+
 
 def get_year_round() -> str:
     """
     The get_year_round function returns the current year's percentage of completion.
-    
+
     :return: The percentage of the year that has passed
     """
     now = dt.utcnow()
@@ -29,6 +30,7 @@ def get_year_round() -> str:
     year_percent = (now - year_start) / (year_end - year_start) * 100
     return year_percent
 
+
 def get_time_string() -> str:
     """
     The get_time_string function is used to get the current time
@@ -36,17 +38,18 @@ def get_time_string() -> str:
     """
     return dt.utcnow().__str__()
 
+
 def progress_bar(percent):
     """
     The progress_bar function prints a progress bar to the console.
-    
+
     :param percent: Display the percentage of completion
     :return: A string that represents a progress bar
     """
-    bar_filled = '▓'
-    bar_empty = '░'
+    bar_filled = "▓"
+    bar_empty = "░"
     length = 15
 
-    progress_bar = bar_filled * int((percent / (100. / length)))
+    progress_bar = bar_filled * int((percent / (100.0 / length)))
     progress_bar += bar_empty * (length - len(progress_bar))
-    return f'{progress_bar} {percent:.1f}%'
+    return f"{progress_bar} {percent:.1f}%"

@@ -21,7 +21,7 @@ class Management(commands.Cog, name="Management"):
             if self.cog.endswith(".py"):
                 self.extension_targets.append(f"cogs.{self.cog[:-3]}")
         return self.extension_targets
-    
+
     @commands.is_owner()
     @commands.command(
         name="reload",

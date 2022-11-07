@@ -30,7 +30,9 @@ class Fun(commands.Cog, name="Fun"):
         :param self: Used to store the bot object.
         :return: a list of categories.
         """
-        response = await self.client.session.get("https://api.chucknorris.io/jokes/categories")
+        response = await self.client.session.get(
+            "https://api.chucknorris.io/jokes/categories"
+        )
         categories = await response.json()
         self.chuck_categories = [x for x in categories if x != "explicit"]
 
@@ -188,7 +190,9 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed that has the anime, character and quote of a random anime.
         """
-        response = await self.client.session.get("https://animechan.vercel.app/api/random")
+        response = await self.client.session.get(
+            "https://animechan.vercel.app/api/random"
+        )
         response = await response.json()
         if response is None:
             await ctx.send("Could not find an anime quote!")
@@ -231,7 +235,9 @@ class Fun(commands.Cog, name="Fun"):
     @commands.command(name="tswift", aliases=["ts", "taylor", "taylorswift"])
     async def random_taylor_swift_quote(self, ctx) -> Embed:
         """ """
-        response = await self.client.session.get("https://taylorswiftapi.herokuapp.com/get")
+        response = await self.client.session.get(
+            "https://taylorswiftapi.herokuapp.com/get"
+        )
         response = await response.json()
         if response is None:
             await ctx.send("Problem getting a Taylor Swift quote!")
@@ -272,7 +278,9 @@ class Fun(commands.Cog, name="Fun"):
                     f'Invalid category - please pick from:\n{", ".join(categories)}'
                 )
                 return
-        response = await self.client.session.get(f"https://api.waifu.pics/sfw/{category}")
+        response = await self.client.session.get(
+            f"https://api.waifu.pics/sfw/{category}"
+        )
         response = await response.json()
         if response is None:
             await ctx.send("No waifu for you!")
