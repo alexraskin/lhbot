@@ -129,32 +129,6 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send(response["url"])
 
     @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.command(name="kanye", aliases=["kw", "kanyewest"])
-    async def get_kayne_west(self, ctx):
-
-        """
-        The get_kayne_west function specifically retrieves a random quote from the Kanye API and embeds it in a message.
-
-        :param self: Used to access the client, which is needed to send messages.
-        :param ctx: Used to get the context of where the command was called.
-        :return: a random quote from Kanye West.
-        """
-        response = await self.client.session.get("https://api.kanye.rest")
-        await ctx.typing()
-        if response is None:
-            await ctx.send("Kanye is busy!")
-            return
-        else:
-            quote = response["quote"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
-            embed.add_field(name="Kayne West once said:", value=f"{quote}", inline=True)
-            embed.set_image(
-                url="https://c.tenor.com/73vhftW9zYMAAAAC/kanye-west-blink.gif"
-            )
-            embed.set_footer(text=f"https://api.kanye.rest")
-            await ctx.send(embed=embed)
-
-    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="catfact", aliases=["cf"])
     async def random_cat_fact(self, ctx):
         """
