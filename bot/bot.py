@@ -88,7 +88,7 @@ class LhBot(AutoShardedBot):
 
     def user_is_admin(self, user) -> bool:
         """
-        The user_is_admin function specifically checks
+        The user_is_admin fu        await self.tree.sync(guild = discord.Object(id = self.config.main_guild))nction specifically checks
         if the user has a role that is in the permitted_roles list.
         The permitted_roles list contains
         all of the roles that are allowed to access admin functions.
@@ -178,6 +178,9 @@ async def on_ready() -> bool:
 
 @client.event
 async def on_command_error(ctx, error) -> None:
+    """
+    The on_command_error function is used to handle errors that occur when a command is run.
+    """
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
@@ -236,7 +239,6 @@ async def on_command_completion(ctx) -> None:
         f"Executed {executed_command} command in {ctx.guild.name}"
         + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
-
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
 logging.info("LhBot has exited")

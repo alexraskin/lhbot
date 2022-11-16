@@ -1,7 +1,6 @@
 import random
-import re
 
-from discord import Embed
+from discord import Embed, app_commands, Interaction
 from discord.ext import commands, tasks
 from utils.bot_utils import get_time_string
 
@@ -35,7 +34,12 @@ class Fun(commands.Cog, name="Fun"):
         )
         categories = await response.json()
         self.chuck_categories = [x for x in categories if x != "explicit"]
-
+    
+    @app_commands.command()
+    async def slashtest(self, interaction: Interaction, fruit: str):
+        await interaction.response.send_message(f'Slashtest: {fruit}')
+        
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="chucknorris", aliases=["chuck", "cn"])
     async def chucknorris(self, ctx, category: str = None):
         """
@@ -181,6 +185,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.typing()
             await ctx.send(embed=embed)
 
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="animechan", aliases=["animequote"])
     async def random_anime_chan(self, ctx):
         """
