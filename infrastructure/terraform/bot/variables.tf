@@ -38,11 +38,6 @@ variable "heroku_enviorment_vars" {
   description = "Environment variables for Heroku app"
 }
 
-variable "git_version_tag" {
-  type        = string
-  description = "Git version tag to deploy"
-}
-
 variable "heroku_stack" {
   type        = string
   description = "Stack for your Heroku app"
