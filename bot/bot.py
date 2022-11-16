@@ -88,7 +88,7 @@ class LhBot(AutoShardedBot):
 
     def user_is_admin(self, user) -> bool:
         """
-        The user_is_admin fu        await self.tree.sync(guild = discord.Object(id = self.config.main_guild))nction specifically checks
+        The user_is_admin function specifically checks
         if the user has a role that is in the permitted_roles list.
         The permitted_roles list contains
         all of the roles that are allowed to access admin functions.
