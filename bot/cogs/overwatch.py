@@ -127,9 +127,8 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="shatter")
-    async def shatter(self, ctx, target_user=None):
+    @commands.hybrid_command(name="shatter")
+    async def shatter(self, ctx: commands.Context, target_user: str = None):
         """
         Shatter another user in the server!
 
@@ -137,7 +136,46 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         :param ctx: Used to get the current context of where the command was called.
         :param target_user=None: Used to specify the user to be targeted.
         """
-        await shatter_execute(ctx, target_user)
+        lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
+        lh_cloudy_block_list = [
+            "Blocked.. cloudy is immune to your shatter!",
+            "LhCloudy is immune to your shatter!",
+            "Blocked - MTD",
+            "ez block... L + ratio",
+            "sr peak check?",
+        ]
+        await ctx.typing()
+        if target_user == None or target_user == "":
+            await ctx.typing()
+            await ctx.send(
+                "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
+            )
+            return
+
+        if len(target_user) > 500:
+            await ctx.typing()
+            await ctx.send("Username is too long!")
+            return
+
+        if target_user.lower() in lh_cloudy_list:
+            await ctx.typing()
+            await ctx.send(random.choice(list(lh_cloudy_block_list)))
+            return
+
+        random.seed(get_time_string())
+        roll_shatter = random.randint(0, 100)
+        did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
+
+        embed = Embed(
+            description=f"Your shatter {did_shatter} {target_user}.",
+            color=random.randint(0, 0xFFFFFF),
+        )
+        embed.set_author(
+            name="Shatter!",
+            icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
+        )
+        embed.set_footer(text=f"Requested by {ctx.message.author.name}")
+        await ctx.send(embed=embed)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="nano", description="Nano Boost")
@@ -190,56 +228,56 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         await ctx.send(f"{random.choice(list(boop_sayings))}, {target_user}")
 
 
-async def shatter_execute(ctx, target_user):
-    """
-    The sahtter function is used to shatter another user in chat.
-    It returns a message determining if your shatter was blocked or not.
-        - 25% chance to hit shatter
+# async def shatter_execute(ctx: commands.Context, target_user: str = None):
+#     """
+#     The shatter function is used to shatter another user in chat.
+#     It returns a message determining if your shatter was blocked or not.
+#         - 25% chance to hit shatter
 
-    :param ctx: Used to get the context of where the command was called.
-    :param target_user: User that is being shattered.
-    :return: a discord embed.
-    """
-    lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
-    lh_cloudy_block_list = [
-        "Blocked.. cloudy is immune to your shatter!",
-        "LhCloudy is immune to your shatter!",
-        "Blocked - MTD",
-        "ez block... L + ratio",
-        "sr peak check?",
-    ]
-    await ctx.typing()
-    if target_user == None or target_user == "":
-        await ctx.typing()
-        await ctx.send(
-            "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
-        )
-        return
+#     :param ctx: Used to get the context of where the command was called.
+#     :param target_user: User that is being shattered.
+#     :return: a discord embed.
+#     """
+#     lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
+#     lh_cloudy_block_list = [
+#         "Blocked.. cloudy is immune to your shatter!",
+#         "LhCloudy is immune to your shatter!",
+#         "Blocked - MTD",
+#         "ez block... L + ratio",
+#         "sr peak check?",
+#     ]
+#     await ctx.typing()
+#     if target_user == None or target_user == "":
+#         await ctx.typing()
+#         await ctx.send(
+#             "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
+#         )
+#         return
 
-    if len(target_user) > 500:
-        await ctx.typing()
-        await ctx.send("Username is too long!")
-        return
+#     if len(target_user) > 500:
+#         await ctx.typing()
+#         await ctx.send("Username is too long!")
+#         return
 
-    if target_user.lower() in lh_cloudy_list:
-        await ctx.typing()
-        await ctx.send(random.choice(list(lh_cloudy_block_list)))
-        return
+#     if target_user.lower() in lh_cloudy_list:
+#         await ctx.typing()
+#         await ctx.send(random.choice(list(lh_cloudy_block_list)))
+#         return
 
-    random.seed(get_time_string())
-    roll_shatter = random.randint(0, 100)
-    did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
+#     random.seed(get_time_string())
+#     roll_shatter = random.randint(0, 100)
+#     did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
 
-    embed = Embed(
-        description=f"Your shatter {did_shatter} {target_user}.",
-        color=random.randint(0, 0xFFFFFF),
-    )
-    embed.set_author(
-        name="Shatter!",
-        icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
-    )
-    embed.set_footer(text=f"Requested by {ctx.message.author.name}")
-    await ctx.send(embed=embed)
+#     embed = Embed(
+#         description=f"Your shatter {did_shatter} {target_user}.",
+#         color=random.randint(0, 0xFFFFFF),
+#     )
+#     embed.set_author(
+#         name="Shatter!",
+#         icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
+#     )
+#     embed.set_footer(text=f"Requested by {ctx.message.author.name}")
+#     await ctx.send(embed=embed)
 
 
 async def nano_execute(ctx, target_user=None):

@@ -29,7 +29,7 @@ class Management(commands.Cog, name="Management"):
     )
     async def sync(self, ctx):
         tree = await self.client.tree.sync()
-        await ctx.send(f"Synced ```{tree}``` slash commands.")
+        await ctx.send(f"Synced slash commands. ```{tree}```")
 
     @commands.is_owner()
     @commands.command(
