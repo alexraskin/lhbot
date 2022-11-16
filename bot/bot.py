@@ -178,6 +178,9 @@ async def on_ready() -> bool:
 
 @client.event
 async def on_command_error(ctx, error) -> None:
+    """
+    The on_command_error function is used to handle errors that occur when a command is run.
+    """
     full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
@@ -236,7 +239,6 @@ async def on_command_completion(ctx) -> None:
         f"Executed {executed_command} command in {ctx.guild.name}"
         + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
-
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
 logging.info("LhBot has exited")
