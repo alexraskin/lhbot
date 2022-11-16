@@ -240,5 +240,6 @@ async def on_command_completion(ctx) -> None:
         + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
     )
 
+
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
 logging.info("LhBot has exited")

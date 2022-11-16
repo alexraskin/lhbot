@@ -34,11 +34,11 @@ class Fun(commands.Cog, name="Fun"):
         )
         categories = await response.json()
         self.chuck_categories = [x for x in categories if x != "explicit"]
-    
+
     @app_commands.command()
-    async def slashtest(self, interaction: Interaction, fruit: str):
-        await interaction.response.send_message(f'Slashtest: {fruit}')
-        
+    async def echo(self, interaction: Interaction, echo: str):
+        await interaction.response.send_message(f"Echo: {echo}")
+
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="chucknorris", aliases=["chuck", "cn"])
     async def chucknorris(self, ctx, category: str = None):
