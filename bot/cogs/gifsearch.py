@@ -63,7 +63,7 @@ class Gif(commands.Cog, name="Gif"):
                     embed.set_image(
                         url=data["data"]["images"]["downsized_large"]["url"]
                     )
-                    embed.set_fopingoter(text="Powered By GIPHY")
+                    embed.set_footer(text="Powered By GIPHY")
                     await ctx.send(embed=embed)
                 else:
                     await ctx.send("No GIF found")
