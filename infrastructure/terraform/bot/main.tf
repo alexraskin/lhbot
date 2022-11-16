@@ -30,7 +30,7 @@ resource "heroku_build" "lhbot" {
 
   source {
     url     = local.source_code_url
-    version = var.git_version_tag
+    version = local.latest_tag
   }
 
   lifecycle {

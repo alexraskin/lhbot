@@ -66,5 +66,5 @@ resource "github_actions_secret" "heroku_dyno_size" {
 resource "github_actions_secret" "git_version_tag" {
   repository      = "lhbot"
   secret_name     = "TF_VAR_git_version_tag"
-  plaintext_value = var.git_version_tag
+  plaintext_value = local.latest_tag
 }
