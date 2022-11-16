@@ -94,11 +94,12 @@ class Fun(commands.Cog, name="Fun"):
         :return: a random cat picture from the random.
         """
         response = await self.client.session.get("https://aws.random.cat/meow")
-        if response is None:
+        data = await response.json()
+        if response.status != 200:
             await ctx.send("Could not find a cat!")
             return
         else:
-            await ctx.send(response["file"])
+            await ctx.send(data["file"])
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="dog", aliases=["dogpic", "doggo"])
@@ -111,11 +112,12 @@ class Fun(commands.Cog, name="Fun"):
         :return: a dog picture in the form of a url.
         """
         response = await self.client.session.get("https://random.dog/woof.json")
-        if response is None:
+        data = await response.json()
+        if response.status != 200:
             await ctx.send("Could not find a dog!")
             return
         else:
-            await ctx.send(response["url"])
+            await ctx.send(data["url"])
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="meme", aliases=["memer"])
@@ -128,11 +130,12 @@ class Fun(commands.Cog, name="Fun"):
         :return: the link to the meme from reddit.
         """
         response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
-        if response is None:
+        data = await response.json()
+        if response.status != 200:
             await ctx.send("Could not find a meme!")
             return
         else:
-            await ctx.send(response["url"])
+            await ctx.send(data["url"])
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="catfact", aliases=["cf"])
