@@ -12,7 +12,7 @@ from utils.s3_client import S3Upload
 
 
 class LhGuess(commands.Cog, name="LhGuess"):
-    def __init__(self, client) -> None:
+    def __init__(self, client: commands.Bot) -> None:
         """
         The __init__ function is used to initialize the class. It's called when an instance of a class is created, and it
         creates space in memory for the new object. In this case, it creates space for self (the bot) and then initializes

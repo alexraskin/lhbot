@@ -11,7 +11,7 @@ from utils.bot_utils import get_year_string, get_year_round, progress_bar
 
 
 class General(commands.Cog, name="General"):
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         """
         General commands
         :param self: Used to refer to the object itself.

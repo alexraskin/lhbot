@@ -5,10 +5,10 @@ from discord.ext import commands
 
 
 class Management(commands.Cog, name="Management"):
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         self.client = client
 
-    async def user_check(self, ctx):
+    async def user_check(self, ctx: commands.Context):
         return self.client.user_is_superuser(ctx.author)
 
     @commands.Cog.listener()
@@ -24,7 +24,7 @@ class Management(commands.Cog, name="Management"):
 
     @commands.is_owner()
     @commands.command(name="sync", hidden=True)
-    async def sync(self, ctx):
+    async def sync(self, ctx: commands.Context):
         tree = await self.client.tree.sync()
         await ctx.send(f"Synced slash commands. ```{tree}```")
 
@@ -36,7 +36,7 @@ class Management(commands.Cog, name="Management"):
         hidden=True,
         aliases=["re"],
     )
-    async def reload_extension(self, ctx, extension) -> None:
+    async def reload_extension(self, ctx: commands.Context, extension: str) -> None:
         try:
             if f"cogs.{extension}" in self.extension_targets:
                 await self.client.reload_extension(f"cogs.{extension}")

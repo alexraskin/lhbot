@@ -6,7 +6,7 @@ from utils.bot_utils import get_time_string
 
 
 class Fun(commands.Cog, name="Fun"):
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         """
         The __init__ function is the constructor for a class.
         It initializes the attributes of an object.
