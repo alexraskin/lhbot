@@ -11,7 +11,7 @@ from utils.reinquotes import quotes
 class OverwatchAPI(commands.Cog, name="Overwatch"):
     """Overwatch specify commands"""
 
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         """
         The __init__ function is the constructor for a class.
         It initializes the attributes of an object. In this case, it initializes
@@ -32,7 +32,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         aliases=["stats", "profile"],
         description="?owstats pc us Jay3#11894",
     )
-    async def get_overwatch_profile(self, ctx, *, info=None) -> Embed:
+    async def get_overwatch_profile(self, ctx: commands.Context, info=None) -> Embed:
         """
         The get overwatch profile command retrieves the Overwatch profile of a user.
         It takes in three parameters, which are the context, and two strings.
@@ -113,7 +113,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                     await ctx.send(embed=embed)
 
     @commands.command(name="reinquote", description="Random Rein Quote")
-    async def random_rein_quote(self, ctx) -> Embed:
+    async def random_rein_quote(self, ctx: commands.Context) -> Embed:
         await ctx.typing()
         embed = Embed(
             color=random.randint(0, 0xFFFFFF),
@@ -144,12 +144,23 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "ez block... L + ratio",
             "sr peak check?",
         ]
+
+        miss = "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
+
         await ctx.typing()
+
+        if ctx.interaction:
+            if target_user is None or target_user == "":
+                await ctx.send(miss)
+                return
+
+            if target_user in lh_cloudy_list:
+                await ctx.send(random.choice(lh_cloudy_block_list))
+                return
+
         if target_user == None or target_user == "":
             await ctx.typing()
-            await ctx.send(
-                "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
-            )
+            await ctx.send(miss)
             return
 
         if len(target_user) > 500:
@@ -175,7 +186,11 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
         )
         embed.set_footer(text=f"Requested by {ctx.message.author.name}")
-        await ctx.send(embed=embed)
+        embed_message = await ctx.send(embed=embed)
+        if did_shatter == "hit":
+            await embed_message.add_reaction("🔨")
+        else:
+            await embed_message.add_reaction("🥶")
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="nano", description="Nano Boost")
@@ -187,10 +202,10 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     async def lamp(self, ctx, target_user=None):
         random.seed(get_time_string())
         lamp_sayings = [
-            "Get in the Immortality Field",
-            "Step inside, stay alive",
-            "Get inside!",
-            "Get in here!",
+            f"Get in the Immortality Field {target_user}!",
+            f"Step inside {target_user}, stay alive",
+            f"Get inside, {target_user}!",
+            f"Get in here, {target_user}!",
         ]
         lamp_answers = [
             str(
