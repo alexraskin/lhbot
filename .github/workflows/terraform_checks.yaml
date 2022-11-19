@@ -1,41 +1,44 @@
-name: Terraform
-on: [push]
+# .github/workflows/staging.yaml
+name: 'Terraform - Staging'
 
-jobs:
+on:
+  push:
+  #   branches:
+  #   - main
+  #   paths: 
+  #   - staging/**
+  # pull_request:
+  #   branches:
+  #   - main
+  #   paths: 
+  #   - staging/**
+
+jobs: 
   terraform:
     runs-on: ubuntu-latest
-    container: smartrent/terraform-ci:1.0.11
+    name: Terraform
     steps:
-      - name: Clone Local Repo
-        uses: actions/checkout@v2
-        with:
-            path: infrastructure/terraform/bot
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.1.9
+        terraform_wrapper: false
 
-      - name: Terraform init
-        run: |
-          terraform init -input=false
-      
-      - name: Verify Terraform version
-        run: |
-          terraform --version
-      
-      - name: terraform format
-        run: |
-          terraform fmt -check -recursive
-      
-      - name: tflint
-        run: |
-          tflint
-     
-      - name: Terraform validation
-        run: |
-          terraform validate
-      
-      - name: Terraform plan
-        run: |
-          echo "working directory: $(pwd)"
-          terraform plan -input=false -out=tfplan
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ./infrastucture/terraform/bot
+      shell: bash
+
+    - name: Terraform Apply
+      run: terraform apply -input=false tf.plan
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ./infrastucture/terraform/bot
+      shell: bash
