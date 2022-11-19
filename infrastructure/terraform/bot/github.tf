@@ -6,7 +6,7 @@ resource "github_actions_secret" "lhbot_github_actions_secret" {
   repository      = "lhbot"
   for_each        = local.heroku_enviorment_vars
   secret_name     = each.key
-  plaintext_value = "TF_VAR_${each.value}"
+  plaintext_value = each.value
 }
 
 resource "github_actions_secret" "mongodbatlas_public_key" {

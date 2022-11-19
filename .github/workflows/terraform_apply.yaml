@@ -25,16 +25,16 @@ jobs:
       run: terraform init
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        access_key:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret_key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        access_key:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret_key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Terraform Plan
       id: plan
@@ -42,5 +42,5 @@ jobs:
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        access_key:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret_key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
