@@ -36,5 +36,7 @@ jobs:
           terraform validate
       
       - name: Terraform plan
+        with: 
+          path: infrastructure/terraform/bot
         run: |
           terraform plan -input=false -out=tfplan
