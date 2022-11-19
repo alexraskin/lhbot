@@ -36,7 +36,6 @@ jobs:
           terraform validate
       
       - name: Terraform plan
-        with: 
-          path: infrastructure/terraform/bot
         run: |
+          echo "working directory: $(pwd)"
           terraform plan -input=false -out=tfplan
