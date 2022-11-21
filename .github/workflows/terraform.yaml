@@ -1,4 +1,5 @@
 name: Terraform Checks
+
 on: [push]
 
 jobs:
