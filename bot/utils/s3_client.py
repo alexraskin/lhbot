@@ -14,7 +14,7 @@ class S3Upload:
     S3Upload is a class that contains all the methods to upload,
     delete and get a presigned url for a file.
     Parameters:
-        filename: str: The name of the file to upload
+    filename: str: The name of the file to upload
     """
 
     def __init__(self, filename: str) -> None:
