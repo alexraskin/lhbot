@@ -1,6 +1,6 @@
 import random
 
-from discord import Embed, app_commands, Interaction
+from discord import Embed, Interaction, app_commands
 from discord.ext import commands, tasks
 from utils.bot_utils import get_time_string
 

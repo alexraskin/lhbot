@@ -49,7 +49,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="lhguess")
-    async def lh_guess(self, ctx, *, guess) -> Embed:
+    async def lh_guess(self, ctx, guess) -> Embed:
         """
         The lh_guess function is used to add a guess to the database.
         It takes in a string as an argument and adds it to the database.
@@ -182,7 +182,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(name="lhdelete", aliases=["deleteguess"], hidden=True)
-    async def lh_delete(self, ctx, *, guess_id) -> Embed:
+    async def lh_delete(self, ctx, guess_id) -> Embed:
         """
         The lh_delete function is used to delete a specific guess from the database.
         It takes in a string of the guess id and deletes it from the database. It also

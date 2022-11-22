@@ -7,7 +7,7 @@ from aiohttp import ContentTypeError
 from discord import DMChannel, Embed
 from discord.ext import commands
 from sentry_sdk import capture_exception
-from utils.bot_utils import get_year_string, get_year_round, progress_bar
+from utils.bot_utils import get_year_round, get_year_string, progress_bar
 
 
 class General(commands.Cog, name="General"):

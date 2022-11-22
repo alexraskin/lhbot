@@ -10,7 +10,7 @@ style:
 	isort .
 
 run:
-	poetry run python bot/bot.py
+	poetry run python3 bot/bot.py
 
 test:
 	cd tests

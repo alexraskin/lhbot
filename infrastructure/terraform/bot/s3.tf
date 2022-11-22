@@ -5,6 +5,7 @@ provider "aws" {
     tags = {
       env       = "lhcloudybot"
       terraform = "true"
+      github    = "https://github.com/alexraskin/lhbot"
     }
   }
 }
