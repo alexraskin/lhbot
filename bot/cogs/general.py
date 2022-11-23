@@ -70,7 +70,7 @@ class General(commands.Cog, name="General"):
 
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="ping")
-    async def ping_execute(self, ctx):
+    async def ping(self, ctx):
         """
         The ping function is used to check the bot's latency.
         It returns a message with the time it takes for a message
