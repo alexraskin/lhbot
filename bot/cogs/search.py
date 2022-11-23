@@ -44,16 +44,16 @@ class Search(commands.Cog, name="Search"):
 
         await ctx.typing()
 
-        await ctx.send("Searching DuckDuckGo...")
+        message = await ctx.send("Searching DuckDuckGo...")
 
         try:
             search_results = self.get_ddg(query)
         except Exception as error:
             capture_exception(error)
-            await ctx.send("Something went wrong while searching DuckDuckGo.")
+            await message.edit("Something went wrong while searching DuckDuckGo.")
             return
 
-        await ctx.send(
+        await message.edit(
             content=f"Search results for *{query}*:"
             + f"\n**Title**: {search_results[0]['title']}"
             + f"\n**Link**: {search_results[0]['href']}"
