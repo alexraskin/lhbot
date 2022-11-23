@@ -24,3 +24,6 @@ terraform-fmt:
 
 pre-commit:
 	pre-commit run --all
+
+reqs:
+	poetry export -f requirements.txt --output requirements.txt --without-hashes
