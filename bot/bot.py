@@ -181,7 +181,8 @@ async def on_command_error(ctx, error) -> None:
     """
     The on_command_error function is used to handle errors that occur when a command is run.
     """
-    full_command_name = ctx.command.qualified_name
+    if ctx.command.qualified_name:
+        full_command_name = ctx.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
     error_message = {

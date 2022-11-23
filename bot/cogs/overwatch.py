@@ -30,7 +30,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.command(
         name="owstats",
         aliases=["stats", "profile"],
-        description="?owstats pc us Jay3#11894",
+        description="Get overwatch profile details. EX: !owstats pc us Jay3#11894",
     )
     async def get_overwatch_profile(self, ctx: commands.Context, info=None) -> Embed:
         """
@@ -127,7 +127,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.hybrid_command(name="shatter")
+    @commands.hybrid_command(name="shatter", description="Shatter a user")
     async def shatter(self, ctx: commands.Context, target_user: str = None):
         """
         Shatter another user in the server!
@@ -193,12 +193,45 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             await embed_message.add_reaction("🥶")
 
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="nano", description="Nano Boost")
-    async def nano(self, ctx, target_user=None):
-        await nano_execute(ctx, target_user)
+    @commands.command(name="nano", description="Nano Boost a user in the server!")
+    async def nano_execute(self, ctx, target_user=None):
+        """
+        target_user is a string that contains the username of who you
+
+        :param ctx: Access the context of where the command was called
+        :param target_user: Determine the user that is being targeted by the nano boost
+        :return: One of the sayings in the nano_boost_sayings list
+        """
+
+        nano_boost_sayings = [
+            "Nano Boost administered",
+            "You're powered up, get in there",
+            "Why would you nano a purple 50 hp Reinhardt?",
+        ]
+
+        if target_user == None or target_user == "":
+            return
+
+        await ctx.typing()
+        if len(target_user) > 500:
+            await ctx.typing()
+            await ctx.send("Username is too long!")
+            return
+
+        random.seed(get_time_string())
+        embed = Embed(
+            description=f"{random.choice(list(nano_boost_sayings))} {target_user}",
+            color=random.randint(0, 0xFFFFFF),
+        )
+        embed.set_author(
+            name="Nano Boost!",
+            icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
+        )
+        embed.set_footer(text=f"Requested by {ctx.message.author.name}")
+        await ctx.send(embed=embed)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="lamp", description="Bap Lamp")
+    @commands.command(name="lamp", description="Lamp a user in the server!")
     async def lamp(self, ctx, target_user=None):
         random.seed(get_time_string())
         lamp_sayings = [
@@ -223,7 +256,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         await ctx.send(random.choice(lamp_answers))
 
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="boop", description="Boop!")
+    @commands.command(name="boop", description="Boop a user in the server!")
     async def boop(self, ctx, target_user=None):
         boop_sayings = [
             "That was the sound of science",
@@ -241,43 +274,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         random.seed(get_time_string())
         await ctx.typing()
         await ctx.send(f"{random.choice(list(boop_sayings))}, {target_user}")
-
-
-async def nano_execute(ctx, target_user=None):
-    """
-    target_user is a string that contains the username of who you
-
-    :param ctx: Access the context of where the command was called
-    :param target_user: Determine the user that is being targeted by the nano boost
-    :return: One of the sayings in the nano_boost_sayings list
-    """
-
-    nano_boost_sayings = [
-        "Nano Boost administered",
-        "You're powered up, get in there",
-        "Why would you nano a purple 50 hp Reinhardt?",
-    ]
-
-    if target_user == None or target_user == "":
-        return
-
-    await ctx.typing()
-    if len(target_user) > 500:
-        await ctx.typing()
-        await ctx.send("Username is too long!")
-        return
-
-    random.seed(get_time_string())
-    embed = Embed(
-        description=f"{random.choice(list(nano_boost_sayings))} {target_user}",
-        color=random.randint(0, 0xFFFFFF),
-    )
-    embed.set_author(
-        name="Nano Boost!",
-        icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
-    )
-    embed.set_footer(text=f"Requested by {ctx.message.author.name}")
-    await ctx.send(embed=embed)
 
 
 async def setup(client):

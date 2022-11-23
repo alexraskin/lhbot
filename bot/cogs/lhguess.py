@@ -48,7 +48,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
             )
 
     @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.command(name="lhguess")
+    @commands.command(
+        name="lhguess", description="Guess what LH stands for in LhCloudy"
+    )
     async def lh_guess(self, ctx, guess) -> Embed:
         """
         The lh_guess function is used to add a guess to the database.
@@ -110,7 +112,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
             await embed_message.add_reaction(random_emoji())
 
     @commands.cooldown(1, 60, commands.BucketType.user)
-    @commands.command(name="lhcount")
+    @commands.command(
+        name="lhcount", description="Count the number of guesses in the database"
+    )
     async def guess_count(self, ctx) -> Embed:
         """
         The guess_count function is used to display the current amount of guesses in the database.
@@ -133,7 +137,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         await embed_message.add_reaction(random_emoji())
 
     @commands.cooldown(1, 30, commands.BucketType.user)
-    @commands.command(name="lhreport")
+    @commands.command(
+        name="lhreport", description="Generate a report of all guesses in the database"
+    )
     async def run_lh_report(self, ctx) -> Embed:
         """
         The run_lh_report function specifically generates a PDF report of all guesses made by the user.
@@ -159,7 +165,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.command(name="lhhint", aliases=["hint"])
+    @commands.command(
+        name="lhhint", aliases=["hint"], description="Get a hint for the LhGuess game"
+    )
     async def lh_hints(self, ctx) -> Embed:
         """
         The lh_hints function is used to send a random hint about the meaning of LH.

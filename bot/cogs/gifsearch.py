@@ -36,7 +36,9 @@ class Gif(commands.Cog, name="Gif"):
             return False
 
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="gif", aliases=["gifsearch", "randomgif"])
+    @commands.command(
+        name="gif", aliases=["gifsearch", "randomgif"], description="Search for a gif"
+    )
     async def get_random_gif(self, ctx, *, search="") -> Embed:
         """
         The get_random_gif function is a helper function that retrieves a random gif from the Giphy API.
