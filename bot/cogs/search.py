@@ -49,6 +49,7 @@ class Search(commands.Cog, name="Search"):
         try:
             search_results = self.get_ddg(query)
         except Exception as error:
+            self.client.logger.error(f"Error in search: {error}")
             capture_exception(error)
             await message.edit("Something went wrong while searching DuckDuckGo.")
             return

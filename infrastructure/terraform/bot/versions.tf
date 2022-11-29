@@ -6,7 +6,7 @@ terraform {
     }
     mongodbatlas = {
       source  = "mongodb/mongodbatlas"
-      version = "~> 1.4"
+      version = "~> 1.6"
     }
     sentry = {
       source  = "jianyuan/sentry"
