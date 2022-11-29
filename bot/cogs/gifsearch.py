@@ -24,14 +24,19 @@ class Gif(commands.Cog, name="Gif"):
                 f"{self.base_url}randomid?api_key={self.client.config.giphy_api_key}"
             ) as response:
                 if response.status != 200:
+                    self.client.logger.error(
+                        "Giphy API returned a non-200 status code."
+                    )
                     return False
                 else:
                     data = await response.json()
                     return str(data["data"]["random_id"])
         except ContentTypeError as e:
             capture_exception(e)
+            self.client.logger.error(f"Error in get_random_giphy_user_id: {e}")
             return False
         except Exception as e:
+            self.client.logger.error(f"Error in get_random_giphy_user_id: {e}")
             capture_exception(e)
             return False
 
@@ -68,11 +73,12 @@ class Gif(commands.Cog, name="Gif"):
                     embed.set_footer(text="Powered By GIPHY")
                     await ctx.send(embed=embed)
                 else:
+                    self.client.logger.error(
+                        f"Error in get_random_gif Status: {response.status}"
+                    )
                     await ctx.send("No GIF found")
-        except ContentTypeError as error:
-            capture_exception(error)
-            await ctx.send("No GIF found")
         except Exception as error:
+            self.client.logger.error(f"Error in get_random_gif: {error}")
             capture_exception(error)
             await ctx.send("No GIF found")
 

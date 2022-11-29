@@ -14,7 +14,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     def __init__(self, client: commands.Bot):
         """
         The __init__ function is the constructor for a class.
-        It initializes the attributes of an object. In this case, it initializes
+        It initializes the attributes of an obrror)ject. In this case, it initializes
         the client attribute.
 
         :param self: Used to access variables that belong to the class.
@@ -69,48 +69,55 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             platform, region, profile = str(info).split(" ")
             url = f'{self.base_url}/profile/{platform}/{region}/{str(profile).replace("#", "-")}'
             async with self.client.session.get(url) as response:
-                user_data = await response.json()
-                if "message" in user_data:
-                    embed = Embed(
-                        title="Unable to find profile",
-                        color=random.randint(0, 0xFFFFFF),
+                if response.status != 200:
+                    self.client.logger.error("Error getting Overwatch profile")
+                    await ctx.send(
+                        f"Overwatch API is currently down. Please try again later."
                     )
-                    await ctx.typing()
-                    await ctx.send(embed=embed)
-                if not user_data["private"]:
-                    await ctx.typing()
-                    embed = Embed(color=random.randint(0, 0xFFFFFF))
-                    embed.set_author(
-                        name=user_data["username"], icon_url=user_data["portrait"]
-                    )
-                    embed.add_field(
-                        name="Player Level:", value=user_data["level"], inline=True
-                    )
-                    embed.add_field(
-                        name="Competitive Tank Rating:",
-                        value=user_data["competitive"]["tank"]["rank"],
-                        inline=True,
-                    )
-                    embed.add_field(
-                        name="Competitive Damage Rating:",
-                        value=user_data["competitive"]["damage"]["rank"],
-                        inline=True,
-                    )
-                    embed.add_field(
-                        name="Competitive Support Rating:",
-                        value=user_data["competitive"]["support"]["rank"],
-                        inline=True,
-                    )
-                    embed.set_footer(text=f"Requested by {ctx.message.author}")
-                    await ctx.send(embed=embed)
-                if user_data["private"]:
-                    embed = Embed(color=random.randint(0, 0xFFFFFF))
-                    embed.set_author(
-                        name=f'{user_data["username"]} is not a public profile',
-                        icon_url=user_data["portrait"],
-                    )
-                    await ctx.typing()
-                    await ctx.send(embed=embed)
+                    return
+                else:
+                    user_data = await response.json()
+                    if "message" in user_data:
+                        embed = Embed(
+                            title="Unable to find profile",
+                            color=random.randint(0, 0xFFFFFF),
+                        )
+                        await ctx.typing()
+                        await ctx.send(embed=embed)
+                    if not user_data["private"]:
+                        await ctx.typing()
+                        embed = Embed(color=random.randint(0, 0xFFFFFF))
+                        embed.set_author(
+                            name=user_data["username"], icon_url=user_data["portrait"]
+                        )
+                        embed.add_field(
+                            name="Player Level:", value=user_data["level"], inline=True
+                        )
+                        embed.add_field(
+                            name="Competitive Tank Rating:",
+                            value=user_data["competitive"]["tank"]["rank"],
+                            inline=True,
+                        )
+                        embed.add_field(
+                            name="Competitive Damage Rating:",
+                            value=user_data["competitive"]["damage"]["rank"],
+                            inline=True,
+                        )
+                        embed.add_field(
+                            name="Competitive Support Rating:",
+                            value=user_data["competitive"]["support"]["rank"],
+                            inline=True,
+                        )
+                        embed.set_footer(text=f"Requested by {ctx.message.author}")
+                        await ctx.send(embed=embed)
+                    if user_data["private"]:
+                        embed = Embed(color=random.randint(0, 0xFFFFFF))
+                        embed.set_author(
+                            name=f'{user_data["username"]} is not a public profile',
+                            icon_url=user_data["portrait"],
+                        )
+                        await ctx.typing()
+                        await ctx.send(embed=embed)
 
     @commands.command(name="reinquote", description="Random Rein Quote")
     async def random_rein_quote(self, ctx: commands.Context) -> Embed:

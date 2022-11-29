@@ -8,8 +8,8 @@ import motor.motor_asyncio
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from config import Settings
-from discord import AllowedMentions, Color, Embed, Game, Intents, Status
-from discord.ext import commands, tasks
+from discord import AllowedMentions, Game, Intents, Status
+from discord.ext import tasks
 from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
 from utils.clear_dir import clean_cache
@@ -51,10 +51,12 @@ class LhBot(AutoShardedBot):
         self.db_client = None
         self.config = config
         self.status = Status.online
+        self.logger = logging.getLogger("discord")
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
         self.headers = {"User-Agent": self.user_agent}
+          
 
     async def start(self, *args, **kwargs) -> None:
         self.session = ClientSession(
@@ -79,12 +81,12 @@ class LhBot(AutoShardedBot):
 
         for extension in reversed(startup_extensions):
             try:
-                logging.info(f"Loading: {extension}")
+                self.logger.info(f"Loading: {extension}")
                 await self.load_extension(f"{extension}")
             except Exception as error:
                 capture_exception(error)
                 exc = f"{type(error).__name__}: {error}"
-                logging.error(f"Failed to load extension {extension}\n{exc}")
+                self.logger.error(f"Failed to load extension {extension}\n{exc}")
 
     def user_is_admin(self, user) -> bool:
         """
@@ -174,72 +176,6 @@ async def on_ready() -> bool:
     status_task.start()
     clean_dir.start()
     return True
-
-
-@client.event
-async def on_command_error(ctx, error) -> None:
-    """
-    The on_command_error function is used to handle errors that occur when a command is run.
-    """
-    if ctx.command.qualified_name:
-        full_command_name = ctx.command.qualified_name
-    split = full_command_name.split(" ")
-    executed_command = str(split[0])
-    error_message = {
-        commands.BotMissingPermissions: "I don't have the permissions needed to run this command",
-        commands.MissingRole: "You don't have the role(s) needed to use this command",
-        commands.BadArgument: "Unexpected argument (check your capitalization and parameter order)",
-        commands.MissingRequiredArgument: "Missing required argument.",
-        commands.TooManyArguments: "Too many arguments",
-        commands.CheckFailure: "You don't have the permissions needed to use this command",
-        AttributeError: "It's probably due to a spelling error somewhere",
-    }
-
-    if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(
-            "This command is on cool down."
-            + f" Please try again in {round(error.retry_after)} "
-            + f'{"second" if round(error.retry_after) <= 1 else "seconds"}.'
-        )
-        logging.info(
-            f"Executed {executed_command} command in {ctx.guild.name}"
-            + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
-        )
-        return
-
-    if isinstance(error, commands.CommandNotFound):
-        await ctx.send(
-            f"Command not found, try `{config.bot_prefix}help` for a list of available commands."
-        )
-        return
-
-    try:
-        description = "Error: " + error_message[error]
-        await ctx.channel.send(
-            embed=Embed(description=description, color=Color.from_rgb(214, 11, 11))
-        )
-    except KeyError as error:
-        logging.error(error)
-        capture_exception(error)
-        if isinstance(error, commands.CommandNotFound):
-            return
-
-
-@client.event
-async def on_command_completion(ctx) -> None:
-    """
-    The on_command_completion function tracks the commands that are executed in each server.
-
-    :param ctx: Used to access the context of the command.
-    :return: a string of the executed command.
-    """
-    full_command_name = ctx.command.qualified_name
-    split = full_command_name.split(" ")
-    executed_command = str(split[0])
-    logging.info(
-        f"Executed {executed_command} command in {ctx.guild.name}"
-        + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
-    )
 
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)

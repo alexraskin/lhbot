@@ -1,9 +1,11 @@
+import datetime
 import platform
+import time
 from inspect import getsourcelines
-import datetime, time
 
-from discord import DMChannel, Embed
+from discord import DMChannel, Embed, HTTPException
 from discord.ext import commands
+from sentry_sdk import capture_exception
 from utils.bot_utils import get_year_round, progress_bar
 
 
@@ -23,6 +25,49 @@ class General(commands.Cog, name="General"):
         startTime = time.time()
 
     @commands.Cog.listener()
+    async def on_command_error(self, ctx, error) -> None:
+        """
+        The on_command_error function is used to handle errors that occur when a command is run.
+
+        """
+        if hasattr(ctx.command, 'on_error'):
+            return
+
+        cog = ctx.cog
+        if cog:
+            if cog._get_overridden_method(cog.cog_command_error) is not None:
+                return
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("You don't have the permissions needed to use this command")
+            return
+
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Missing required argument: {error.param.name}")
+            return
+
+        if isinstance(error, commands.CommandNotFound):
+          await ctx.send(f"Command not found, try `{self.client.config.bot_prefix}help` for a list of available commands.")
+          return
+
+        if isinstance(error, commands.DisabledCommand):
+            await ctx.send(f'{ctx.command} has been disabled.')
+            return
+
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(
+                "This command is on cool down."
+                + f" Please try again in {round(error.retry_after)} "
+                + f'{"second" if round(error.retry_after) <= 1 else "seconds"}.'
+            )
+            self.client.logger.info("Command on cooldown")
+            return
+        else:
+              await ctx.send(f"An error occurred, this has been reported to the developers.")
+              self.client.logger.error(error)
+              capture_exception(error)
+              return
+
+    @commands.Cog.listener()
     async def on_message(self, message):
         """
         The on_message function specifically handles messages that are sent to the bot.
@@ -37,11 +82,33 @@ class General(commands.Cog, name="General"):
             return
 
         if isinstance(message.channel, DMChannel):
-            return
+            try:
+                await message.author.send(
+                    f"{message.command} can not be used in Private Messages."
+                )
+            except HTTPException:
+                self.client.logger.error(f"Failed to send message to {message.author}")
+                pass
+
+    @commands.Cog.listener()
+    async def on_command_completion(self, ctx) -> None:
+        """
+        The on_command_completion function tracks the commands that are executed in each server.
+
+        :param ctx: Used to access the context of the command.
+        :return: a string of the executed command.
+        """
+        full_command_name = ctx.command.qualified_name
+        split = full_command_name.split(" ")
+        executed_command = str(split[0])
+        self.client.logger.info(
+            f"Executed {executed_command} command in {ctx.guild.name}"
+            + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
+        )
 
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="info", aliases=["botinfo"])
-    async def info_execute(self, ctx):
+    async def info(self, ctx):
         """
         The info function specifically tells the user about the bot,
         and gives them a link to the github page.
@@ -90,7 +157,7 @@ class General(commands.Cog, name="General"):
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="year", aliases=["yearprogress"])
-    async def year_execute(self, ctx):
+    async def year(self, ctx):
         """
         The year function tells the user how much of the current year has passed.
 
