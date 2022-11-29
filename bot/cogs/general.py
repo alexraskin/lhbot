@@ -20,11 +20,6 @@ class General(commands.Cog, name="General"):
         self.client = client
 
     @commands.Cog.listener()
-    async def on_ready(self):
-        global startTime
-        startTime = time.time()
-
-    @commands.Cog.listener()
     async def on_command_error(self, ctx, error) -> None:
         """
         The on_command_error function is used to handle errors that occur when a command is run.
@@ -216,7 +211,7 @@ class General(commands.Cog, name="General"):
         The uptime function is used to show the uptime of the bot.
         """
         await ctx.typing()
-        uptime = str(datetime.timedelta(seconds=int(round(time.time() - startTime))))
+        uptime = str(datetime.timedelta(seconds=int(round(time.time() - self.client.start_time))))
 
         embed = Embed(
             title="Bot Uptime", description=f"Uptime: {uptime}", color=0x42F56C

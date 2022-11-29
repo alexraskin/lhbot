@@ -1,6 +1,7 @@
 import logging
 import platform
 import random
+import time
 from functools import lru_cache
 from os import listdir, path
 
@@ -51,6 +52,8 @@ class LhBot(AutoShardedBot):
         self.db_client = None
         self.config = config
         self.status = Status.online
+        self.start_time = None
+        self.version = "2.4.0"
         self.logger = logging.getLogger("discord")
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
@@ -58,6 +61,7 @@ class LhBot(AutoShardedBot):
         self.headers = {"User-Agent": self.user_agent}
 
     async def start(self, *args, **kwargs) -> None:
+        self.start_time = time.time()
         self.session = ClientSession(
             timeout=ClientTimeout(total=30), headers=self.headers
         )
