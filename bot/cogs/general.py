@@ -30,7 +30,7 @@ class General(commands.Cog, name="General"):
         The on_command_error function is used to handle errors that occur when a command is run.
 
         """
-        if hasattr(ctx.command, 'on_error'):
+        if hasattr(ctx.command, "on_error"):
             return
 
         cog = ctx.cog
@@ -46,11 +46,13 @@ class General(commands.Cog, name="General"):
             return
 
         if isinstance(error, commands.CommandNotFound):
-          await ctx.send(f"Command not found, try `{self.client.config.bot_prefix}help` for a list of available commands.")
-          return
+            await ctx.send(
+                f"Command not found, try `{self.client.config.bot_prefix}help` for a list of available commands."
+            )
+            return
 
         if isinstance(error, commands.DisabledCommand):
-            await ctx.send(f'{ctx.command} has been disabled.')
+            await ctx.send(f"{ctx.command} has been disabled.")
             return
 
         if isinstance(error, commands.CommandOnCooldown):
@@ -62,10 +64,12 @@ class General(commands.Cog, name="General"):
             self.client.logger.info("Command on cooldown")
             return
         else:
-              await ctx.send(f"An error occurred, this has been reported to the developers.")
-              self.client.logger.error(error)
-              capture_exception(error)
-              return
+            await ctx.send(
+                f"An error occurred, this has been reported to the developers."
+            )
+            self.client.logger.error(error)
+            capture_exception(error)
+            return
 
     @commands.Cog.listener()
     async def on_message(self, message):

@@ -56,7 +56,6 @@ class LhBot(AutoShardedBot):
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
         self.headers = {"User-Agent": self.user_agent}
-          
 
     async def start(self, *args, **kwargs) -> None:
         self.session = ClientSession(
