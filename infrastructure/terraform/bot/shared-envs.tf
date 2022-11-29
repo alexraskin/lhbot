@@ -1,5 +1,6 @@
 locals {
   heroku_enviorment_vars = {
+    PORT              = var.heroku_enviorment_vars["PORT"]
     DATABASE_URL      = var.heroku_enviorment_vars["DATABASE_URL"]
     BOT_PREFIX        = var.heroku_enviorment_vars["BOT_PREFIX"]
     BOT_TOKEN         = var.heroku_enviorment_vars["BOT_TOKEN"]

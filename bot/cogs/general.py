@@ -211,7 +211,9 @@ class General(commands.Cog, name="General"):
         The uptime function is used to show the uptime of the bot.
         """
         await ctx.typing()
-        uptime = str(datetime.timedelta(seconds=int(round(time.time() - self.client.start_time))))
+        uptime = str(
+            datetime.timedelta(seconds=int(round(time.time() - self.client.start_time)))
+        )
 
         embed = Embed(
             title="Bot Uptime", description=f"Uptime: {uptime}", color=0x42F56C
