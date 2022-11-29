@@ -7,10 +7,11 @@ resource "mongodbatlas_cluster" "lhcloudy_cluster" {
   project_id = var.mongodb_project_id
   name       = var.mongodb_cluster_name
 
-  provider_name               = "TENANT"
-  backing_provider_name       = "AWS"
-  provider_region_name        = "US_EAST_1"
-  provider_instance_size_name = "M0"
+  provider_name                  = "TENANT"
+  backing_provider_name          = "AWS"
+  provider_region_name           = "US_EAST_1"
+  provider_instance_size_name    = "M0"
+  termination_protection_enabled = true
 }
 
 resource "mongodbatlas_database_user" "lhcloudybot_db_user" {
