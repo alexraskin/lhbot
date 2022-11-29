@@ -10,12 +10,13 @@ from aiohttp import web
 from discord.ext import commands
 from discord import __version__ as discord_version
 
+def get_uptime(start_time):
+    return str(datetime.timedelta(seconds=int(round(time.time() - start_time))))
 
 class WebServer(commands.Cog, name="WebServer"):
     def __init__(self, client):
         self.client = client
         self.path = os.path.join(Path(__file__).resolve().parent, "static/")
-        self.uptime = str(datetime.timedelta(seconds=int(round(time.time() - self.client.start_time))))
 
     def html_response(self, text):
         return web.Response(text=text, content_type="text/html")
@@ -26,7 +27,7 @@ class WebServer(commands.Cog, name="WebServer"):
           "discord_version": discord_version,
           "bot_version": self.client.version,
           "bot_latency": f"{round(self.client.latency * 1000)}ms",
-          "bot_uptime": self.uptime
+          "bot_uptime": get_uptime(self.client.start_time),
           }
 
     async def webserver(self):
@@ -38,7 +39,7 @@ class WebServer(commands.Cog, name="WebServer"):
         app.router.add_get("/", self.index_handler)
         runner = web.AppRunner(app)
         await runner.setup()
-        self.site = web.TCPSite(runner, "0.0.0.0", 8000)
+        self.site = web.TCPSite(runner, "0.0.0.0", self.client.config.port)
         await self.client.wait_until_ready()
         await self.site.start()
 

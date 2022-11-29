@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     """
     The Settings class is a class that contains all the settings for the bot.
     """
-
+    port = int(os.getenv("PORT", 8000))
     bot_prefix: str = os.getenv("BOT_PREFIX")
     bot_token: str = os.getenv("BOT_TOKEN")
     application_id: str = os.getenv("APPLICATION_ID")
