@@ -17,7 +17,7 @@ class Management(commands.Cog, name="Management"):
 
     def cog_crawl(self):
         self.extension_targets = []
-        for self.cog in listdir("./bot/cogs"):
+        for self.cog in self.client.abs_path:
             if self.cog.endswith(".py"):
                 self.extension_targets.append(f"cogs.{self.cog[:-3]}")
         return self.extension_targets

@@ -5,8 +5,6 @@ README.md
 .github/
 .gitignore
 .gitattributes
-poetry.lock
-pyproject.toml
 Procfile
 runtime.txt
 infrastructure/terraform/

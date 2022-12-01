@@ -1,9 +1,10 @@
+import datetime
 import logging
+import os
 import platform
 import random
 import time
 from functools import lru_cache
-from os import listdir, path
 
 import motor.motor_asyncio
 import sentry_sdk
@@ -50,18 +51,22 @@ class LhBot(AutoShardedBot):
         super().__init__(*args, **options)
         self.session = None
         self.db_client = None
+        self.start_time = None
+        self.version = None
         self.config = config
         self.status = Status.online
-        self.start_time = None
-        self.version = "2.4.0"
         self.logger = logging.getLogger("discord")
+        self.start_time = time.time()
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
         self.headers = {"User-Agent": self.user_agent}
+        if self.config.docker_enabled == True:
+          self.abs_path = os.listdir("cogs")
+        else:
+          self.abs_path = os.listdir(os.path.join(os.path.dirname(__file__), "cogs/"))
 
     async def start(self, *args, **kwargs) -> None:
-        self.start_time = time.time()
         self.session = ClientSession(
             timeout=ClientTimeout(total=30), headers=self.headers
         )
@@ -75,10 +80,10 @@ class LhBot(AutoShardedBot):
         await super().close()
 
     async def setup_hook(self) -> None:
-        logging.info("Loading Extensions:")
         startup_extensions = []
-        for file in listdir(path.join(path.dirname(__file__), "cogs/")):
-            filename, ext = path.splitext(file)
+
+        for file in self.abs_path:
+            filename, ext = os.path.splitext(file)
             if ".py" in ext:
                 startup_extensions.append(f"cogs.{filename}")
 
@@ -121,10 +126,25 @@ class LhBot(AutoShardedBot):
         superusers = self.config.superusers
         return user.id in superusers
 
+    def get_uptime(self) -> str:
+      """Returns the uptime of the bot."""
+      return str(datetime.timedelta(seconds=int(round(time.time() - self.start_time))))
+    
+    def get_bot_latency(self) -> float:
+      """Returns the latency of the bot."""
+      return round(self.latency * 1000)
+
+    async def get_bot_version(self) -> str:
+      """Returns the version of the bot."""
+      url = "https://api.github.com/repos/alexraskin/lhbot/tags"
+      async with self.session.get(url) as response:
+            version = await response.json()
+            return version[0]["name"]
+
 
 client = LhBot(
     command_prefix=config.bot_prefix,
-    description="Hi I am LhBot!",
+    description="Hi, I am LhBot!",
     max_messages=15000,
     intents=Intents.all(),
     allowed_mentions=AllowedMentions(everyone=False, users=True, roles=True),

@@ -148,7 +148,7 @@ class General(commands.Cog, name="General"):
         """
         embed = Embed(
             title="🏓 Pong!",
-            description=f"The bot latency is {round(self.client.latency * 1000)}ms.",
+            description=f"The bot latency is {self.client.get_bot_latency()}ms.",
             color=0x42F56C,
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
@@ -211,12 +211,9 @@ class General(commands.Cog, name="General"):
         The uptime function is used to show the uptime of the bot.
         """
         await ctx.typing()
-        uptime = str(
-            datetime.timedelta(seconds=int(round(time.time() - self.client.start_time)))
-        )
 
         embed = Embed(
-            title="Bot Uptime", description=f"Uptime: {uptime}", color=0x42F56C
+            title="Bot Uptime", description=f"Uptime: {self.client.get_uptime()}", color=0x42F56C
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
 
