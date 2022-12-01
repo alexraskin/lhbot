@@ -62,9 +62,9 @@ class LhBot(AutoShardedBot):
         )
         self.headers = {"User-Agent": self.user_agent}
         if self.config.docker_enabled == True:
-          self.abs_path = os.listdir("cogs")
+            self.abs_path = os.listdir("cogs")
         else:
-          self.abs_path = os.listdir(os.path.join(os.path.dirname(__file__), "cogs/"))
+            self.abs_path = os.listdir(os.path.join(os.path.dirname(__file__), "cogs/"))
 
     async def start(self, *args, **kwargs) -> None:
         self.session = ClientSession(
@@ -127,17 +127,19 @@ class LhBot(AutoShardedBot):
         return user.id in superusers
 
     def get_uptime(self) -> str:
-      """Returns the uptime of the bot."""
-      return str(datetime.timedelta(seconds=int(round(time.time() - self.start_time))))
-    
+        """Returns the uptime of the bot."""
+        return str(
+            datetime.timedelta(seconds=int(round(time.time() - self.start_time)))
+        )
+
     def get_bot_latency(self) -> float:
-      """Returns the latency of the bot."""
-      return round(self.latency * 1000)
+        """Returns the latency of the bot."""
+        return round(self.latency * 1000)
 
     async def get_bot_version(self) -> str:
-      """Returns the version of the bot."""
-      url = "https://api.github.com/repos/alexraskin/lhbot/tags"
-      async with self.session.get(url) as response:
+        """Returns the version of the bot."""
+        url = "https://api.github.com/repos/alexraskin/lhbot/tags"
+        async with self.session.get(url) as response:
             version = await response.json()
             return version[0]["name"]
 
