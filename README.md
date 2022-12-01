@@ -8,7 +8,6 @@ ___
 [Profile Picture Credit](https://twitter.com/PetraYle)
 
 ![GitHub](https://img.shields.io/github/license/alexraskin/lhbot)
-![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)
 
@@ -25,22 +24,26 @@ If you follow LhCloudy on twitch, you will know, that he will not share what Lh 
 
 ---
 #### Deploy
-This bot is completely managed by terraform and is deployed on heroku. If you are wanting to deploy this bot, you can do so by following the instructions below.
+This bot is completely managed by terraform and is deployed on AWS. If you are wanting to deploy this bot, you can do so by following the instructions below.
 
 A few things you will need:
 - Discord bot
 - Mongo database (I use atlas)
-- Heroku App 
+- AWS Account
 - Amazon S3 Bucket
 
 Take a look in the `/example-files` folder for examples of the files you will need to create.
 
-#### Deploying the bot to Heroku via Terraform
+#### Deploying the bot to AWS via Terraform
 1. Clone the repository
 2. Change `dir` to `infrastructure/terraform/bot`
 3. Create a `terraform.tfvars` The bot will look for all these environment variables [in this file](hhttps://github.com/alexraskin/lhbot/blob/main/infrastructure/terraform/bot/shared-envs.tf)
 4. Run `terraform init`
-5. Run `terraform apply`
+5. Run `terraform apply --target aws_ecr_repository.ecr_repository`
+
+- You will need to make sure the docker build is built and stored in the ECR repository. You can do this by running `docker build -t lhbot .` and then `docker tag lhbot:latest <aws_account_id>.dkr.ecr.eu-west-2.amazonaws.com/lhbot:latest` and then `docker push <aws_account_id>.dkr.ecr.eu-west-2.amazonaws.com/lhbot:latest` or something similar.
+
+6. Run `terraform apply`
 
 ___
 #### Run the bot locally

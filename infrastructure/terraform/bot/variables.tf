@@ -114,7 +114,7 @@ variable "docker_image_tag" {
 }
 
 variable "service_port" {
-  type = string
+  type    = string
   default = 8000
 }
 

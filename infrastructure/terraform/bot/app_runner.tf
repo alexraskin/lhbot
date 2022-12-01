@@ -38,3 +38,8 @@ resource "aws_apprunner_auto_scaling_configuration_version" "runner_auto_scaling
   min_size                        = var.auto_scaling_min_size
   max_size                        = var.auto_scaling_max_size
 }
+
+resource "aws_apprunner_custom_domain_association" "lh_bot_domain" {
+  domain_name = "lhbot.reinfrog.de"
+  service_arn = aws_apprunner_service.runner_service.arn
+}
