@@ -11,6 +11,7 @@ from discord.ext import commands
 
 class WebServer(commands.Cog, name="WebServer"):
     """WebServer cog for the bot."""
+
     def __init__(self, client):
         self.client = client
         self.path = os.path.join(Path(__file__).resolve().parent, "static/")

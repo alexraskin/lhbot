@@ -213,7 +213,9 @@ class General(commands.Cog, name="General"):
         await ctx.typing()
 
         embed = Embed(
-            title="Bot Uptime", description=f"Uptime: {self.client.get_uptime()}", color=0x42F56C
+            title="Bot Uptime",
+            description=f"Uptime: {self.client.get_uptime()}",
+            color=0x42F56C,
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
 
