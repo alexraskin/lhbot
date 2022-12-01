@@ -5,14 +5,34 @@ LABEL MAINTAINER="alexraskin"
 WORKDIR /bot
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
+ENV DOCKER_ENABLED=${DOCKER_ENABLED}
+ENV BOT_PREFIX=${BOT_PREFIX}
+ENV BOT_TOKEN=${BOT_TOKEN}
+ENV APPLICATION_ID=${APPLICATION_ID}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV FILE_STACK_API_KEY=${FILE_STACK_API_KEY}
+ENV SENTRY_DSN=${SENTRY_DSN}
+ENV main_guild=${main_guild}
+ENV owners=${owners}
+ENV superusers=${superusers}
+ENV admin_roles=${admin_roles}
+ENV GIPHY_API_KEY=${GIPHY_API_KEY}
+ENV BOT_NAME=${BOT_NAME}
+ENV AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV AWS_REGION=${AWS_REGION}
+ENV TENOR_API_KEY=${TENOR_API_KEY}
+ENV S3_BUCKET_NAME=${S3_BUCKET_NAME}
 
 RUN pip install poetry
 
-COPY ./bot /bot
-
 COPY poetry.lock pyproject.toml ./
+
+COPY ./bot/ /bot
 
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction
 
-CMD ["python3", "bot/bot.py"]
+EXPOSE 8000
+
+CMD ["python3", "bot.py"]

@@ -1,14 +1,12 @@
 import asyncio
 import os
-import time
-import datetime
 from pathlib import Path
 
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
-from discord.ext import commands
 from discord import __version__ as discord_version
+from discord.ext import commands
 
 
 class WebServer(commands.Cog, name="WebServer"):
