@@ -2,7 +2,6 @@ import datetime
 import logging
 import os
 import platform
-import random
 import time
 from functools import lru_cache
 
@@ -10,7 +9,7 @@ import motor.motor_asyncio
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from config import Settings
-from discord import AllowedMentions, Game, Intents, Status
+from discord import AllowedMentions, Intents, Status
 from discord.ext import tasks
 from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
@@ -152,29 +151,6 @@ client = LhBot(
     allowed_mentions=AllowedMentions(everyone=False, users=True, roles=True),
 )
 
-
-@tasks.loop(minutes=1.0)
-async def status_task() -> None:
-    """
-    The status_task function is a loop that will run every 60 seconds.
-    It will randomly select one of the statuses from the list
-    and set it as the bot's status.
-
-    :return: a list of strings that will be used to change the status of the bot.
-    """
-    statuses = [
-        "Overwatch",
-        "Overwatch 2",
-        "Diffing LhCloudy",
-        f"{config.bot_prefix}help",
-        f"{config.bot_prefix}info",
-        f"{config.bot_prefix}dog",
-        f"{config.bot_prefix}cat",
-        f"{config.bot_prefix}meme",
-    ]
-    await client.change_presence(activity=Game(random.choice(statuses)))
-
-
 @tasks.loop(minutes=60)
 async def clean_dir() -> None:
     """
@@ -198,10 +174,8 @@ async def on_ready() -> bool:
     main_id = config.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     logging.info(f"{client.user.name} started successfully")
-    status_task.start()
     clean_dir.start()
     return True
-
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
 logging.info("LhBot has exited")

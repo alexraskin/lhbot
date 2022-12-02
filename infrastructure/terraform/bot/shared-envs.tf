@@ -18,5 +18,7 @@ locals {
     AWS_REGION         = var.enviorment_vars["AWS_REGION"]
     S3_BUCKET_NAME     = var.enviorment_vars["S3_BUCKET_NAME"]
     AWS_ECR_REPOSITORY = var.enviorment_vars["AWS_ECR_REPOSITORY"]
+    TWITCH_CLIENT_ID   = var.enviorment_vars["TWITCH_CLIENT_ID"]
+    TWITCH_CLIENT_SECRET = var.enviorment_vars["TWITCH_CLIENT_SECRET"]
   }
 }

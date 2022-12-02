@@ -1,10 +1,9 @@
-import datetime
+import random
 import platform
-import time
 from inspect import getsourcelines
 
-from discord import DMChannel, Embed, HTTPException
-from discord.ext import commands
+import discord
+from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
 from utils.bot_utils import get_year_round, progress_bar
 
@@ -18,6 +17,57 @@ class General(commands.Cog, name="General"):
         :return: the object of the class.
         """
         self.client = client
+        self.streamer_name = "lhcloudy27"
+        self.twitch_url = "https://www.twitch.tv/lhcloudy27"
+        self.body = {
+            "client_id": self.client.config.twitch_client_id,
+            "client_secret": self.client.config.twitch_client_secret,
+            "grant_type": "client_credentials",
+        }
+        self.status_task.start()
+
+    async def check_if_live(self) -> list:
+        async with self.client.session.post(
+            "https://id.twitch.tv/oauth2/token", data=self.body
+        ) as response:
+            keys = await response.json()
+            headers = {
+                "Client-ID": self.client.config.twitch_client_id,
+                "Authorization": "Bearer " + keys["access_token"],
+            }
+        async with self.client.session.get(
+            f"https://api.twitch.tv/helix/streams?user_login={self.streamer_name}",
+            headers=headers,
+        ) as response:
+            stream_data = await response.json()
+            if len(stream_data["data"]) == 1:
+                return True
+            else:
+                return False
+
+    @tasks.loop(seconds=160)
+    async def status_task(self) -> None:
+        """
+        The status_task function is a loop that will run every 60 seconds.
+        It will randomly select one of the statuses from the list
+        and set it as the bot's status.
+
+        :return: a list of strings that will be used to change the status of the bot.
+        """
+        statuses = [
+            "Overwatch",
+            "Overwatch 2",
+            "Diffing LhCloudy",
+            f"{self.client.config.bot_prefix}help",
+            f"{self.client.config.bot_prefix}info",
+            f"{self.client.config.bot_prefix}dog",
+            f"{self.client.config.bot_prefix}cat",
+            f"{self.client.config.bot_prefix}meme",
+        ]
+        if await self.check_if_live() == True:
+           await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="LhCloudy on Twitch!"))
+        else:
+          await self.client.change_presence(activity=discord.Game(random.choice(statuses)))
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error) -> None:
@@ -80,12 +130,12 @@ class General(commands.Cog, name="General"):
         if message.author.bot:
             return
 
-        if isinstance(message.channel, DMChannel):
+        if isinstance(message.channel, discord.DMChannel):
             try:
                 await message.author.send(
                     f"{message.command} can not be used in Private Messages."
                 )
-            except HTTPException:
+            except discord.HTTPException:
                 self.client.logger.error(f"Failed to send message to {message.author}")
                 pass
 
@@ -115,7 +165,7 @@ class General(commands.Cog, name="General"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed with the bot's information.
         """
-        embed = Embed(description="LhBot", color=0x42F56C)
+        embed = discord.Embed(description="LhBot", color=0x42F56C)
         embed.set_author(
             name="Bot Information",
             icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
@@ -146,7 +196,7 @@ class General(commands.Cog, name="General"):
         :param latency: Latency of the bot.
         :return: a discord embed.
         """
-        embed = Embed(
+        embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency()}ms.",
             color=0x42F56C,
@@ -164,7 +214,7 @@ class General(commands.Cog, name="General"):
         :return: an embed with the percentage of the year that has passed.
         """
         await ctx.typing()
-        embed = Embed(color=0x42F56C)
+        embed = discord.Embed(color=0x42F56C)
         embed.set_author(
             name="Year Progress",
             icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
@@ -212,7 +262,7 @@ class General(commands.Cog, name="General"):
         """
         await ctx.typing()
 
-        embed = Embed(
+        embed = discord.Embed(
             title="Bot Uptime",
             description=f"Uptime: {self.client.get_uptime()}",
             color=0x42F56C,
