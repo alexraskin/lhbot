@@ -40,10 +40,15 @@ class General(commands.Cog, name="General"):
             headers=headers,
         ) as response:
             stream_data = await response.json()
-            if len(stream_data["data"]) == 1:
-                return True
+            if stream_data["data"][0]["type"] == "live":
+                return (
+                    True,
+                    stream_data["data"][0]["game_name"],
+                    stream_data["data"][0]["title"],
+                    stream_data["data"][0]["thumbnail_url"],
+                )
             else:
-                return False
+                return False, None, None
 
     @tasks.loop(seconds=160)
     async def status_task(self) -> None:
@@ -64,10 +69,22 @@ class General(commands.Cog, name="General"):
             f"{self.client.config.bot_prefix}cat",
             f"{self.client.config.bot_prefix}meme",
         ]
-        if await self.check_if_live() == True:
+        check = await self.check_if_live()
+        if check[0] == True:
+            thumbnail = check[3]
+            assets = {
+                "large_image": thumbnail.format(width=100, height=100),
+                "large_text": check[1],
+                "small_image": thumbnail.format(width=50, height=50),
+                "small_text": check[1],
+            }
             await self.client.change_presence(
-                activity=discord.Activity(
-                    type=discord.ActivityType.watching, name="LhCloudy on Twitch!"
+                activity=discord.Streaming(
+                    name="LhCloudy is Live!",
+                    url=self.twitch_url,
+                    platform="Twitch",
+                    game=check[1],
+                    assets=assets,
                 )
             )
         else:

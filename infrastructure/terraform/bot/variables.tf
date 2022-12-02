@@ -126,7 +126,7 @@ variable "auto_scaling_min_size" {
 
 variable "auto_scaling_max_size" {
   type        = number
-  default     = 5
+  default     = 1
   description = "The maximum number of instances to run for the service. Defaults to 5. Minimum value of 1. Maximum value of 25"
 }
 
@@ -183,4 +183,9 @@ variable "unhealthy_threshold" {
   default     = 5
   description = "The number of consecutive checks that must fail before App Runner decides that the service is unhealthy. Defaults to 5. Minimum value of 1. Maximum value of 20."
 
+}
+
+variable "domain_name" {
+  type        = string
+  description = "The domain name to use for the service"
 }

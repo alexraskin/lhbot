@@ -40,6 +40,6 @@ resource "aws_apprunner_auto_scaling_configuration_version" "runner_auto_scaling
 }
 
 resource "aws_apprunner_custom_domain_association" "lh_bot_domain" {
-  domain_name = "lhbot.reinfrog.de"
+  domain_name = var.domain_name
   service_arn = aws_apprunner_service.runner_service.arn
 }
