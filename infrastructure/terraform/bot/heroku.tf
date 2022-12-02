@@ -51,5 +51,3 @@ resource "heroku_slug" "lhbot" {
     web = "python bot/bot.py"
   }
 }
-
-# terraform apply --target heroku_app.lhbot --target heroku_build.lhbot --target heroku_formation.lhbot --target heroku_app_release.lhbot --target heroku_slug.lhbot
