@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    heroku = {
+      source  = "heroku/heroku"
+      version = "~> 5.1"
+    }
     mongodbatlas = {
       source  = "mongodb/mongodbatlas"
       version = "~> 1.6"
