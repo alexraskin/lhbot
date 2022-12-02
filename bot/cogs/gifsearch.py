@@ -20,7 +20,7 @@ class Gif(commands.Cog, name="Gif"):
         :return: a random user id from the Giphy API.
         """
         try:
-            async with self.session.get(
+            async with self.client.session.get(
                 f"{self.base_url}randomid?api_key={self.client.config.giphy_api_key}"
             ) as response:
                 if response.status != 200:
@@ -44,7 +44,7 @@ class Gif(commands.Cog, name="Gif"):
     @commands.command(
         name="gif", aliases=["gifsearch", "randomgif"], description="Search for a gif"
     )
-    async def get_random_gif(self, ctx, search="") -> Embed:
+    async def get_random_gif(self, ctx, search: str = None) -> Embed:
         """
         The get_random_gif function is a helper function that retrieves a random gif from the Giphy API.
         It takes in an optional search parameter which will be used to filter the results of the query.
@@ -57,26 +57,28 @@ class Gif(commands.Cog, name="Gif"):
         :return: a random gif from the giphy api.
         """
         try:
-            async with self.client.session.get(
-              f"{self.base_url}gifs/search?api_key={self.client.config.giphy_api_key}&q={search}&limit=1&offset=0&rating=g&lang=en"
-              + f"&random_id={await self.get_random_giphy_user_id()}"
-            ) as response:
-                if response.status == 200:
-                    data = await response.json()
-                    embed = Embed(
-                        url=data["data"]["images"]["downsized_large"]["url"],
-                        color=0x00FF00,
-                    )
-                    embed.set_image(
-                        url=data["data"]["images"]["downsized_large"]["url"]
-                    )
-                    embed.set_footer(text="Powered By GIPHY")
-                    await ctx.send(embed=embed)
-                else:
-                    self.client.logger.error(
-                        f"Error in get_random_gif Status: {response.status}"
-                    )
-                    await ctx.send("No GIF found")
+            if search is None:
+                url = f"{self.base_url}gifs/trending?api_key={self.client.config.giphy_api_key}&limit=1&offset=0&rating=g&lang=en&random_id={await self.get_random_giphy_user_id()}"
+            else:
+                url = f"{self.base_url}gifs/search?api_key={self.client.config.giphy_api_key}&q={search}&limit=1&offset=0&rating=g&lang=en&random_id={await self.get_random_giphy_user_id()}"
+                async with self.client.session.get(url) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        print(data)
+                        embed = Embed(
+                            url=data["data"][0]["images"]["downsized_large"]["url"],
+                            color=0x00FF00,
+                        )
+                        embed.set_image(
+                            url=data["data"][0]["images"]["downsized_large"]["url"]
+                        )
+                        embed.set_footer(text="Powered By GIPHY")
+                        await ctx.send(embed=embed)
+                    else:
+                        self.client.logger.error(
+                            f"Error in get_random_gif Status: {response.status}"
+                        )
+                        await ctx.send("No GIF found")
         except Exception as error:
             self.client.logger.error(f"Error in get_random_gif: {error}")
             capture_exception(error)

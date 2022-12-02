@@ -41,13 +41,13 @@ class General(commands.Cog, name="General"):
         ) as response:
             stream_data = await response.json()
             if len(stream_data["data"]) == 1:
-              if stream_data["data"][0]["type"] == "live":
-                  return (
-                      True,
-                      stream_data["data"][0]["game_name"],
-                      stream_data["data"][0]["title"],
-                      stream_data["data"][0]["thumbnail_url"],
-                  )
+                if stream_data["data"][0]["type"] == "live":
+                    return (
+                        True,
+                        stream_data["data"][0]["game_name"],
+                        stream_data["data"][0]["title"],
+                        stream_data["data"][0]["thumbnail_url"],
+                    )
             else:
                 return False, None, None
 
