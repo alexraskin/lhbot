@@ -151,6 +151,7 @@ client = LhBot(
     allowed_mentions=AllowedMentions(everyone=False, users=True, roles=True),
 )
 
+
 @tasks.loop(minutes=60)
 async def clean_dir() -> None:
     """
@@ -176,6 +177,7 @@ async def on_ready() -> bool:
     logging.info(f"{client.user.name} started successfully")
     clean_dir.start()
     return True
+
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
 logging.info("LhBot has exited")

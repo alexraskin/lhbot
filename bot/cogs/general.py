@@ -1,5 +1,5 @@
-import random
 import platform
+import random
 from inspect import getsourcelines
 
 import discord
@@ -65,9 +65,15 @@ class General(commands.Cog, name="General"):
             f"{self.client.config.bot_prefix}meme",
         ]
         if await self.check_if_live() == True:
-           await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="LhCloudy on Twitch!"))
+            await self.client.change_presence(
+                activity=discord.Activity(
+                    type=discord.ActivityType.watching, name="LhCloudy on Twitch!"
+                )
+            )
         else:
-          await self.client.change_presence(activity=discord.Game(random.choice(statuses)))
+            await self.client.change_presence(
+                activity=discord.Game(random.choice(statuses))
+            )
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error) -> None:
