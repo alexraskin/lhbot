@@ -28,3 +28,5 @@ class Settings(BaseSettings):
     aws_access_key: str = os.getenv("AWS_ACCESS_KEY")
     aws_secret_access_key: str = os.getenv("AWS_SECRET_ACCESS_KEY")
     s3_bucket_name: str = os.getenv("S3_BUCKET_NAME")
+    twitch_client_id: str = os.getenv("TWITCH_CLIENT_ID")
+    twitch_client_secret: str = os.getenv("TWITCH_CLIENT_SECRET")
