@@ -6,7 +6,7 @@
 <h1>LhCloudy Bot Info</h1>
 
 <p>Discord Version {{ discord_version }}</p>
-<p>Bot Version <body onload="javascript:get_version()"></body></p>
+<p>Bot Version {{ bot_version }}</p>
 <p>Bot Latency {{ bot_latency }} </p>
 <p>Bot Uptime is {{ bot_uptime }} </p>
 
@@ -16,23 +16,6 @@
 
 <a href="https://gyazo.com/632f0e60dc0535128971887acad98993"><img src="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png" alt="Image from Gyazo" width="293"/></a>
 </center>
-<body style="background-color:rgb(89, 168, 241);"></body>
+<body style="background-color:rgb(69, 83, 76);"></body>
 </body>
 </html>
-
-
-<script>
-function get_version(); {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.github.com/repos/alexraskin/lhbot/tags');
-  xhr.responseType = 'json';
-  xhr.onload = function(e) {
-    if (this.status == 200) {
-      console.log('response[0].name', this.response[0].name);
-      version = this.response[0].name;
-    }
-  };
-  xhr.send();
-  return version;
-}
-</script>
