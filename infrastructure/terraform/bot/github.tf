@@ -2,13 +2,6 @@ provider "github" {
   token = var.github_token
 }
 
-resource "github_actions_secret" "lhbot_github_actions_secret" {
-  repository      = "lhbot"
-  for_each        = local.enviorment_vars
-  secret_name     = each.key
-  plaintext_value = each.value
-}
-
 resource "github_actions_secret" "aws_ac_key" {
   repository      = "lhbot"
   secret_name     = "AWS_ACCESS_KEY_ID"
