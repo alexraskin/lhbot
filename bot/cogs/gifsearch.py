@@ -44,7 +44,7 @@ class Gif(commands.Cog, name="Gif"):
     @commands.command(
         name="gif", aliases=["gifsearch", "randomgif"], description="Search for a gif"
     )
-    async def get_random_gif(self, ctx, *, search="") -> Embed:
+    async def get_random_gif(self, ctx, search="") -> Embed:
         """
         The get_random_gif function is a helper function that retrieves a random gif from the Giphy API.
         It takes in an optional search parameter which will be used to filter the results of the query.
@@ -58,8 +58,8 @@ class Gif(commands.Cog, name="Gif"):
         """
         try:
             async with self.client.session.get(
-                f"{self.base_url}gifs/random?api_key={self.client.config.giphy_api_key}"
-                + f"&tag={search}&rating=r&random_id={await self.get_random_giphy_user_id()}"
+              f"{self.base_url}gifs/search?api_key={self.client.config.giphy_api_key}&q={search}&limit=1&offset=0&rating=g&lang=en"
+              + f"&random_id={await self.get_random_giphy_user_id()}"
             ) as response:
                 if response.status == 200:
                     data = await response.json()
