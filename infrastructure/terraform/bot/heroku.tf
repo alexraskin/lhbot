@@ -51,3 +51,8 @@ resource "heroku_slug" "lhbot" {
     web = "python bot/bot.py"
   }
 }
+
+resource "heroku_domain" "lhbot" {
+  app_id   = heroku_app.lhbot.id
+  hostname = "lhbot.reinfrog.de"
+}
