@@ -64,7 +64,10 @@ class Gif(commands.Cog, name="Gif"):
                 async with self.client.session.get(url) as response:
                     if response.status == 200:
                         data = await response.json()
-                        print(data)
+                        if len(data["data"]) == 0:
+                            embed = Embed(title="No GIF found!", color=0xFF0000)
+                            embed.set_image(url="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy-downsized.gif")
+                            return await ctx.send(embed=embed)
                         embed = Embed(
                             url=data["data"][0]["images"]["downsized_large"]["url"],
                             color=0x00FF00,
