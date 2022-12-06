@@ -18,5 +18,6 @@ locals {
     S3_BUCKET_NAME       = var.enviorment_vars["S3_BUCKET_NAME"]
     TWITCH_CLIENT_ID     = var.enviorment_vars["TWITCH_CLIENT_ID"]
     TWITCH_CLIENT_SECRET = var.enviorment_vars["TWITCH_CLIENT_SECRET"]
+    OPENAI_API_KEY = var.enviorment_vars["OPENAI_API_KEY"]
   }
 }
