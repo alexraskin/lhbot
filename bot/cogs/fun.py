@@ -129,7 +129,7 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to access the context of where the command was called.
         :return: the link to the meme from reddit.
         """
-        response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
+        response = await self.client.session.get("https://meme-api.com/gimme")
         data = await response.json()
         if response.status != 200:
             await ctx.send("Could not find a meme!")
