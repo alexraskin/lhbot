@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from discord import Embed
+from discord import Embed, Member
 from discord.ext import commands
 
 
@@ -9,8 +9,6 @@ class OneVOne(commands.Cog, name="OneVOne"):
     def __init__(self, client: commands.Bot):
 
         self.client = client
-        self.player_one = None
-        self.player_two = None
 
         self.tank_heros = {
             "D.Va": 650,
@@ -58,10 +56,10 @@ class OneVOne(commands.Cog, name="OneVOne"):
         description="Random Hero 1v1",
     )
     async def one_v_one(
-        self, ctx: commands.Context, player_one: str = None, player_two: str = None
+        self, ctx: commands.Context, user: Member,
     ):
-        if player_one is None or player_two is None:
-            await ctx.send("Please provide two players to play against each other")
+        if user is None:
+            await ctx.send("Please target another user to 1v1")
             return
 
         hero_one = self.get_random_hero()
@@ -70,20 +68,32 @@ class OneVOne(commands.Cog, name="OneVOne"):
         hero_one_health = self.get_hero_health(hero_one)
         hero_two_health = self.get_hero_health(hero_two)
 
-        embed = Embed(title="1v1", description="Random Hero 1v1", color=0x00FF00)
+        embed = Embed(title="Overwatch Random Hero 1v1", color=0x00FF00)
 
-        embed.add_field(name=f"{player_one} is playing", value=f"{hero_one} with {hero_one_health} health")
-        embed.add_field(name=f"{player_two} is playing", value=f"{hero_two} with {hero_two_health} health")
+        embed.add_field(name=f"{str(ctx.author).strip('#')} is playing", value=f"{hero_one} with {hero_one_health} health")
+        embed.add_field(name=f"{user} is playing", value=f"{hero_two} with {hero_two_health} health")
 
-        await ctx.send(embed=embed)
+        first_message = await ctx.send(embed=embed)
 
         while hero_one_health > 0 and hero_two_health > 0:
-            embed = Embed(title="1v1", description="Random Hero 1v1", color=0x00FF00)
-            await asyncio.sleep(1)
+            second_embed = Embed(title="Overwatch Random Hero 1v1", color=0x00FF00)
             hero_one_health -= random.randint(0, hero_one_health)
             hero_two_health -= random.randint(0, hero_two_health)
-            embed.add_field(name=)
-            
+            await asyncio.sleep(1)
+            second_embed.add_field(name=f"{ctx.author}", value=f"Playing {hero_one} with {hero_one_health} health")
+            second_embed.add_field(name=f"{user}", value=f"Playing {hero_two} with {hero_two_health} health")
+            final = await first_message.edit(embed=second_embed)
+            win_embed = Embed(title="Overwatch Random Hero 1v1", color=0x00FF00)
+        if hero_one_health == 0:
+          win_embed.add_field(name=ctx.author, value=f"Won, playing {hero_one}!")
+          win_embed.add_field(name=user, value=f"Lost, playing {hero_two}")
+        elif hero_two_health == 0:
+          win_embed.add_field(name=ctx.author, value=f"Lost, playing {hero_one}")
+          win_embed.add_field(name=user, value=f"Won, playing {hero_two}")
+        
+        await final.edit(embed=win_embed)
+              
+
 
     def get_random_hero(self) -> str:
         all = self.tank_heros | self.dmg_heros | self.support_heros
