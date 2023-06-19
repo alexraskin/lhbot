@@ -17,7 +17,6 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.44.0 |
-| <a name="provider_github"></a> [github](#provider\_github) | 5.3.0 |
 | <a name="provider_heroku"></a> [heroku](#provider\_heroku) | 5.1.6 |
 | <a name="provider_http"></a> [http](#provider\_http) | 3.2.1 |
 | <a name="provider_mongodbatlas"></a> [mongodbatlas](#provider\_mongodbatlas) | 1.6.0 |
@@ -40,12 +39,10 @@ No modules.
 | [aws_s3_bucket_public_access_block.terraform_state_lhbot_public_access_block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.lhcloudy_bot_config_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.terraform_state_lhbot_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [github_actions_secret.aws_ac_key](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
-| [github_actions_secret.aws_ecr_repo](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
-| [github_actions_secret.aws_s_key](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
 | [heroku_app.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app) | resource |
 | [heroku_app_release.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app_release) | resource |
 | [heroku_build.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/build) | resource |
+| [heroku_domain.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/domain) | resource |
 | [heroku_formation.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/formation) | resource |
 | [heroku_slug.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/slug) | resource |
 | [mongodbatlas_cluster.lhcloudy_cluster](https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/cluster) | resource |
@@ -68,7 +65,6 @@ No modules.
 | <a name="input_dyno_size"></a> [dyno\_size](#input\_dyno\_size) | Size of dyno | `string` | n/a | yes |
 | <a name="input_dyno_type"></a> [dyno\_type](#input\_dyno\_type) | Type of dyno | `string` | n/a | yes |
 | <a name="input_enviorment_vars"></a> [enviorment\_vars](#input\_enviorment\_vars) | Environment variables for the app | `map(string)` | n/a | yes |
-| <a name="input_github_token"></a> [github\_token](#input\_github\_token) | Github token | `string` | n/a | yes |
 | <a name="input_heroku_api_key"></a> [heroku\_api\_key](#input\_heroku\_api\_key) | Heroku API Key | `string` | n/a | yes |
 | <a name="input_heroku_email"></a> [heroku\_email](#input\_heroku\_email) | Heroku account email | `string` | n/a | yes |
 | <a name="input_heroku_stack"></a> [heroku\_stack](#input\_heroku\_stack) | Stack for your Heroku app | `string` | n/a | yes |

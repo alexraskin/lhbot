@@ -5,7 +5,9 @@ provider "sentry" {
 resource "sentry_project" "sentry_lhcloudybot" {
   organization = var.sentry_organization
 
-  team = var.sentry_team_name
+  teams = [
+    var.sentry_team_name,
+  ]
   name = var.sentry_project_name
   slug = var.sentry_slug
 

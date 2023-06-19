@@ -54,5 +54,5 @@ resource "heroku_slug" "lhbot" {
 
 resource "heroku_domain" "lhbot" {
   app_id   = heroku_app.lhbot.id
-  hostname = "lhbot.reinfrog.de"
+  hostname = "lhbot.twizy.dev"
 }

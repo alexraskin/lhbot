@@ -5,6 +5,7 @@ provider "registry.terraform.io/hashicorp/aws" {
   version     = "4.44.0"
   constraints = "~> 4.42"
   hashes = [
+    "h1:IicMBt+WvFATiN4j/oaJYB4Kvk6LCxxpnokv2PXo1ag=",
     "h1:fwOG8IE3AiHdUBo841jC2p4rIF45pWYettgBshcMyJI=",
     "zh:08da139140530900ebb07baedd9044b5002f0296f5f160d96783e72080158326",
     "zh:2d677b9e4f195481098cec843d0138f3a198f1f93be42c1d1654b71438e2f5ab",
@@ -28,6 +29,7 @@ provider "registry.terraform.io/hashicorp/http" {
   version = "3.2.1"
   hashes = [
     "h1:DfxMa1zM/0NCFWN5PAxivSHJMNkOAFZvDYQkO72ZQmw=",
+    "h1:Q2YQZzEhHQVlkQCQVpMzFVs0Gg+eXzISbOwaOYqpflc=",
     "zh:088b3b3128034485e11dff8da16e857d316fbefeaaf5bef24cceda34c6980641",
     "zh:09ed1f2462ea4590b112e048c4af556f0b6eafc7cf2c75bb2ac21cd87ca59377",
     "zh:39c6b0b4d3f0f65e783c467d3f634e2394820b8aef907fcc24493f21dcf73ca3",
@@ -48,6 +50,7 @@ provider "registry.terraform.io/heroku/heroku" {
   constraints = "~> 5.1"
   hashes = [
     "h1:6pmxW7Ol8E1M1Chls0AIEVGRj6m2RPsjqys2JmTxLzY=",
+    "h1:cAg6b2muSc4ThDGWrRhoOyoPMJE2pWqa2i77wjQGXVU=",
     "zh:3790c0c0802baa60df779837be1e058251c5fb3eba3ff9f5b2ad5d274468193f",
     "zh:3d1be4522dc3ecddb6d2f28fcbea17732c21b6ab8a43c4ad4e4022042d6d133a",
     "zh:645dfce325977a10c1f9c2abc1ee1a19bc523056b41a9bf256ed3f9fd9105b61",
@@ -69,9 +72,10 @@ provider "registry.terraform.io/heroku/heroku" {
 
 provider "registry.terraform.io/integrations/github" {
   version     = "5.3.0"
-  constraints = "5.3.0"
+  constraints = "~> 5.3.0"
   hashes = [
     "h1:DVgl7G+BOUt0tBLW3LwCuJh7FmliwG4Y+KiELX4gN9U=",
+    "h1:gkuLk40s4v+hfzRbVbDEByYUyg4HE22XDtCjACqYYTc=",
     "h1:pFsKVGjnvAUu9Scqkk3W0EdjEXtgkTz2qxKYMMA/Bww=",
     "zh:1ad22c2d5b02f16ff6281e471be93d9e33f102020e7d88b2a86fd97b7f2c3728",
     "zh:1d3968417f7cd87678d505afd12d8d753e692dd90c6ba0f52e7b150c69649eaf",
@@ -94,6 +98,7 @@ provider "registry.terraform.io/jianyuan/sentry" {
   version     = "0.10.0"
   constraints = "~> 0.9"
   hashes = [
+    "h1:1KJnNreoVw0Y/swohxuvpEqbmqvDB8Ynz1pARZ3pBnE=",
     "h1:Ijp/3fMi17gC7MuIlx1+EMUCTbd9cEyu6W66fh8J+hQ=",
     "zh:0b98c58194bf607c26688aae7d8e5e22a0a513fa04d295b6246607d9525fb98d",
     "zh:0fa82a384b25a58b65523e0ea4768fa1212b1f5cfc0c9379d31162454fedcc9d",
@@ -117,6 +122,7 @@ provider "registry.terraform.io/mongodb/mongodbatlas" {
   version     = "1.6.0"
   constraints = "~> 1.6"
   hashes = [
+    "h1:5mRZcn95gML0qXMS8zqGcHRvYhpNggWIxmaAHXO8Q8c=",
     "h1:A47VSveTxWRnOyztioExRAFGcmvoAy7WFkcwsL4Fa7Y=",
     "zh:312cfc3c27aa0319618daaac24db3ac0608474f8281b7264187ee2df19c5771f",
     "zh:36c6ae8b63651fee94e1c7ef114c8bb8ceb33694da05015d6e077b1721185954",

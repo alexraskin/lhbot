@@ -24,7 +24,6 @@ class MessageTestClass:
 
 
 class CogsLhCloudyTests(unittest.IsolatedAsyncioTestCase):
-
     botPrefix = "!"
 
     @patch.object(Context, "send")

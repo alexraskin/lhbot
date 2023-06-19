@@ -11,7 +11,6 @@ class OneVOne(commands.Cog, name="OneVOne"):
     """
 
     def __init__(self, client: commands.Bot):
-
         self.client = client
 
         self.tank_heros = {

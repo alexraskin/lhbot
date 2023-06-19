@@ -10,7 +10,7 @@ printf "Setting up python environment...🏎️\n"
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip --disable-pip-version-check -q install -r requirements.txt
+pip3 --disable-pip-version-check -q install -r requirements.txt
 
 printf "Local python environment setup complete🏁\n"
 

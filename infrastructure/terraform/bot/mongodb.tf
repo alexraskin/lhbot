@@ -12,6 +12,7 @@ resource "mongodbatlas_cluster" "lhcloudy_cluster" {
   provider_region_name           = "US_EAST_1"
   provider_instance_size_name    = "M0"
   termination_protection_enabled = true
+  mongo_db_major_version         = "6.0"
 }
 
 resource "mongodbatlas_database_user" "lhcloudybot_db_user" {

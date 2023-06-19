@@ -19,4 +19,4 @@ pre-commit:
 	pre-commit run --all
 
 export:
-	pip freeze > requirements.txt
+	pip3 freeze > requirements.txt
