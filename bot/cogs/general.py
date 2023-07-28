@@ -78,7 +78,7 @@ class General(commands.Cog, name="General"):
                     name="LhCloudy is Live!",
                     url=self.twitch_url,
                     platform="Twitch",
-                    game=check[2],
+                    game=check[1],
 
                 )
             )
