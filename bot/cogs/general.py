@@ -134,7 +134,8 @@ class General(commands.Cog, name="General"):
             return
         else:
             await ctx.send(
-                f"An error occurred, this has been reported to the developers."
+                f"An error occurred, this has been reported to the developers.",
+                ephemeral=True,
             )
             self.client.logger.error(error)
             capture_exception(error)
@@ -150,7 +151,6 @@ class General(commands.Cog, name="General"):
         :param message: Used to store information about the message.
         :return: None.
         """
-
         if message.author.bot:
             return
 
@@ -189,13 +189,17 @@ class General(commands.Cog, name="General"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed with the bot's information.
         """
-        embed = discord.Embed(description="LhBot", color=0x42F56C)
+        embed = discord.Embed(
+            description="LhBot is a Discord bot that was created by twizykat.",
+            color=0x42F56C,
+            timestamp=ctx.message.created_at
+        )
         embed.set_author(
-            name="Bot Information",
+            name="LhBot",
             icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
         )
         embed.add_field(
-            name="Owners:", value=str("reinfrog#1738, PayMeToThrow#2129"), inline=True
+            name="Owners:", value=str("twizykat"), inline=True
         )
         embed.add_field(
             name="Prefix:", value=self.client.config.bot_prefix, inline=True
@@ -206,6 +210,7 @@ class General(commands.Cog, name="General"):
         embed.add_field(
             name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
         )
+        embed.set_footer(text=self.client.footer)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -224,8 +229,9 @@ class General(commands.Cog, name="General"):
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency()}ms.",
             color=0x42F56C,
+            timestamp=ctx.message.created_at
         )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=self.client.footer)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -238,7 +244,7 @@ class General(commands.Cog, name="General"):
         :return: an embed with the percentage of the year that has passed.
         """
         await ctx.typing()
-        embed = discord.Embed(color=0x42F56C)
+        embed = discord.Embed(color=0x42F56C, timestamp=ctx.message.created_at)
         embed.set_author(
             name="Year Progress",
             icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
@@ -246,6 +252,7 @@ class General(commands.Cog, name="General"):
         embed.add_field(
             name="Progress:", value=progress_bar(get_year_round()), inline=True
         )
+        embed.set_footer(text=self.client.footer)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 60, commands.BucketType.user)
@@ -290,8 +297,9 @@ class General(commands.Cog, name="General"):
             title="Bot Uptime",
             description=f"Uptime: {self.client.get_uptime()}",
             color=0x42F56C,
+            timestamp=ctx.message.created_at
         )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=self.client.footer)
 
         await ctx.send(embed=embed)
 

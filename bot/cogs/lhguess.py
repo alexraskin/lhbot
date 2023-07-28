@@ -107,6 +107,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 name="Guessed by:", value=pretty_return["guessedBy"], inline=False
             )
             embed.add_field(name="Guess ID:", value=pretty_return["id"], inline=False)
+            embed.set_footer(text=self.client.footer)
             await ctx.typing()
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction(random_emoji())
@@ -132,7 +133,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed.add_field(
             name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
         )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=self.client.footer)
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
@@ -161,6 +162,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         share.upload_file()
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.get_url())
+        embed.set_footer(text=self.client.footer)
         await ctx.typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
@@ -183,7 +185,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=self.client.footer)
         await ctx.typing()
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
@@ -210,8 +212,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed = Embed(
                 title="You do not have permisson to run this command!",
                 color=self.error_color,
+                timestamp=ctx.message.created_at,
             )
-            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            embed.set_footer(text=self.client.footer)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
@@ -221,18 +224,19 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed = Embed(
                 title=f"Guess with ID: {guess_id} was not found!",
                 color=self.error_color,
+                timestamp=ctx.message.created_at,
             )
-            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            embed.set_footer(text=self.client.footer)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
 
         if guess:
-            embed = Embed(color=self.success_color)
+            embed = Embed(color=self.success_color, timestamp=ctx.message.created_at)
             embed.add_field(
                 name="Succesfully Deleted LhGuess:", value=guess_id, inline=True
             )
-            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            embed.set_footer(text=self.client.footer)
             await self.collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")

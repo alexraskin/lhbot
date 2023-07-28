@@ -51,11 +51,12 @@ class LhBot(AutoShardedBot):
         self.session = None
         self.db_client = None
         self.start_time = None
-        self.version = None
+        self.version = config.bot_version
         self.config = config
         self.status = Status.online
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
+        self.footer = f"Bot Version: {self.version} • Made by Twizy"
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
@@ -134,14 +135,7 @@ class LhBot(AutoShardedBot):
     def get_bot_latency(self) -> float:
         """Returns the latency of the bot."""
         return round(self.latency * 1000)
-
-    async def get_bot_version(self) -> str:
-        """Returns the version of the bot."""
-        url = "https://api.github.com/repos/alexraskin/lhbot/tags"
-        async with self.session.get(url) as response:
-            version = await response.json()
-            return version[0]["name"]
-
+            
 
 client = LhBot(
     command_prefix=config.bot_prefix,

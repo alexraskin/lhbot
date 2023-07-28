@@ -3,6 +3,7 @@ import random
 from discord import Embed, Interaction, app_commands
 from discord.ext import commands, tasks
 from utils.bot_utils import get_time_string
+from typing import Union
 
 
 class Fun(commands.Cog, name="Fun"):
@@ -41,7 +42,7 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="chucknorris", aliases=["chuck", "cn"])
-    async def chucknorris(self, ctx, category: str = None):
+    async def chucknorris(self, ctx, category: str = None) -> Union[Embed, None]:
         """
         The chucknorris function is a command that allows the user to get a random chuck norris fact.
         The function takes in an optional argument, category, which can be any of the following:
@@ -74,7 +75,7 @@ class Fun(commands.Cog, name="Fun"):
         else:
             response = await response.json()
             chuck = response["value"]
-            embed = Embed(description=chuck, color=random.randint(0, 0xFFFFFF))
+            embed = Embed(description=chuck, color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.set_author(
                 name="Chuck Norris fun fact...",
                 icon_url=f"https://assets.chucknorris.host/img/avatar/chuck-norris.png",
@@ -93,13 +94,14 @@ class Fun(commands.Cog, name="Fun"):
         :param ctx: Used to get the context of where the command was called.
         :return: a random cat picture from the random.
         """
-        response = await self.client.session.get("https://aws.random.cat/meow")
+        cat_url = "https://cataas.com"
+        response = await self.client.session.get(f"{cat_url}/cat?json=true")
         data = await response.json()
         if response.status != 200:
             await ctx.send("Could not find a cat!")
             return
         else:
-            await ctx.send(data["file"])
+            await ctx.send(f"{cat_url}{data['url']}")
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="dog", aliases=["dogpic", "doggo"])
@@ -139,7 +141,7 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="catfact", aliases=["cf"])
-    async def random_cat_fact(self, ctx):
+    async def random_cat_fact(self, ctx) -> Embed:
         """
         The random_cat_fact function specifically retrieves a random cat fact
         from the meowfacts.herokuapp.com website and embeds it into an Embed object.
@@ -156,7 +158,7 @@ class Fun(commands.Cog, name="Fun"):
             return
         else:
             fact = response["data"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.add_field(
                 name="Random Cat Fact:",
                 value=str(fact).strip("[]").strip("'"),
@@ -182,7 +184,7 @@ class Fun(commands.Cog, name="Fun"):
             return
         else:
             joke = response["joke"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.add_field(name="Random Dad Joke", value=joke, inline=True)
             embed.set_footer(text=f"https://icanhazdadjoke.com/")
             await ctx.typing()
@@ -190,7 +192,7 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="animechan", aliases=["animequote"])
-    async def random_anime_chan(self, ctx):
+    async def random_anime_chan(self, ctx) -> Union[Embed, None]:
         """
         The random anime chan function specifically retrieves a random anime quote from an API.
 
@@ -208,14 +210,14 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             quote = str(response["quote"]).strip("[").strip("]")
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.add_field(name="Quote", value=quote, inline=True)
             embed.set_footer(text=f"https://animechan.vercel.app/api/random")
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="dogfact", aliases=["df"])
-    async def random_dog_fact(self, ctx):
+    async def random_dog_fact(self, ctx) -> Union[Embed, None]:
         """
         The random_dog_fact function retrieves a random dog fact
         from the Dog Fact API and embeds it in an Embed object.
@@ -234,26 +236,26 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             fact = response[0]["fact"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.add_field(name="Random Dog Fact:", value=fact, inline=True)
-            embed.set_footer(text=f"https://dog-fact-api.herokuapp.com")
+            embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="tswift", aliases=["ts", "taylor", "taylorswift"])
-    async def random_taylor_swift_quote(self, ctx) -> Embed:
+    async def random_taylor_swift_quote(self, ctx) -> Union[Embed, None]:
         """ """
         response = await self.client.session.get(
             "https://taylorswiftapi.herokuapp.com/get"
         )
         response = await response.json()
-        if response is None:
+        if response.status_code != 200:
             await ctx.send("Problem getting a Taylor Swift quote!")
             return
         else:
             await ctx.typing()
             quote = response["quote"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.set_author(
                 name="Taylor Swift",
                 icon_url=f"https://i.gyazo.com/97cd0059f957bf80d01672bdfe258357.png",
@@ -262,12 +264,12 @@ class Fun(commands.Cog, name="Fun"):
             embed.set_image(
                 url="https://c.tenor.com/DDIYEFpaAboAAAAC/taylor-swift-dance.gif"
             )
-            embed.set_footer(text=f"https://taylorswiftapi.herokuapp.com")
+            embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="waifu", aliases=["getwaifu"])
-    async def random_waifu(self, ctx, category: str = None):
+    async def random_waifu(self, ctx, category: str = None) -> Union[Embed, None]:
         """
         The random_waifu function retrieves a random waifu from the Waifu API and embeds it in an Embed object.
 
@@ -296,9 +298,9 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             url = response["url"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF))
+            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
             embed.set_image(url=url)
-            embed.set_footer(text=f"https://api.waifu.pics/sfw/{category}")
+            embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
 
 
