@@ -40,6 +40,7 @@ class General(commands.Cog, name="General"):
             headers=headers,
         ) as response:
             stream_data = await response.json()
+            print(stream_data)
             if len(stream_data["data"]) == 1:
                 if stream_data["data"][0]["type"] == "live":
                     return (
@@ -51,7 +52,7 @@ class General(commands.Cog, name="General"):
             else:
                 return False, None, None, None
 
-    @tasks.loop(seconds=160)
+    @tasks.loop(seconds=60)
     async def status_task(self) -> None:
         """
         The status_task function is a loop that will run every 60 seconds.
@@ -72,20 +73,13 @@ class General(commands.Cog, name="General"):
         ]
         check = await self.check_if_live()
         if check[0] == True:
-            thumbnail = check[3]
-            assets = {
-                "large_image": thumbnail.format(width=100, height=100),
-                "large_text": check[1],
-                "small_image": thumbnail.format(width=50, height=50),
-                "small_text": check[1],
-            }
             await self.client.change_presence(
                 activity=discord.Streaming(
                     name="LhCloudy is Live!",
                     url=self.twitch_url,
                     platform="Twitch",
-                    game=check[1],
-                    assets=assets,
+                    game=check[2],
+
                 )
             )
         else:
