@@ -26,7 +26,7 @@ class General(commands.Cog, name="General"):
         }
         self.status_task.start()
 
-    async def check_if_live(self) -> list:
+    async def check_if_live(self) -> set:
         async with self.client.session.post(
             "https://id.twitch.tv/oauth2/token", data=self.body
         ) as response:
@@ -49,7 +49,7 @@ class General(commands.Cog, name="General"):
                         stream_data["data"][0]["thumbnail_url"],
                     )
             else:
-                return False, None, None
+                return False, None, None, None
 
     @tasks.loop(seconds=160)
     async def status_task(self) -> None:
