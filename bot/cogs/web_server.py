@@ -30,7 +30,7 @@ class WebServer(commands.Cog, name="WebServer"):
         """
         return {
             "discord_version": discord_version,
-            "bot_version": await self.client.get_bot_version(),
+            "bot_version": await self.client.config.bot_version,
             "bot_latency": f"{self.client.get_bot_latency()}ms",
             "bot_uptime": self.client.get_uptime(),
         }
