@@ -36,7 +36,7 @@ class myHelpCommand(HelpCommand):
 
         """
         destination = self.get_destination()
-        embed = Embed(color=0x2ECC71)
+        embed = Embed(color=0x2ECC71, timestamp=self.context.message.created_at)
         if header:
             embed.set_author(name=self.context.bot.description)
         for category, entries in self.paginator:
@@ -100,7 +100,7 @@ class myHelpCommand(HelpCommand):
         filtered = await self.filter_commands(cog.get_commands(), sort=True)
         if not filtered:
             await self.context.send(
-                "No public commands in this cog. Try again with lhbot helpall."
+                "No public commands in this cog. Try again with !lhbot helpall."
             )
             return
         category = f"▼ {cog.qualified_name}"
