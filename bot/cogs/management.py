@@ -61,8 +61,6 @@ class Management(commands.Cog, name="Management"):
             embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
 
-          
-
 
 async def setup(client):
     await client.add_cog(Management(client))

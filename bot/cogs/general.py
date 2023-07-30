@@ -40,7 +40,6 @@ class General(commands.Cog, name="General"):
             headers=headers,
         ) as response:
             stream_data = await response.json()
-            print(stream_data)
             if len(stream_data["data"]) == 1:
                 if stream_data["data"][0]["type"] == "live":
                     return (
@@ -79,7 +78,6 @@ class General(commands.Cog, name="General"):
                     url=self.twitch_url,
                     platform="Twitch",
                     game=check[1],
-
                 )
             )
         else:
@@ -186,15 +184,13 @@ class General(commands.Cog, name="General"):
         embed = discord.Embed(
             description="LhBot is a Discord bot that was created by twizykat.",
             color=0x42F56C,
-            timestamp=ctx.message.created_at
+            timestamp=ctx.message.created_at,
         )
         embed.set_author(
             name="LhBot",
             icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
         )
-        embed.add_field(
-            name="Owners:", value=str("twizykat"), inline=True
-        )
+        embed.add_field(name="Owners:", value=str("twizykat"), inline=True)
         embed.add_field(
             name="Prefix:", value=self.client.config.bot_prefix, inline=True
         )
@@ -204,7 +200,7 @@ class General(commands.Cog, name="General"):
         embed.add_field(
             name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
         )
-        embed.set_footer(text=self.client.footer)
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -223,9 +219,9 @@ class General(commands.Cog, name="General"):
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency()}ms.",
             color=0x42F56C,
-            timestamp=ctx.message.created_at
+            timestamp=ctx.message.created_at,
         )
-        embed.set_footer(text=self.client.footer)
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -246,7 +242,7 @@ class General(commands.Cog, name="General"):
         embed.add_field(
             name="Progress:", value=progress_bar(get_year_round()), inline=True
         )
-        embed.set_footer(text=self.client.footer)
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 60, commands.BucketType.user)
@@ -291,9 +287,9 @@ class General(commands.Cog, name="General"):
             title="Bot Uptime",
             description=f"Uptime: {self.client.get_uptime()}",
             color=0x42F56C,
-            timestamp=ctx.message.created_at
+            timestamp=ctx.message.created_at,
         )
-        embed.set_footer(text=self.client.footer)
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
 
         await ctx.send(embed=embed)
 

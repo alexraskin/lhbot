@@ -75,7 +75,11 @@ class Fun(commands.Cog, name="Fun"):
         else:
             response = await response.json()
             chuck = response["value"]
-            embed = Embed(description=chuck, color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                description=chuck,
+                color=random.randint(0, 0xFFFFFF),
+                timestamp=ctx.message.created_at,
+            )
             embed.set_author(
                 name="Chuck Norris fun fact...",
                 icon_url=f"https://assets.chucknorris.host/img/avatar/chuck-norris.png",
@@ -153,12 +157,14 @@ class Fun(commands.Cog, name="Fun"):
         response = await self.client.session.get("https://meowfacts.herokuapp.com/")
         await ctx.typing()
         response = await response.json()
-        if response is None:
+        if response is None or response.status != 200:
             await ctx.send("Could not find a cat fact!")
             return
         else:
             fact = response["data"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at
+            )
             embed.add_field(
                 name="Random Cat Fact:",
                 value=str(fact).strip("[]").strip("'"),
@@ -184,7 +190,9 @@ class Fun(commands.Cog, name="Fun"):
             return
         else:
             joke = response["joke"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at
+            )
             embed.add_field(name="Random Dad Joke", value=joke, inline=True)
             embed.set_footer(text=f"https://icanhazdadjoke.com/")
             await ctx.typing()
@@ -210,7 +218,9 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             quote = str(response["quote"]).strip("[").strip("]")
-            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at
+            )
             embed.add_field(name="Quote", value=quote, inline=True)
             embed.set_footer(text=f"https://animechan.vercel.app/api/random")
             await ctx.send(embed=embed)
@@ -236,7 +246,9 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             fact = response[0]["fact"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at
+            )
             embed.add_field(name="Random Dog Fact:", value=fact, inline=True)
             embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
@@ -255,7 +267,9 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             quote = response["quote"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at
+            )
             embed.set_author(
                 name="Taylor Swift",
                 icon_url=f"https://i.gyazo.com/97cd0059f957bf80d01672bdfe258357.png",
@@ -298,7 +312,9 @@ class Fun(commands.Cog, name="Fun"):
         else:
             await ctx.typing()
             url = response["url"]
-            embed = Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
+            embed = Embed(
+                color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at
+            )
             embed.set_image(url=url)
             embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)

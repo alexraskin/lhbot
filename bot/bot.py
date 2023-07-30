@@ -56,6 +56,7 @@ class LhBot(AutoShardedBot):
         self.status = Status.online
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
+        self.logo_url = "https://i.gyazo.com/5363ec0171eb1243542250c107889cc9.png"
         self.footer = f"Bot Version: {self.version} • Made by Twizy"
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
@@ -135,7 +136,7 @@ class LhBot(AutoShardedBot):
     def get_bot_latency(self) -> float:
         """Returns the latency of the bot."""
         return round(self.latency * 1000)
-            
+
 
 client = LhBot(
     command_prefix=config.bot_prefix,
