@@ -8,7 +8,6 @@
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.42 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | ~> 5.3.0 |
-| <a name="requirement_heroku"></a> [heroku](#requirement\_heroku) | ~> 5.1 |
 | <a name="requirement_mongodbatlas"></a> [mongodbatlas](#requirement\_mongodbatlas) | ~> 1.6 |
 | <a name="requirement_sentry"></a> [sentry](#requirement\_sentry) | ~> 0.9 |
 
@@ -17,7 +16,6 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.44.0 |
-| <a name="provider_heroku"></a> [heroku](#provider\_heroku) | 5.1.6 |
 | <a name="provider_http"></a> [http](#provider\_http) | 3.2.1 |
 | <a name="provider_mongodbatlas"></a> [mongodbatlas](#provider\_mongodbatlas) | 1.6.0 |
 | <a name="provider_sentry"></a> [sentry](#provider\_sentry) | 0.10.0 |
@@ -39,12 +37,6 @@ No modules.
 | [aws_s3_bucket_public_access_block.terraform_state_lhbot_public_access_block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.lhcloudy_bot_config_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.terraform_state_lhbot_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [heroku_app.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app) | resource |
-| [heroku_app_release.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/app_release) | resource |
-| [heroku_build.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/build) | resource |
-| [heroku_domain.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/domain) | resource |
-| [heroku_formation.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/formation) | resource |
-| [heroku_slug.lhbot](https://registry.terraform.io/providers/heroku/heroku/latest/docs/resources/slug) | resource |
 | [mongodbatlas_cluster.lhcloudy_cluster](https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/cluster) | resource |
 | [mongodbatlas_database_user.lhcloudybot_db_user](https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/database_user) | resource |
 | [sentry_project.sentry_lhcloudybot](https://registry.terraform.io/providers/jianyuan/sentry/latest/docs/resources/project) | resource |
@@ -88,7 +80,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_app_name"></a> [app\_name](#output\_app\_name) | Application name |
 | <a name="output_database_url"></a> [database\_url](#output\_database\_url) | Database URL |
-| <a name="output_status"></a> [status](#output\_status) | Application status |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
