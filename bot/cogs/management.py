@@ -1,6 +1,6 @@
 import logging
-from os import listdir
 
+from discord import Embed
 from discord.ext import commands
 
 
@@ -25,28 +25,42 @@ class Management(commands.Cog, name="Management"):
     @commands.is_owner()
     @commands.command(name="sync", hidden=True)
     async def sync(self, ctx: commands.Context):
-        tree = await self.client.tree.sync()
-        await ctx.send(f"Synced slash commands. ```{tree}```")
+        message = await ctx.send("Syncing slash commands... 🔄")
+        await self.client.tree.sync()
+        await message.edit(content="Synced slash commands successfully! ✅")
 
     @commands.is_owner()
-    @commands.command(
-        name="reload",
-        brief="Reload bot extension",
-        description="Reload bot extension\n\nExample: lhbot reload cogs.stats",
-        hidden=True,
-        aliases=["re"],
-    )
-    async def reload_extension(self, ctx: commands.Context, extension: str) -> None:
-        try:
-            if f"cogs.{extension}" in self.extension_targets:
-                await self.client.reload_extension(f"cogs.{extension}")
-                await ctx.send(f"```Reloaded [{extension}] cog```")
-            else:
-                await ctx.send(f"```Extension [{extension}] cog not found```")
-        except Exception as error:
-            exc = f"{type(error).__name__}: {error}"
-            logging.error(f"Failed to reload extension {extension}\n{exc}")
-            await ctx.send(f"```Failed to reload [{extension}] cog```")
+    @commands.command(name="reload", hidden=True)
+    async def reload(self, ctx, extension=None):
+        if extension is None:
+            for cog in self.client.extensions.copy():
+                await self.client.unload_extension(cog)
+                await self.client.load_extension(cog)
+            self.client.logger.info(f"Reload Command Executed by {ctx.author}")
+            embed = Embed(
+                title="Cog Reload 🔃",
+                description="I have reloaded all the cogs successfully ✅",
+                color=0x00FF00,
+                timestamp=ctx.message.created_at,
+            )
+            embed.set_author(name="🤖 LhBot")
+            embed.set_footer(text=self.client.footer)
+            await ctx.send(embed=embed)
+        else:
+            self.client.logger.info(
+                f"Reloaded: {str(extension).upper()} COG - Command Executed by {ctx.author}"
+            )
+            await self.client.unload_extension(f"cogs.{extension}")
+            await self.client.load_extension(f"cogs.{extension}")
+            embed = Embed(
+                title="Cog Reload 🔃",
+                description=f"I have reloaded the **{str(extension).upper()}** cog successfully ✅",
+                color=0x00FF00,
+                timestamp=ctx.message.created_at,
+            )
+            embed.set_author(name="🤖 LhBot")
+            embed.set_footer(text=self.client.footer)
+            await ctx.send(embed=embed)
 
 
 async def setup(client):

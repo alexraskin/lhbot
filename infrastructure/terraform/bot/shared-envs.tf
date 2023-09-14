@@ -1,6 +1,5 @@
 locals {
   enviorment_vars = {
-    PORT                 = var.enviorment_vars["PORT"]
     DATABASE_URL         = var.enviorment_vars["DATABASE_URL"]
     BOT_PREFIX           = var.enviorment_vars["BOT_PREFIX"]
     BOT_TOKEN            = var.enviorment_vars["BOT_TOKEN"]
@@ -17,8 +16,8 @@ locals {
     AWS_SECRET_KEY_ID    = var.enviorment_vars["AWS_SECRET_ACCESS_KEY"]
     AWS_REGION           = var.enviorment_vars["AWS_REGION"]
     S3_BUCKET_NAME       = var.enviorment_vars["S3_BUCKET_NAME"]
-    AWS_ECR_REPOSITORY   = var.enviorment_vars["AWS_ECR_REPOSITORY"]
     TWITCH_CLIENT_ID     = var.enviorment_vars["TWITCH_CLIENT_ID"]
     TWITCH_CLIENT_SECRET = var.enviorment_vars["TWITCH_CLIENT_SECRET"]
+    OPENAI_API_KEY       = var.enviorment_vars["OPENAI_API_KEY"]
   }
 }

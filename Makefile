@@ -10,14 +10,7 @@ style:
 	isort .
 
 run:
-	poetry run python3 bot/bot.py
-
-test:
-	cd tests
-	poetry run pytest
-
-install:
-	poetry install
+	bash run.sh
 
 terraform-fmt:
 	terraform fmt -recursive
@@ -26,4 +19,4 @@ pre-commit:
 	pre-commit run --all
 
 export:
-	poetry export -f requirements.txt --output requirements.txt --without-hashes
+	pip3 freeze > requirements.txt

@@ -26,7 +26,7 @@ class General(commands.Cog, name="General"):
         }
         self.status_task.start()
 
-    async def check_if_live(self) -> list:
+    async def check_if_live(self) -> set:
         async with self.client.session.post(
             "https://id.twitch.tv/oauth2/token", data=self.body
         ) as response:
@@ -40,17 +40,18 @@ class General(commands.Cog, name="General"):
             headers=headers,
         ) as response:
             stream_data = await response.json()
-            if stream_data["data"][0]["type"] == "live":
-                return (
-                    True,
-                    stream_data["data"][0]["game_name"],
-                    stream_data["data"][0]["title"],
-                    stream_data["data"][0]["thumbnail_url"],
-                )
+            if len(stream_data["data"]) == 1:
+                if stream_data["data"][0]["type"] == "live":
+                    return (
+                        True,
+                        stream_data["data"][0]["game_name"],
+                        stream_data["data"][0]["title"],
+                        stream_data["data"][0]["thumbnail_url"],
+                    )
             else:
-                return False, None, None
+                return False, None, None, None
 
-    @tasks.loop(seconds=160)
+    @tasks.loop(seconds=60)
     async def status_task(self) -> None:
         """
         The status_task function is a loop that will run every 60 seconds.
@@ -71,20 +72,12 @@ class General(commands.Cog, name="General"):
         ]
         check = await self.check_if_live()
         if check[0] == True:
-            thumbnail = check[3]
-            assets = {
-                "large_image": thumbnail.format(width=100, height=100),
-                "large_text": check[1],
-                "small_image": thumbnail.format(width=50, height=50),
-                "small_text": check[1],
-            }
             await self.client.change_presence(
                 activity=discord.Streaming(
                     name="LhCloudy is Live!",
                     url=self.twitch_url,
                     platform="Twitch",
                     game=check[1],
-                    assets=assets,
                 )
             )
         else:
@@ -133,7 +126,8 @@ class General(commands.Cog, name="General"):
             return
         else:
             await ctx.send(
-                f"An error occurred, this has been reported to the developers."
+                f"An error occurred, this has been reported to the developers.",
+                ephemeral=True,
             )
             self.client.logger.error(error)
             capture_exception(error)
@@ -149,7 +143,6 @@ class General(commands.Cog, name="General"):
         :param message: Used to store information about the message.
         :return: None.
         """
-
         if message.author.bot:
             return
 
@@ -188,14 +181,16 @@ class General(commands.Cog, name="General"):
         :param ctx: Used to get the context of where the command was called.
         :return: an embed with the bot's information.
         """
-        embed = discord.Embed(description="LhBot", color=0x42F56C)
+        embed = discord.Embed(
+            description="LhBot is a Discord bot that was created by twizykat.",
+            color=0x42F56C,
+            timestamp=ctx.message.created_at,
+        )
         embed.set_author(
-            name="Bot Information",
+            name="LhBot",
             icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
         )
-        embed.add_field(
-            name="Owners:", value=str("reinfrog#1738, PayMeToThrow#2129"), inline=True
-        )
+        embed.add_field(name="Owners:", value=str("twizykat"), inline=True)
         embed.add_field(
             name="Prefix:", value=self.client.config.bot_prefix, inline=True
         )
@@ -205,6 +200,7 @@ class General(commands.Cog, name="General"):
         embed.add_field(
             name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
         )
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -223,8 +219,9 @@ class General(commands.Cog, name="General"):
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency()}ms.",
             color=0x42F56C,
+            timestamp=ctx.message.created_at,
         )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -237,7 +234,7 @@ class General(commands.Cog, name="General"):
         :return: an embed with the percentage of the year that has passed.
         """
         await ctx.typing()
-        embed = discord.Embed(color=0x42F56C)
+        embed = discord.Embed(color=0x42F56C, timestamp=ctx.message.created_at)
         embed.set_author(
             name="Year Progress",
             icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
@@ -245,6 +242,7 @@ class General(commands.Cog, name="General"):
         embed.add_field(
             name="Progress:", value=progress_bar(get_year_round()), inline=True
         )
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 60, commands.BucketType.user)
@@ -289,8 +287,9 @@ class General(commands.Cog, name="General"):
             title="Bot Uptime",
             description=f"Uptime: {self.client.get_uptime()}",
             color=0x42F56C,
+            timestamp=ctx.message.created_at,
         )
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
 
         await ctx.send(embed=embed)
 

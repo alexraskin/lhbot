@@ -30,3 +30,4 @@ class Settings(BaseSettings):
     s3_bucket_name: str = os.getenv("S3_BUCKET_NAME")
     twitch_client_id: str = os.getenv("TWITCH_CLIENT_ID")
     twitch_client_secret: str = os.getenv("TWITCH_CLIENT_SECRET")
+    openai_api_key: str = os.getenv("OPENAI_API_KEY")
