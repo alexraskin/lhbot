@@ -23,20 +23,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         description="Get overwatch profile details. EX: !owstats pc us Jay3#11894",
     )
     async def get_overwatch_profile(self, ctx: commands.Context, info=None) -> Embed:
-        """
-        The get overwatch profile command retrieves the Overwatch profile of a user.
-        It takes in three parameters, which are the context, and two strings.
-        The first string is for platform (pc/xbl/psn),
-        the second string is for region (us/eu/kr).
-        It then splits these two strings into three separate variables.
-
-        :param self: Used to access variables that belong to the class.
-        :param ctx: Used to get the context of where the message was sent.
-        :param *: Used to pass in unlimited parameters to this function.
-        :param info=None: Used to pass in the user's information.
-        :return: :.
-
-        """
         if info is None:
             embed = Embed(
                 title="Please Enter A Profile!", color=random.randint(0, 0xFFFFFF)
@@ -126,13 +112,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
     @commands.hybrid_command(name="shatter", description="Shatter a user")
     async def shatter(self, ctx: commands.Context, target_user: str = None):
-        """
-        Shatter another user in the server!
-
-        :param self: Used to access the class attributes and methods.
-        :param ctx: Used to get the current context of where the command was called.
-        :param target_user=None: Used to specify the user to be targeted.
-        """
         lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
         lh_cloudy_block_list = [
             "Blocked.. cloudy is immune to your shatter!",
@@ -192,13 +171,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="nano", description="Nano Boost a user in the server!")
     async def nano_execute(self, ctx, target_user=None):
-        """
-        target_user is a string that contains the username of who you
-
-        :param ctx: Access the context of where the command was called
-        :param target_user: Determine the user that is being targeted by the nano boost
-        :return: One of the sayings in the nano_boost_sayings list
-        """
 
         nano_boost_sayings = [
             "Nano Boost administered",

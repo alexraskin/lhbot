@@ -117,7 +117,7 @@ class SnailRace(commands.Cog, name="Snail Racing"):
             running_guilds.remove(interaction.guild.id)
         except ValueError:
             pass
-        self.client.log.info(f"{interaction.user} used {command}")
+        self.client.logger.info(f"{interaction.user} used {command}")
 
 
 async def setup(client: commands.Bot) -> None:
