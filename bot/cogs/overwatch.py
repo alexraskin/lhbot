@@ -12,16 +12,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     """Overwatch specify commands"""
 
     def __init__(self, client: commands.Bot):
-        """
-        The __init__ function is the constructor for a class.
-        It initializes the attributes of an obrror)ject. In this case, it initializes
-        the client attribute.
-
-        :param self: Used to access variables that belong to the class.
-        :param client: Used to store the reference to the client object.
-        :return: a new instance of the class.
-
-        """
         self.client = client
         self.rein_quotes = quotes.split("\n")
         self.base_url = "https://owapi.io"
@@ -284,12 +274,4 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
 
 async def setup(client):
-    """
-    The setup function is used to register the commands that will be used in the bot.
-    This function is run when you load a cog, and it allows you to use commands in your cogs.
-
-    :param client: Used to pass in the discord client, which is used to interact with the Discord API.
-    :return: a dictionary with the following keys:.
-
-    """
     await client.add_cog(OverwatchAPI(client))

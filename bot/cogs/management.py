@@ -25,8 +25,9 @@ class Management(commands.Cog, name="Management"):
     @commands.is_owner()
     @commands.command(name="sync", hidden=True)
     async def sync(self, ctx: commands.Context):
-        tree = await self.client.tree.sync()
-        await ctx.send(f"Synced slash commands. ```{tree}```")
+        message = await ctx.send("Syncing slash commands... 🔄")
+        await self.client.tree.sync()
+        await message.edit(content="Synced slash commands successfully! ✅")
 
     @commands.is_owner()
     @commands.command(name="reload", hidden=True)

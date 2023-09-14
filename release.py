@@ -1,6 +1,6 @@
+import argparse
 import json
 import os
-import argparse
 
 import requests
 from dotenv import load_dotenv
@@ -42,8 +42,13 @@ class CreateRelease:
 if __name__ == "__main__":
     create_release = CreateRelease()
 
-    print(f"Latest release: ", latest_release := create_release.get_release()[0]["name"])
-    print(f"New version number:", version_number := f"{latest_release.split('.')[0]}.{int(latest_release.split('.')[1]) + 1}")
+    print(
+        f"Latest release: ", latest_release := create_release.get_release()[0]["name"]
+    )
+    print(
+        f"New version number:",
+        version_number := f"{latest_release.split('.')[0]}.{int(latest_release.split('.')[1]) + 1}",
+    )
 
     argparse = argparse.ArgumentParser()
     argparse.add_argument("--description", help="Description of the release")

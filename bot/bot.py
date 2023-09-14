@@ -11,7 +11,7 @@ from aiohttp import ClientSession, ClientTimeout
 from config import Settings
 from discord import AllowedMentions, Intents, Status
 from discord.ext import tasks
-from discord.ext.commands import AutoShardedBot
+from discord.ext.commands import AutoShardedBot, when_mentioned_or
 from sentry_sdk import capture_exception
 from utils.clear_dir import clean_cache
 
@@ -20,9 +20,6 @@ logging.basicConfig(level=logging.INFO)
 
 @lru_cache()
 def settings():
-    """
-    Load the settings from the config file.
-    """
     return Settings()
 
 
@@ -38,14 +35,7 @@ class LhBot(AutoShardedBot):
 
     def __init__(self, *args, **options) -> None:
         """
-        The __init__ function is the constructor for a class.
-        It is called when an instance of a class is created.
-        It can take arguments (in this case, *args and **options)
-
-        :param self: Used to refer to the object itself.
-        :param *args: Used to pass a non-keyworded, variable-length argument list to the function.
-        :param **options: Used to pass a dictionary of keyword arguments to the function.
-        :return: a new instance of the Session class.
+        The __init__ function is used to initialize the Bot class.
         """
         super().__init__(*args, **options)
         self.session = None
@@ -56,7 +46,7 @@ class LhBot(AutoShardedBot):
         self.status = Status.online
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
-        self.logo_url = "https://i.gyazo.com/5363ec0171eb1243542250c107889cc9.png"
+        self.logo_url = "https://i.gyazo.com/fa23d3eb9c323b3f39b8ba9dadaa8f95.png"
         self.footer = f"Bot Version: {self.version} • Made by Twizy"
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
@@ -98,16 +88,6 @@ class LhBot(AutoShardedBot):
                 self.logger.error(f"Failed to load extension {extension}\n{exc}")
 
     def user_is_admin(self, user) -> bool:
-        """
-        The user_is_admin function specifically checks
-        if the user has a role that is in the permitted_roles list.
-        The permitted_roles list contains
-        all of the roles that are allowed to access admin functions.
-
-        :param self: Used to access attributes of the class.
-        :param user: Used to check if the user has a certain role.
-        :return: false if the user attribute is not an instance of discord.
-        """
         try:
             user_roles = [role.id for role in user.roles]
         except AttributeError as error:
@@ -117,13 +97,6 @@ class LhBot(AutoShardedBot):
         return any(role in permitted_roles for role in user_roles)
 
     def user_is_superuser(self, user) -> bool:
-        """
-        The user_is_superuser function specifically checks if the user is a superuser.
-
-        :param self: Used to refer to the object itself.
-        :param user: Used to check if the user is a superuser.
-        :return: True if the user is a superuser and False otherwise.
-        """
         superusers = self.config.superusers
         return user.id in superusers
 
@@ -139,7 +112,7 @@ class LhBot(AutoShardedBot):
 
 
 client = LhBot(
-    command_prefix=config.bot_prefix,
+    command_prefix=when_mentioned_or(config.bot_prefix),
     description="Hi, I am LhBot!",
     max_messages=15000,
     intents=Intents.all(),

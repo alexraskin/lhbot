@@ -1,7 +1,7 @@
 import random
 
 from bson.objectid import ObjectId
-from discord import Embed
+from discord import Embed, app_commands
 from discord.ext import commands, tasks
 from utils.banwords import banned_words
 from utils.emojis import random_emoji
@@ -13,15 +13,6 @@ from utils.s3_client import S3Upload
 
 class LhGuess(commands.Cog, name="LhGuess"):
     def __init__(self, client: commands.Bot) -> None:
-        """
-        The __init__ function is used to initialize the class. It's called when an instance of a class is created, and it
-        creates space in memory for the new object. In this case, it creates space for self (the bot) and then initializes
-        variables that will be used later on.
-
-        :param self: Used to reference the class itself.
-        :param client: Used to access the bot's attributes.
-        :return: the client that we will use to interact with the Discord API.
-        """
         self.client = client
         self.banned_words_list = banned_words.split("\n")
         self.hints = lh_hints.split("\n")
@@ -34,11 +25,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @tasks.loop(seconds=30)
     async def load_collection_list(self) -> list:
         """
-        The load_collection_list function specifically loads the collection list from the database and stores it in a variable.
-        It then iterates through each guess in the collection and appends them to a list.
-
-        :param self: Used to access the class attributes.
-        :return: a list of all the guesses in the collection.
+        Load the guess list from the database.
         """
         self.guess_list = []
         async for guess in self.collection.find():
@@ -47,21 +34,13 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 {"guess": data["guess"], "guessedBy": data["guessedBy"]}
             )
 
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.command(
-        name="lhguess", description="Guess what LH stands for in LhCloudy"
-    )
-    async def lh_guess(self, ctx, guess) -> Embed:
+    @commands.hybrid_group(fallback="guess")
+    @commands.guild_only()
+    @app_commands.guild_only()
+    @app_commands.describe(guess="Take a guess at what LH means")
+    async def lhguess(self, ctx: commands.Context, guess: str) -> Embed:
         """
-        The lh_guess function is used to add a guess to the database.
-        It takes in a string as an argument and adds it to the database.
-        The function also returns some information about the guess that was just added.
-
-        :param self: Used to access the bot's attributes.
-        :param ctx: Used to get the context of the message.
-        :param *: Used to pass in unlimited arguments.
-        :param guess: Used to store the user's guess.
-        :return: an embed message
+        Take a guess at what LH means. The guess must start with the letter L.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
@@ -112,18 +91,12 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction(random_emoji())
 
-    @commands.cooldown(1, 60, commands.BucketType.user)
-    @commands.command(
-        name="lhcount", description="Count the number of guesses in the database"
-    )
-    async def guess_count(self, ctx) -> Embed:
+    @commands.hybrid_group()
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def count(self, ctx: commands.Context) -> Embed:
         """
-        The guess_count function is used to display the current amount of guesses in the database.
-        It does this by creating a list of all guesses and then counting them.
-
-        :param self: Used to access the class methods and variables.
-        :param ctx: Used to pass the context of the command.
-        :return: the current amount of guesses in the database.
+        The number of guesses in the database.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
@@ -137,19 +110,12 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    @commands.command(
-        name="lhreport", description="Generate a report of all guesses in the database"
-    )
-    async def run_lh_report(self, ctx) -> Embed:
+    @commands.hybrid_group()
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def report(self, ctx) -> Embed:
         """
-        The run_lh_report function specifically generates a PDF report of all guesses made by the user.
-        The report is generated using the PdfReport class and is stored in a file named after the author of
-        the command. The function also creates an embed object that contains a link to download the PDF file.
-
-        :param self: Used to access the class attributes and methods.
-        :param ctx: Used to get the message author and channel.
-        :return: the report.
+        Generate a PDF report of all the guesses.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
@@ -167,17 +133,12 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.command(
-        name="lhhint", aliases=["hint"], description="Get a hint for the LhGuess game"
-    )
-    async def lh_hints(self, ctx) -> Embed:
+    @commands.hybrid_group()
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def hints(self, ctx: commands.Context) -> Embed:
         """
-        The lh_hints function is used to send a random hint about the meaning of LH.
-        It's called by typing !lh_hints in discord chat.
-
-        :param self: Used to access the class attributes.
-        :param ctx: Used to access the context of the command.
-        :return: a random hint from the hints dictionary.
+        Get a random hint.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
@@ -190,19 +151,13 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(random_emoji())
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    @commands.command(name="lhdelete", aliases=["deleteguess"], hidden=True)
-    async def lh_delete(self, ctx, guess_id) -> Embed:
+    @commands.hybrid_group()
+    @commands.guild_only()
+    @app_commands.guild_only()
+    @app_commands.describe(guess_id="Delete a guess from the database")
+    async def delete(self, ctx: commands.Context, guess_id: int) -> Embed:
         """
-        The lh_delete function is used to delete a specific guess from the database.
-        It takes in a string of the guess id and deletes it from the database. It also
-        returns an embed message with confirmation that it was deleted.
-
-        :param self: Used to access the class attributes and methods.
-        :param ctx: Used to access the context of where the command was called.
-        :param *: Used to take in any number of arguments.
-        :param guess_id: Used to specify the ID of the guess that is to be deleted.
-        :return: the embed message that is sent to the channel.
+        Delete a guess from the database.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             # Don't allow guesses messages on servers other than the main server
@@ -244,11 +199,4 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
 
 async def setup(client) -> None:
-    """
-    The setup function is used to register the commands that will be used in the bot.
-    This function is run when you load a cog, and it's what makes your commands usable.
-
-    :param client: Used to access the client's resources.
-    :return: a dictionary of information about the bot and server.
-    """
     await client.add_cog(LhGuess(client))

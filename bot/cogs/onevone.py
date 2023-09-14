@@ -96,7 +96,9 @@ class OneVOne(commands.Cog, name="OneVOne"):
                 name=f"{user}",
                 value=f"Playing {hero_two_name} with {hero_two_health} health",
             )
-            second_embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
+            second_embed.set_footer(
+                text=self.client.footer, icon_url=self.client.logo_url
+            )
             final = await first_message.edit(embed=second_embed)
             win_embed = Embed(
                 title="Overwatch Random Hero 1v1",
