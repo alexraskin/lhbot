@@ -14,9 +14,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @commands.group(invoke_without_command=True)
     async def twitch(self, ctx):
-        """
-        The twitch command is used to get the latest Cloudy twitch commands
-        """
         if ctx.invoked_subcommand is None:
             await ctx.send(
                 f"Please use `{self.client.config.bot_prefix}twitch help` to see the list of commands."
@@ -216,13 +213,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="playlist")
     async def playlist(self, ctx):
-        """
-        The playlist function specifically sends a message with the link to the playlist.
-
-        :param self: Used to reference the bot.
-        :param ctx: Used to access the context of where the command was called.
-        :return: the url of the playlist.
-        """
         url = "https://www.youtube.com/watch?v=p1SlBlB5pzU&list=RDHiu1hPdJk-Y&index=23"
         await ctx.typing()
         message = await ctx.send(url)
@@ -230,14 +220,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="srpeak")
     async def srpeak(self, ctx):
-        """
-        The srpeak function specifically sends a message with text
-
-        :param self: Used to reference the bot's instance.
-        :param ctx: Used to get the context of where the command was called.
-        :return: a message that Cloudy has sent to the server.
-
-        """
         text = (
             "I saw Cloudy in a 4K lobby one time. "
             + "I told him how cool it was to meet him in game, "
@@ -253,11 +235,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="stairs")
     async def stair(self, ctx):
-        """
-        :param self: Used to access the bot's attributes.
-        :param ctx: Used to get information about the message that invoked this command.
-        :return: a url
-        """
         url = "https://clips.twitch.tv/ProductiveSuspiciousReubenChocolateRain-apmCaU0TwTIFuF2Z"
         await ctx.typing()
         message = await ctx.send(url)
@@ -265,11 +242,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="strength")
     async def strength(self, ctx):
-        """
-        :param self: Used to reference the class itself.
-        :param ctx: Used to get information about the message that invoked the command.
-        :return: a string with the description of Cloudy's strength.
-        """
         text = (
             "Cloudys strength is aggression, "
             + "catching people off guard with it. "
@@ -281,11 +253,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="tips")
     async def tips(self, ctx):
-        """
-        :param self: Used to access the class attributes.
-        :param ctx: Used to access the context of where the command was called.
-        :return: a message in the channel.
-        """
         text = "W+M1"
         await ctx.typing()
         message = await ctx.send(text)
@@ -293,11 +260,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="twitter")
     async def twitter(self, ctx):
-        """
-        :param self: Used to access the attributes and methods in the class.
-        :param ctx: Used to access the context of where the command was called.
-        :return: a message with a link to the twitter page for LhCloudy.
-        """
         url = "https://twitter.com/LhCloudy"
         await ctx.typing()
         message = await ctx.send(url)
@@ -305,11 +267,6 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
 
     @twitch.command(name="tracer")
     async def tracer(self, ctx):
-        """
-        :param self: Used to access the bot's attributes.
-        :param ctx: Used to access the context of where the command was called.
-        :return: a message object, containing the url.
-        """
         url = "https://gyazo.com/444bd292aa15ca168bddb563aefc1191"
         await ctx.typing()
         message = await ctx.send(url)

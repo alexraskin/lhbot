@@ -29,14 +29,8 @@ sentry_sdk.init(config.sentry_dsn, traces_sample_rate=1.0)
 
 
 class LhBot(AutoShardedBot):
-    """
-    The Bot class is a subclass of the AutoShardedBot class.
-    """
 
     def __init__(self, *args, **options) -> None:
-        """
-        The __init__ function is used to initialize the Bot class.
-        """
         super().__init__(*args, **options)
         self.session = None
         self.db_client = None
@@ -101,13 +95,11 @@ class LhBot(AutoShardedBot):
         return user.id in superusers
 
     def get_uptime(self) -> str:
-        """Returns the uptime of the bot."""
         return str(
             datetime.timedelta(seconds=int(round(time.time() - self.start_time)))
         )
 
     def get_bot_latency(self) -> float:
-        """Returns the latency of the bot."""
         return round(self.latency * 1000)
 
 
@@ -122,24 +114,11 @@ client = LhBot(
 
 @tasks.loop(minutes=60)
 async def clean_dir() -> None:
-    """
-    The clean_dir function is used to clean the directory of all files that are not
-    .py, .txt or .json files.
-
-    :return: bool
-    """
     clean_cache("./bot/files", ".pdf")
 
 
 @client.event
 async def on_ready() -> bool:
-    """
-    The on_ready function specifically accomplishes the following:
-        - Sets up a status task that changes the bot's status every 60 seconds.
-        - Sets up a clean_dir task that cleans out old files in the cache directory every 5 minutes.
-
-    :return: a string with the details of our main guild.
-    """
     main_id = config.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     logging.info(f"{client.user.name} started successfully")

@@ -20,10 +20,6 @@ class Fun(commands.Cog, name="Fun"):
         categories = await response.json()
         self.chuck_categories = [x for x in categories if x != "explicit"]
 
-    @app_commands.command()
-    async def echo(self, interaction: Interaction, echo: str):
-        await interaction.response.send_message(f"Echo: {echo}")
-
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="chucknorris", aliases=["chuck", "cn"])
     async def chucknorris(self, ctx, category: str = None) -> Union[Embed, None]:
@@ -76,13 +72,6 @@ class Fun(commands.Cog, name="Fun"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="dog", aliases=["dogpic", "doggo"])
     async def dog(self, ctx):
-        """
-        The dog function specifically gets a random dog picture from the website random.dog
-
-        :param self: Used to access the client object.
-        :param ctx: Used to get the channel and author of the message.
-        :return: a dog picture in the form of a url.
-        """
         response = await self.client.session.get("https://random.dog/woof.json")
         data = await response.json()
         if response.status != 200:

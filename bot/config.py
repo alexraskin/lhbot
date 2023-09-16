@@ -7,10 +7,6 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    """
-    The Settings class is a class that contains all the settings for the bot.
-    """
-
     docker_enabled = os.getenv("DOCKER_ENABLED", False)
     port = int(os.getenv("PORT", 8000))
     bot_prefix: str = os.getenv("BOT_PREFIX")

@@ -10,12 +10,6 @@ from utils.bot_utils import get_year_round, progress_bar
 
 class General(commands.Cog, name="General"):
     def __init__(self, client: commands.Bot):
-        """
-        General commands
-        :param self: Used to refer to the object itself.
-        :param client: Used to pass the client object to the class.
-        :return: the object of the class.
-        """
         self.client = client
         self.streamer_name = "lhcloudy27"
         self.twitch_url = "https://www.twitch.tv/lhcloudy27"
@@ -53,13 +47,6 @@ class General(commands.Cog, name="General"):
 
     @tasks.loop(seconds=60)
     async def status_task(self) -> None:
-        """
-        The status_task function is a loop that will run every 60 seconds.
-        It will randomly select one of the statuses from the list
-        and set it as the bot's status.
-
-        :return: a list of strings that will be used to change the status of the bot.
-        """
         statuses = [
             "Overwatch",
             "Overwatch 2",
@@ -87,10 +74,6 @@ class General(commands.Cog, name="General"):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error) -> None:
-        """
-        The on_command_error function is used to handle errors that occur when a command is run.
-
-        """
         if hasattr(ctx.command, "on_error"):
             return
 
@@ -135,14 +118,6 @@ class General(commands.Cog, name="General"):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        """
-        The on_message function specifically handles messages that are sent to the bot.
-        It checks if the message is a command, and then executes it if it is.
-
-        :param self: Used to access the class' attributes and methods.
-        :param message: Used to store information about the message.
-        :return: None.
-        """
         if message.author.bot:
             return
 
@@ -157,12 +132,6 @@ class General(commands.Cog, name="General"):
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx) -> None:
-        """
-        The on_command_completion function tracks the commands that are executed in each server.
-
-        :param ctx: Used to access the context of the command.
-        :return: a string of the executed command.
-        """
         full_command_name = ctx.command.qualified_name
         split = full_command_name.split(" ")
         executed_command = str(split[0])
@@ -174,13 +143,6 @@ class General(commands.Cog, name="General"):
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, ctx):
-        """
-        The info function specifically tells the user about the bot,
-        and gives them a link to the github page.
-
-        :param ctx: Used to get the context of where the command was called.
-        :return: an embed with the bot's information.
-        """
         embed = discord.Embed(
             description="LhBot is a Discord bot that was created by twizykat.",
             color=0x42F56C,
@@ -206,15 +168,6 @@ class General(commands.Cog, name="General"):
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="ping")
     async def ping(self, ctx):
-        """
-        The ping function is used to check the bot's latency.
-        It returns a message with the time it takes for a message
-        to reach Discord and be received by the bot.
-
-        :param ctx: Used to get the context of where the command was called.
-        :param latency: Latency of the bot.
-        :return: a discord embed.
-        """
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency()}ms.",
@@ -227,12 +180,6 @@ class General(commands.Cog, name="General"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="year", aliases=["yearprogress"])
     async def year(self, ctx):
-        """
-        The year function tells the user how much of the current year has passed.
-
-        :param ctx: Used to get the context of where the command was called.
-        :return: an embed with the percentage of the year that has passed.
-        """
         await ctx.typing()
         embed = discord.Embed(color=0x42F56C, timestamp=ctx.message.created_at)
         embed.set_author(
@@ -248,16 +195,6 @@ class General(commands.Cog, name="General"):
     @commands.cooldown(1, 60, commands.BucketType.user)
     @commands.command(name="inspect", hidden=True)
     async def inspect(self, ctx, command_name: str):
-        """
-        The inspect function is used to print the source code of a command.
-        It's useful for figuring out what exactly a command does, and how it works.
-
-        :param self: Used to access the client object.
-        :param ctx: Used to access the bot's context.
-        :param *: Used to pass a list of arguments to the function.
-        :param command_name:str: Used to specify the name of the command that we want to inspect.
-        :return: a link to the github repo and the source code of a command.
-        """
         cmd = self.client.get_command(command_name)
         if cmd is None:
             return
@@ -278,9 +215,6 @@ class General(commands.Cog, name="General"):
         name="uptime", aliases=["up"], description="Shows the uptime of the bot"
     )
     async def uptime(self, ctx):
-        """
-        The uptime function is used to show the uptime of the bot.
-        """
         await ctx.typing()
 
         embed = discord.Embed(
@@ -295,11 +229,4 @@ class General(commands.Cog, name="General"):
 
 
 async def setup(client):
-    """
-    The setup function is used to register the commands that will be used in the bot.
-    This function is run when you load a cog, and it allows you to use commands in your cogs.
-
-    :param client: Used to pass in the client object.
-    :return: a dictionary that contains the following keys:.
-    """
     await client.add_cog(General(client))

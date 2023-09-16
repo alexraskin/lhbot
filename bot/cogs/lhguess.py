@@ -24,9 +24,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
     @tasks.loop(seconds=30)
     async def load_collection_list(self) -> list:
-        """
-        Load the guess list from the database.
-        """
         self.guess_list = []
         async for guess in self.collection.find():
             data = helper(guess)
@@ -40,10 +37,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @app_commands.describe(guess="Take a guess at what LH means")
     async def lhguess(self, ctx: commands.Context, guess: str) -> Embed:
         """
-        Take a guess at what LH means. The guess must start with the letter L.
+        Take a guess at what LH means.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
-            # Don't allow guesses messages on servers other than the main server
             return
 
         if not str(guess).lower().startswith("l"):
@@ -96,10 +92,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @app_commands.guild_only()
     async def count(self, ctx: commands.Context) -> Embed:
         """
-        The number of guesses in the database.
+        Get the current guess count.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
-            # Don't allow guesses messages on servers other than the main server
             return
         await ctx.typing()
         embed = Embed(title="LhGuess Count", color=self.success_color)
@@ -118,7 +113,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         Generate a PDF report of all the guesses.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
-            # Don't allow guesses messages on servers other than the main server
             return
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
@@ -141,7 +135,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         Get a random hint.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
-            # Don't allow guesses messages on servers other than the main server
             return
         embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
@@ -160,7 +153,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         Delete a guess from the database.
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
-            # Don't allow guesses messages on servers other than the main server
             return
         await ctx.typing()
         if not self.client.user_is_superuser(ctx.author):

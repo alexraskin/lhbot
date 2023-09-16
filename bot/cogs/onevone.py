@@ -6,10 +6,6 @@ from discord.ext import commands
 
 
 class OneVOne(commands.Cog, name="OneVOne"):
-    """
-    One V One another user in the server!
-    """
-
     def __init__(self, client: commands.Bot):
         self.client = client
         self.roles = ["tank", "damage", "support"]
