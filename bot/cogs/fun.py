@@ -1,7 +1,7 @@
 import random
 from typing import Union
 
-from discord import Embed, Colour
+from discord import Colour, Embed
 from discord.ext import commands, tasks
 from utils import bot_utils
 

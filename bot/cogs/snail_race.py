@@ -1,6 +1,6 @@
 import asyncio
 import random
-from typing import List, Optional, Union, Dict
+from typing import Dict, List, Optional, Union
 
 import discord
 from discord import Interaction, Member, app_commands

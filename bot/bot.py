@@ -4,12 +4,12 @@ import os
 import platform
 import time
 from functools import lru_cache
-import psutil
 
 import motor.motor_asyncio
+import psutil
 import sentry_sdk
-from cogs import EXTENSIONS
 from aiohttp import ClientSession, ClientTimeout
+from cogs import EXTENSIONS
 from config import Settings
 from discord import AllowedMentions, Intents, Status, User
 from discord.ext import tasks

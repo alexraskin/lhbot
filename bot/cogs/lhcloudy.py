@@ -1,7 +1,7 @@
 import datetime
 import sys
 
-from discord import Embed, Colour
+from discord import Colour, Embed
 from discord.ext import commands
 
 
