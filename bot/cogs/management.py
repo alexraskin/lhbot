@@ -11,17 +11,6 @@ class Management(commands.Cog, name="Management"):
     async def user_check(self, ctx: commands.Context):
         return self.client.user_is_superuser(ctx.author)
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.cog_crawl()
-
-    def cog_crawl(self):
-        self.extension_targets = []
-        for self.cog in self.client.abs_path:
-            if self.cog.endswith(".py"):
-                self.extension_targets.append(f"cogs.{self.cog[:-3]}")
-        return self.extension_targets
-
     @commands.is_owner()
     @commands.command(name="sync", hidden=True)
     async def sync(self, ctx: commands.Context):
@@ -44,7 +33,6 @@ class Management(commands.Cog, name="Management"):
                 timestamp=ctx.message.created_at,
             )
             embed.set_author(name="🤖 LhBot")
-            embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
         else:
             self.client.logger.info(
@@ -59,7 +47,6 @@ class Management(commands.Cog, name="Management"):
                 timestamp=ctx.message.created_at,
             )
             embed.set_author(name="🤖 LhBot")
-            embed.set_footer(text=self.client.footer)
             await ctx.send(embed=embed)
 
 

@@ -1,27 +1,25 @@
 import asyncio
 import random
 
-from discord import Embed, Member
+from discord import Embed, Member, app_commands
 from discord.ext import commands
 
 
 class OneVOne(commands.Cog, name="OneVOne"):
-    """
-    One V One another user in the server!
-    """
-
     def __init__(self, client: commands.Bot):
         self.client = client
         self.roles = ["tank", "damage", "support"]
 
-    @commands.command(
+    @commands.hybrid_command(
         name="1v1",
         description="Random Overwatch Hero 1v1",
     )
+    @commands.guild_only()
+    @app_commands.guild_only()
     async def one_v_one(
         self,
         ctx: commands.Context,
-        user: Member = "",
+        user: Member = None,
     ):
         if user is None or "":
             await ctx.send("Please target another user to 1v1")
