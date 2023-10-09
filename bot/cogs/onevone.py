@@ -74,7 +74,6 @@ class OneVOne(commands.Cog, name="OneVOne"):
             name=f"{user} is playing",
             value=f"{hero_two_name} with {hero_two_health} health",
         )
-        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
         first_message = await ctx.send(embed=embed)
 
         while hero_one_health > 0 and hero_two_health > 0:
@@ -103,7 +102,6 @@ class OneVOne(commands.Cog, name="OneVOne"):
                 color=0x00FF00,
                 timestamp=ctx.message.created_at,
             )
-            win_embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
 
         if hero_one_health == 0:
             win_embed.add_field(name=ctx.author, value=f"Won, playing {hero_one_name}!")
