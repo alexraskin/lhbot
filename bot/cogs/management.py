@@ -8,9 +8,6 @@ class Management(commands.Cog, name="Management"):
     def __init__(self, client: commands.Bot):
         self.client = client
 
-    async def user_check(self, ctx: commands.Context):
-        return self.client.user_is_superuser(ctx.author)
-
     @commands.is_owner()
     @commands.command(name="sync", hidden=True)
     async def sync(self, ctx: commands.Context):

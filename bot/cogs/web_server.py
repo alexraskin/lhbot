@@ -14,16 +14,25 @@ class WebServer(commands.Cog, name="WebServer"):
         self.client = client
         self.path = os.path.join(Path(__file__).resolve().parent, "static/")
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.client.logger.info(f"Webserver ready on port {self.client.config.port}")
+
     def html_response(self, text: str) -> web.Response:
         return web.Response(text=text, content_type="text/html")
 
     @aiohttp_jinja2.template("index.html")
     async def index_handler(self, request: web.Request) -> dict:
+        self.client.logger.info(f"Webserver request from {request.remote}")
+        self.client.logger.info(f"Webserver request for {request.path}")
+        self.client.logger.info(f"Webserver request for {request.query_string}")
         return {
             "discord_version": discord_version,
             "bot_version": self.client.config.bot_version,
             "bot_latency": f"{self.client.get_bot_latency}ms",
             "bot_uptime": self.client.get_uptime,
+            "bot_ram": f"{self.client.memory_usage}MB",
+            "bot_cpu": f"{self.client.cpu_usage}%",
         }
 
     async def webserver(self) -> None:

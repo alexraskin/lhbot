@@ -22,6 +22,9 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.hybrid_command(with_app_command=True)
     async def chucknorris(self, ctx, category: str = None) -> Union[Embed, None]:
+        """
+        Get a random Chuck Norris fact
+        """
         if not hasattr(self, "chuck_categories"):
             await ctx.send("Hold up partner, still locating Chuck!")
             return
@@ -56,6 +59,9 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.hybrid_command(with_app_command=True)
     async def cat(self, ctx):
+        """
+        Get a random cat from cataas.com
+        """
         cat_url = "https://cataas.com"
         response = await self.client.session.get(f"{cat_url}/cat?json=true")
         data = await response.json()
@@ -69,6 +75,9 @@ class Fun(commands.Cog, name="Fun"):
         name="dog", aliases=["dogpic", "doggo"], with_app_command=True
     )
     async def dog(self, ctx: commands.Context):
+        """
+        Get a random dog from random.dog
+        """
         response = await self.client.session.get("https://random.dog/woof.json")
         data = await response.json()
         if response.status != 200:
@@ -79,6 +88,9 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.hybrid_command(name="meme", aliases=["memer"], with_app_command=True)
     async def get_meme(self, ctx: commands.Context):
+        """
+        Get a random meme from meme-api.com
+        """
         response = await self.client.session.get("https://meme-api.com/gimme")
         data = await response.json()
         if response.status != 200:
@@ -89,7 +101,12 @@ class Fun(commands.Cog, name="Fun"):
 
     @commands.hybrid_command(name="joke", aliases=["dadjoke"], with_app_command=True)
     async def random_joke(self, ctx: commands.Context):
-        response = await self.client.session.get("https://icanhazdadjoke.com/")
+        """
+        Get a random dad joke from icanhazdadjoke.com
+        """
+        response = await self.client.session.get(
+            "https://icanhazdadjoke.com/", headers={"Accept": "application/json"}
+        )
         response = await response.json()
         if response is None:
             await ctx.send("Could not find a joke!")
@@ -106,6 +123,9 @@ class Fun(commands.Cog, name="Fun"):
     async def random_waifu(
         self, ctx: commands.Context, category: str = None
     ) -> Union[Embed, None]:
+        """
+        Get a random waifu from waifu.pics
+        """
         random.seed(get_time_string())
         categories = ["cuddle", "cry", "hug", "awoo", "kiss"]
         if category is None:
@@ -135,6 +155,9 @@ class Fun(commands.Cog, name="Fun"):
         name="year", aliases=["yearprogress"], with_app_command=True
     )
     async def year(self, ctx: commands.Context):
+        """
+        Get the progress of the year
+        """
         embed = Embed(timestamp=ctx.message.created_at)
         embed.colour = Colour.blurple()
         embed.set_author(
@@ -142,7 +165,9 @@ class Fun(commands.Cog, name="Fun"):
             icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
         )
         embed.add_field(
-            name="Progress:", value=bot_utils.progress_bar(bot_utils.get_year_round()), inline=True
+            name="Progress:",
+            value=bot_utils.progress_bar(bot_utils.get_year_round()),
+            inline=True,
         )
         await ctx.send(embed=embed)
 

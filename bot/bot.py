@@ -38,6 +38,7 @@ class LhBot(AutoShardedBot):
         self.start_time = None
         self.version = config.bot_version
         self.config = config
+        self.pid = os.getpid()
         self.status = Status.online
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
@@ -68,22 +69,10 @@ class LhBot(AutoShardedBot):
                 await self.load_extension(cog)
                 self.logger.info(f"Loaded extension: {cog}")
             except Exception as exc:
+                capture_exception(exc)
                 self.logger.error(
                     f"Could not load extension: {cog} due to {exc.__class__.__name__}: {exc}"
                 )
-
-    def user_is_admin(self, user) -> bool:
-        try:
-            user_roles = [role.id for role in user.roles]
-        except AttributeError as error:
-            capture_exception(error)
-            return False
-        permitted_roles = self.config.admin_roles
-        return any(role in permitted_roles for role in user_roles)
-
-    def user_is_superuser(self, user) -> bool:
-        superusers = self.config.superusers
-        return user.id in superusers
 
     @property
     def get_uptime(self) -> str:
@@ -124,6 +113,8 @@ client = LhBot(
     max_messages=15000,
     intents=Intents.all(),
     allowed_mentions=AllowedMentions(everyone=False, users=True, roles=True),
+    guild_ready_timeout=10,
+    strip_after_prefix=True,
 )
 
 
@@ -141,4 +132,4 @@ async def on_ready() -> bool:
 
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
-logging.info("LhBot has exited")
+logging.info(f"{client.user.name} stopped successfully")

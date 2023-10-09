@@ -3,6 +3,7 @@ import random
 from bson.objectid import ObjectId
 from discord import Embed, app_commands
 from discord.ext import commands, tasks
+from utils import checks
 from utils.banwords import banned_words
 from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
@@ -34,6 +35,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.guild_only()
     @app_commands.guild_only()
     async def lh(self, ctx: commands.Context) -> None:
+        """
+        LhGuess Commands
+        """
         if ctx.invoked_subcommand is None:
             await ctx.send_help(ctx.command)
 
@@ -50,14 +54,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
         if not str(guess).lower().startswith("l"):
             embed = Embed(title="Guess not allowed!", color=self.error_color)
-            
+
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
             return
 
         if str(guess).lower() in self.banned_words_list:
             embed = Embed(title="Guess not allowed!", color=self.error_color)
-            
+
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
             return
@@ -68,7 +72,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 title="This has already been guessed 🚨",
                 description=f"LhGuess: {guess}",
             )
-            
+
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("👎")
         else:
@@ -90,7 +94,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed.add_field(name="Guess ID:", value=pretty_return["id"], inline=False)
             await ctx.send(embed=embed)
 
-    @lh.command()
+    @lh.command(description="Get the current guess count.")
     @commands.guild_only()
     @app_commands.guild_only()
     async def count(self, ctx: commands.Context) -> Embed:
@@ -99,14 +103,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             return
-        
+
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
         )
         await ctx.send(embed=embed)
 
-    @lh.command()
+    @lh.command(description="Generate a PDF report of all the guesses.")
     @commands.guild_only()
     @app_commands.guild_only()
     async def report(self, ctx) -> Embed:
@@ -125,7 +129,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed.add_field(name="PDF Link:", value=share.get_url())
         await ctx.send(embed=embed)
 
-    @lh.command()
+    @lh.command(description="Get a random hint.")
     @commands.guild_only()
     @app_commands.guild_only()
     async def hints(self, ctx: commands.Context) -> Embed:
@@ -137,10 +141,11 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
-        
+
         await ctx.send(embed=embed)
 
     @lh.command()
+    @checks.is_mod()
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess_id="Delete a guess from the database")
@@ -150,16 +155,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             return
-        
-        if not self.client.user_is_superuser(ctx.author):
-            embed = Embed(
-                title="You do not have permisson to run this command!",
-                color=self.error_color,
-                timestamp=ctx.message.created_at,
-            )
-            embed_message = await ctx.send(embed=embed)
-            await embed_message.add_reaction("🔨")
-            return
+
         guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
 
         if not guess:
