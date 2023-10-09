@@ -1,73 +1,62 @@
-heroku_email = ""
+railway_token =
 
-heroku_api_key = ""
+aws_profile = 
 
-app_region = ""
+aws_region = 
 
-app_name = ""
-
-source_code_url = ""
-
-app_version = ""
-
-heroku_stack = ""
-
-dyno_type = ""
-
-dyno_size = ""
-
-webhook_url = ""
-
-heroku_enviorment_vars = {
-  "BOT_NAME"              = ""
-  "BOT_PREFIX"            = ""
-  "BOT_TOKEN"             = ""
-  "APPLICATION_ID"        = ""
-  "DATABASE_URL"          = ""
-  "SENTRY_DSN"            = ""
-  "MAIN_GUILD"            = ""
-  "OWNERS"                = ""
-  "SUPERUSERS"            = ""
-  "ADMIN_ROLES"           = ""
-  "GIPHY_API_KEY"         = ""
-  "AWS_ACCESS_KEY"        = ""
-  "AWS_SECRET_ACCESS_KEY" = ""
-  "AWS_REGION"            = ""
-  "S3_BUCKET_NAME"        = ""
+enviorment_vars = {
+  "BOT_NAME"              = 
+  "BOT_PREFIX"            = 
+  "BOT_VERSION"           = 
+  "BOT_TOKEN"             = 
+  "DATABASE_URL"          = 
+  "APPLICATION_ID"        = 
+  "SENTRY_DSN"            = 
+  "MAIN_GUILD"            = 
+  "OWNERS"                = 
+  "SUPERUSERS"            = 
+  "ADMIN_ROLES"           = 
+  "GIPHY_API_KEY"         = 
+  "AWS_ACCESS_KEY"        = 
+  "AWS_SECRET_ACCESS_KEY" = 
+  "AWS_REGION"            = 
+  "S3_BUCKET_NAME"        = 
+  "TWITCH_CLIENT_ID"      = 
+  "TWITCH_CLIENT_SECRET"  = 
+  "OPENAI_API_KEY"        = 
+  "TWIZY_API_KEY"         = 
 }
 
-collaborator_email = ""
+mongodbatlas_public_key =
 
-mongodbatlas_public_key = ""
+mongodbatlas_private_key =
 
-mongodbatlas_private_key = ""
+mongodb_region =
 
-mongodb_region = ""
+database_user =
 
-database_user = ""
+database_password =
 
-database_password = ""
+mongodb_cluster_name =
 
-mongodb_cluster_name = ""
+mongo_database_name =
 
-mongo_database_name = ""
+mongodb_project_id =
 
-mongodb_project_id = ""
+mongo_auth_database_name =
 
-mongo_auth_database_name = ""
+sentry_token =
 
-sentry_token = ""
+sentry_team_name =
 
-sentry_team_name = ""
+sentry_project_name =
 
-sentry_project_name = ""
+sentry_slug =
 
-sentry_slug = ""
+sentry_organization =
 
-sentry_organization = ""
+lh_bot_s3_bot_config_bucket =
 
-lh_bot_s3_bot_config_bucket = ""
+lh_bot_s3_terraform_state_bucket =
 
-lh_bot_s3_terraform_state_bucket = ""
-
-lh_bot_reports_s3_bucket = ""
+lh_bot_reports_s3_bucket =

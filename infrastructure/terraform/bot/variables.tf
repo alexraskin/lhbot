@@ -1,3 +1,8 @@
+variable "railway_token" {
+  type        = string
+  description = "Railway token"
+}
+
 variable "aws_profile" {
   description = "AWS profile to use"
   type        = string

@@ -9,6 +9,7 @@
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.42 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | ~> 5.3.0 |
 | <a name="requirement_mongodbatlas"></a> [mongodbatlas](#requirement\_mongodbatlas) | ~> 1.6 |
+| <a name="requirement_railway"></a> [railway](#requirement\_railway) | 0.2.0 |
 | <a name="requirement_sentry"></a> [sentry](#requirement\_sentry) | ~> 0.9 |
 
 ## Providers
@@ -18,6 +19,7 @@
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.44.0 |
 | <a name="provider_http"></a> [http](#provider\_http) | 3.2.1 |
 | <a name="provider_mongodbatlas"></a> [mongodbatlas](#provider\_mongodbatlas) | 1.6.0 |
+| <a name="provider_railway"></a> [railway](#provider\_railway) | 0.2.0 |
 | <a name="provider_sentry"></a> [sentry](#provider\_sentry) | 0.10.0 |
 
 ## Modules
@@ -39,6 +41,12 @@ No modules.
 | [aws_s3_bucket_server_side_encryption_configuration.terraform_state_lhbot_server_side_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [mongodbatlas_cluster.lhcloudy_cluster](https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/cluster) | resource |
 | [mongodbatlas_database_user.lhcloudybot_db_user](https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/database_user) | resource |
+| [railway_custom_domain.lhbot_domain](https://registry.terraform.io/providers/terraform-community-providers/railway/0.2.0/docs/resources/custom_domain) | resource |
+| [railway_deployment_trigger.lhbot_trigger](https://registry.terraform.io/providers/terraform-community-providers/railway/0.2.0/docs/resources/deployment_trigger) | resource |
+| [railway_environment.lhbot_environment](https://registry.terraform.io/providers/terraform-community-providers/railway/0.2.0/docs/resources/environment) | resource |
+| [railway_project.lhbot_project](https://registry.terraform.io/providers/terraform-community-providers/railway/0.2.0/docs/resources/project) | resource |
+| [railway_service.lhbot_service](https://registry.terraform.io/providers/terraform-community-providers/railway/0.2.0/docs/resources/service) | resource |
+| [railway_variable.lhbot_vars](https://registry.terraform.io/providers/terraform-community-providers/railway/0.2.0/docs/resources/variable) | resource |
 | [sentry_project.sentry_lhcloudybot](https://registry.terraform.io/providers/jianyuan/sentry/latest/docs/resources/project) | resource |
 | [aws_iam_policy_document.lhbot_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [http_http.github_tag](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
@@ -70,6 +78,7 @@ No modules.
 | <a name="input_mongodb_region"></a> [mongodb\_region](#input\_mongodb\_region) | Mongodb Atlas region | `string` | n/a | yes |
 | <a name="input_mongodbatlas_private_key"></a> [mongodbatlas\_private\_key](#input\_mongodbatlas\_private\_key) | Mongodb Atlas private key | `string` | n/a | yes |
 | <a name="input_mongodbatlas_public_key"></a> [mongodbatlas\_public\_key](#input\_mongodbatlas\_public\_key) | Mongodb Atlas public key | `string` | n/a | yes |
+| <a name="input_railway_token"></a> [railway\_token](#input\_railway\_token) | Railway token | `string` | n/a | yes |
 | <a name="input_sentry_organization"></a> [sentry\_organization](#input\_sentry\_organization) | Sentry organization | `string` | n/a | yes |
 | <a name="input_sentry_project_name"></a> [sentry\_project\_name](#input\_sentry\_project\_name) | Sentry project name | `string` | n/a | yes |
 | <a name="input_sentry_slug"></a> [sentry\_slug](#input\_sentry\_slug) | Sentry slug | `string` | n/a | yes |
