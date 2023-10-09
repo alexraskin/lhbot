@@ -146,7 +146,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         )
         embed.colour = color
         embed.set_author(
-            name="Earthshatter 🔨",
+            name="Earthshatter!",
             icon_url=f"https://i.gyazo.com/cc82531d22c9b608d745b296048c8f48.png",
         )
         embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
