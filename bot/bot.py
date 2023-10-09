@@ -11,7 +11,7 @@ import sentry_sdk
 from cogs import EXTENSIONS
 from aiohttp import ClientSession, ClientTimeout
 from config import Settings
-from discord import AllowedMentions, Intents, Status
+from discord import AllowedMentions, Intents, Status, User
 from discord.ext import tasks
 from discord.ext.commands import AutoShardedBot, when_mentioned_or
 from sentry_sdk import capture_exception
@@ -42,7 +42,6 @@ class LhBot(AutoShardedBot):
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
         self.logo_url = "https://i.gyazo.com/fa23d3eb9c323b3f39b8ba9dadaa8f95.png"
-        self.footer = f"Bot Version: {self.version} • Made by Twizy"
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
@@ -113,6 +112,10 @@ class LhBot(AutoShardedBot):
             return None
         url = f"<https://github.com/alexraskin/lhbot/commit/{(short := latest_revision[:7])}>"
         return f"[{short}]({url})"
+
+    @property
+    def owner(self) -> User:
+        return self.bot_app_info.owner
 
 
 client = LhBot(
