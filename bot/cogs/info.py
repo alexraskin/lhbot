@@ -51,7 +51,7 @@ class Info(commands.Cog, name="Info"):
         message = f"Latest Changes:\n{self.client.git_revision}, {os.getenv('RAILWAY_GIT_COMMIT_MESSAGE')}"
         embed.description = message
         embed.set_author(
-            name=str(self.client.owner).strip('#'), icon_url=self.client.owner.display_avatar.url
+            name=str(self.client.owner), icon_url=self.client.owner.display_avatar.url
         )
         embed.add_field(
             name="Process",
