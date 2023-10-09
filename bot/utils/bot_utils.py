@@ -1,24 +1,25 @@
-from datetime import datetime as dt
+import time
+from datetime import datetime
 
 
 def get_year_string() -> str:
-    now = dt.utcnow()
-    year_end = dt(now.year + 1, 1, 1)
-    year_start = dt(now.year, 1, 1)
+    now = datetime.utcnow()
+    year_end = datetime(now.year + 1, 1, 1)
+    year_start = datetime(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
     return f"For your information, the year is {year_percent:.1f}% over!"
 
 
 def get_year_round() -> str:
-    now = dt.utcnow()
-    year_end = dt(now.year + 1, 1, 1)
-    year_start = dt(now.year, 1, 1)
+    now = datetime.utcnow()
+    year_end = datetime(now.year + 1, 1, 1)
+    year_start = datetime(now.year, 1, 1)
     year_percent = (now - year_start) / (year_end - year_start) * 100
     return year_percent
 
 
 def get_time_string() -> str:
-    return dt.utcnow().__str__()
+    return datetime.utcnow().__str__()
 
 
 def progress_bar(percent):
@@ -29,3 +30,17 @@ def progress_bar(percent):
     progress_bar = bar_filled * int((percent / (100.0 / length)))
     progress_bar += bar_empty * (length - len(progress_bar))
     return f"{progress_bar} {percent:.1f}%"
+
+
+def date(target, clock: bool = True, ago: bool = False, only_ago: bool = False) -> str:
+    """Converts a timestamp to a Discord timestamp format"""
+    if isinstance(target, int) or isinstance(target, float):
+        target = datetime.utcfromtimestamp(target)
+
+    unix = int(time.mktime(target.timetuple()))
+    timestamp = f"<t:{unix}:{'f' if clock else 'D'}>"
+    if ago:
+        timestamp += f" (<t:{unix}:R>)"
+    if only_ago:
+        timestamp = f"<t:{unix}:R>"
+    return timestamp

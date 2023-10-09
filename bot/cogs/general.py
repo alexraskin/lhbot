@@ -1,11 +1,8 @@
-import platform
 import random
-from inspect import getsourcelines
 
 import discord
 from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
-from utils.bot_utils import get_year_round, progress_bar
 
 
 class General(commands.Cog, name="General"):
@@ -126,7 +123,8 @@ class General(commands.Cog, name="General"):
                 await message.author.send(
                     f"{message.command} can not be used in Private Messages."
                 )
-            except discord.HTTPException:
+            except discord.HTTPException as e:
+                capture_exception(e)
                 self.client.logger.error(f"Failed to send message to {message.author}")
                 pass
 
@@ -139,93 +137,6 @@ class General(commands.Cog, name="General"):
             f"Executed {executed_command} command in {ctx.guild.name}"
             + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
         )
-
-    @commands.cooldown(1, 15, commands.BucketType.user)
-    @commands.command(name="info", aliases=["botinfo"])
-    async def info(self, ctx):
-        embed = discord.Embed(
-            description="LhBot is a Discord bot that was created by twizykat.",
-            color=0x42F56C,
-            timestamp=ctx.message.created_at,
-        )
-        embed.set_author(
-            name="LhBot",
-            icon_url="https://i.gyazo.com/632f0e60dc0535128971887acad98993.png",
-        )
-        embed.add_field(name="Owners:", value=str("twizykat"), inline=True)
-        embed.add_field(
-            name="Prefix:", value=self.client.config.bot_prefix, inline=True
-        )
-        embed.add_field(
-            name="Python Version:", value=f"{platform.python_version()}", inline=True
-        )
-        embed.add_field(
-            name="URL:", value="https://github.com/alexraskin/lhbot", inline=True
-        )
-        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
-        await ctx.send(embed=embed)
-
-    @commands.cooldown(1, 15, commands.BucketType.user)
-    @commands.command(name="ping")
-    async def ping(self, ctx):
-        embed = discord.Embed(
-            title="🏓 Pong!",
-            description=f"The bot latency is {self.client.get_bot_latency()}ms.",
-            color=0x42F56C,
-            timestamp=ctx.message.created_at,
-        )
-        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
-        await ctx.send(embed=embed)
-
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.command(name="year", aliases=["yearprogress"])
-    async def year(self, ctx):
-        await ctx.typing()
-        embed = discord.Embed(color=0x42F56C, timestamp=ctx.message.created_at)
-        embed.set_author(
-            name="Year Progress",
-            icon_url="https://i.gyazo.com/db74b90ebf03429e4cc9873f2990d01e.png",
-        )
-        embed.add_field(
-            name="Progress:", value=progress_bar(get_year_round()), inline=True
-        )
-        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
-        await ctx.send(embed=embed)
-
-    @commands.cooldown(1, 60, commands.BucketType.user)
-    @commands.command(name="inspect", hidden=True)
-    async def inspect(self, ctx, command_name: str):
-        cmd = self.client.get_command(command_name)
-        if cmd is None:
-            return
-        module = cmd.module
-        saucelines, startline = getsourcelines(cmd.callback)
-        url = (
-            "<https://github.com/alexraskin/lhbot/blob/main/"
-            f'{"/".join(module.split("."))}.py#L{startline}>\n'
-        )
-        sauce = "".join(saucelines)
-        sanitized = sauce.replace("`", "\u200B`")
-        if len(url) + len(sanitized) > 1950:
-            sanitized = sanitized[: 1950 - len(url)] + "\n[...]"
-        await ctx.typing()
-        await ctx.send(url + f"```python\n{sanitized}\n```")
-
-    @commands.command(
-        name="uptime", aliases=["up"], description="Shows the uptime of the bot"
-    )
-    async def uptime(self, ctx):
-        await ctx.typing()
-
-        embed = discord.Embed(
-            title="Bot Uptime",
-            description=f"Uptime: {self.client.get_uptime()}",
-            color=0x42F56C,
-            timestamp=ctx.message.created_at,
-        )
-        embed.set_footer(text=self.client.footer, icon_url=self.client.logo_url)
-
-        await ctx.send(embed=embed)
 
 
 async def setup(client):

@@ -4,7 +4,6 @@ from bson.objectid import ObjectId
 from discord import Embed, app_commands
 from discord.ext import commands, tasks
 from utils.banwords import banned_words
-from utils.emojis import random_emoji
 from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
 from utils.return_helper import helper
@@ -31,11 +30,18 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 {"guess": data["guess"], "guessedBy": data["guessedBy"]}
             )
 
-    @commands.hybrid_group(fallback="guess")
+    @commands.hybrid_group(description="LhGuess Commands", without_command=True)
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def lh(self, ctx: commands.Context) -> None:
+        if ctx.invoked_subcommand is None:
+            await ctx.send_help(ctx.command)
+
+    @lh.command()
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess="Take a guess at what LH means")
-    async def lhguess(self, ctx: commands.Context, guess: str) -> Embed:
+    async def guess(self, ctx: commands.Context, guess: str) -> Embed:
         """
         Take a guess at what LH means.
         """
@@ -44,14 +50,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
 
         if not str(guess).lower().startswith("l"):
             embed = Embed(title="Guess not allowed!", color=self.error_color)
-            await ctx.typing()
+            
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
             return
 
         if str(guess).lower() in self.banned_words_list:
             embed = Embed(title="Guess not allowed!", color=self.error_color)
-            await ctx.typing()
+            
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("❌")
             return
@@ -62,7 +68,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 title="This has already been guessed 🚨",
                 description=f"LhGuess: {guess}",
             )
-            await ctx.typing()
+            
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("👎")
         else:
@@ -82,12 +88,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 name="Guessed by:", value=pretty_return["guessedBy"], inline=False
             )
             embed.add_field(name="Guess ID:", value=pretty_return["id"], inline=False)
-            embed.set_footer(text=self.client.footer)
-            await ctx.typing()
-            embed_message = await ctx.send(embed=embed)
-            await embed_message.add_reaction(random_emoji())
+            await ctx.send(embed=embed)
 
-    @commands.hybrid_group()
+    @lh.command()
     @commands.guild_only()
     @app_commands.guild_only()
     async def count(self, ctx: commands.Context) -> Embed:
@@ -96,16 +99,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             return
-        await ctx.typing()
+        
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
         )
-        embed.set_footer(text=self.client.footer)
-        embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction(random_emoji())
+        await ctx.send(embed=embed)
 
-    @commands.hybrid_group()
+    @lh.command()
     @commands.guild_only()
     @app_commands.guild_only()
     async def report(self, ctx) -> Embed:
@@ -122,12 +123,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         share.upload_file()
         embed = Embed(title="LhGuess report is ready", color=self.success_color)
         embed.add_field(name="PDF Link:", value=share.get_url())
-        embed.set_footer(text=self.client.footer)
-        await ctx.typing()
-        embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction(random_emoji())
+        await ctx.send(embed=embed)
 
-    @commands.hybrid_group()
+    @lh.command()
     @commands.guild_only()
     @app_commands.guild_only()
     async def hints(self, ctx: commands.Context) -> Embed:
@@ -139,12 +137,10 @@ class LhGuess(commands.Cog, name="LhGuess"):
         embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
-        embed.set_footer(text=self.client.footer)
-        await ctx.typing()
-        embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction(random_emoji())
+        
+        await ctx.send(embed=embed)
 
-    @commands.hybrid_group()
+    @lh.command()
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess_id="Delete a guess from the database")
@@ -154,14 +150,13 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         if not ctx.channel.guild.id == self.client.main_guild.id:
             return
-        await ctx.typing()
+        
         if not self.client.user_is_superuser(ctx.author):
             embed = Embed(
                 title="You do not have permisson to run this command!",
                 color=self.error_color,
                 timestamp=ctx.message.created_at,
             )
-            embed.set_footer(text=self.client.footer)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
@@ -173,7 +168,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 color=self.error_color,
                 timestamp=ctx.message.created_at,
             )
-            embed.set_footer(text=self.client.footer)
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")
             return
@@ -183,7 +177,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed.add_field(
                 name="Succesfully Deleted LhGuess:", value=guess_id, inline=True
             )
-            embed.set_footer(text=self.client.footer)
             await self.collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)
             await embed_message.add_reaction("🔨")

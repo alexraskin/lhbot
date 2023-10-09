@@ -4,9 +4,11 @@ import os
 import platform
 import time
 from functools import lru_cache
+import psutil
 
 import motor.motor_asyncio
 import sentry_sdk
+from cogs import EXTENSIONS
 from aiohttp import ClientSession, ClientTimeout
 from config import Settings
 from discord import AllowedMentions, Intents, Status
@@ -29,7 +31,6 @@ sentry_sdk.init(config.sentry_dsn, traces_sample_rate=1.0)
 
 
 class LhBot(AutoShardedBot):
-
     def __init__(self, *args, **options) -> None:
         super().__init__(*args, **options)
         self.session = None
@@ -46,10 +47,6 @@ class LhBot(AutoShardedBot):
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
         self.headers = {"User-Agent": self.user_agent}
-        if self.config.docker_enabled == True:
-            self.abs_path = os.listdir("cogs")
-        else:
-            self.abs_path = os.listdir(os.path.join(os.path.dirname(__file__), "cogs/"))
 
     async def start(self, *args, **kwargs) -> None:
         self.session = ClientSession(
@@ -65,21 +62,16 @@ class LhBot(AutoShardedBot):
         await super().close()
 
     async def setup_hook(self) -> None:
-        startup_extensions = []
-
-        for file in self.abs_path:
-            filename, ext = os.path.splitext(file)
-            if ".py" in ext:
-                startup_extensions.append(f"cogs.{filename}")
-
-        for extension in reversed(startup_extensions):
+        self.bot_app_info = await self.application_info()
+        self.owner_id = self.bot_app_info.owner.id
+        for cog in EXTENSIONS:
             try:
-                self.logger.info(f"Loading: {extension}")
-                await self.load_extension(f"{extension}")
-            except Exception as error:
-                capture_exception(error)
-                exc = f"{type(error).__name__}: {error}"
-                self.logger.error(f"Failed to load extension {extension}\n{exc}")
+                await self.load_extension(cog)
+                self.logger.info(f"Loaded extension: {cog}")
+            except Exception as exc:
+                self.logger.error(
+                    f"Could not load extension: {cog} due to {exc.__class__.__name__}: {exc}"
+                )
 
     def user_is_admin(self, user) -> bool:
         try:
@@ -94,13 +86,33 @@ class LhBot(AutoShardedBot):
         superusers = self.config.superusers
         return user.id in superusers
 
+    @property
     def get_uptime(self) -> str:
         return str(
             datetime.timedelta(seconds=int(round(time.time() - self.start_time)))
         )
 
+    @property
     def get_bot_latency(self) -> float:
         return round(self.latency * 1000)
+
+    @property
+    def memory_usage(self) -> int:
+        process = psutil.Process(self.pid)
+        memory_info = process.memory_info()
+        return round(memory_info.rss / (1024**2))
+
+    @property
+    def cpu_usage(self) -> float:
+        return psutil.cpu_percent(interval=1)
+
+    @property
+    def git_revision(self):
+        latest_revision = os.getenv("RAILWAY_GIT_COMMIT_SHA")
+        if latest_revision is None:
+            return None
+        url = f"<https://github.com/alexraskin/lhbot/commit/{(short := latest_revision[:7])}>"
+        return f"[{short}]({url})"
 
 
 client = LhBot(
@@ -123,7 +135,6 @@ async def on_ready() -> bool:
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     logging.info(f"{client.user.name} started successfully")
     clean_dir.start()
-    return True
 
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)

@@ -22,8 +22,8 @@ class WebServer(commands.Cog, name="WebServer"):
         return {
             "discord_version": discord_version,
             "bot_version": self.client.config.bot_version,
-            "bot_latency": f"{self.client.get_bot_latency()}ms",
-            "bot_uptime": self.client.get_uptime(),
+            "bot_latency": f"{self.client.get_bot_latency}ms",
+            "bot_uptime": self.client.get_uptime,
         }
 
     async def webserver(self) -> None:

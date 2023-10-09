@@ -4,7 +4,6 @@ import random
 from discord import Embed
 from discord.ext import commands
 from utils.bot_utils import get_time_string
-from utils.emojis import random_emoji
 from utils.reinquotes import quotes
 
 
@@ -39,7 +38,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                 name="Region of player:", value="us/eu/kr/cn/global", inline=True
             )
             embed.add_field(name="BattleTag of user:", value="Jay3#11894", inline=True)
-            await ctx.typing()
+            
             await ctx.send(embed=embed)
         else:
             platform, region, profile = str(info).split(" ")
@@ -58,10 +57,10 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                             title="Unable to find profile",
                             color=random.randint(0, 0xFFFFFF),
                         )
-                        await ctx.typing()
+                        
                         await ctx.send(embed=embed)
                     if not user_data["private"]:
-                        await ctx.typing()
+                        
                         embed = Embed(color=random.randint(0, 0xFFFFFF))
                         embed.set_author(
                             name=user_data["username"], icon_url=user_data["portrait"]
@@ -92,12 +91,12 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                             name=f'{user_data["username"]} is not a public profile',
                             icon_url=user_data["portrait"],
                         )
-                        await ctx.typing()
+                        
                         await ctx.send(embed=embed)
 
     @commands.command(name="reinquote", description="Random Rein Quote")
     async def random_rein_quote(self, ctx: commands.Context) -> Embed:
-        await ctx.typing()
+        
         embed = Embed(
             color=random.randint(0, 0xFFFFFF),
         )
@@ -107,8 +106,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             inline=True,
         )
         embed.set_footer(text=f"Requested by {ctx.message.author}")
-        embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction(random_emoji())
+        await ctx.send(embed=embed)
 
     @commands.hybrid_command(name="shatter", description="Shatter a user")
     async def shatter(self, ctx: commands.Context, target_user: str = None):
@@ -123,7 +121,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
         miss = "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
 
-        await ctx.typing()
+        
 
         if ctx.interaction:
             if target_user is None or target_user == "":
@@ -135,17 +133,14 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                 return
 
         if target_user == None or target_user == "":
-            await ctx.typing()
             await ctx.send(miss)
             return
 
         if len(target_user) > 500:
-            await ctx.typing()
             await ctx.send("Username is too long!")
             return
 
         if target_user.lower() in lh_cloudy_list:
-            await ctx.typing()
             await ctx.send(random.choice(list(lh_cloudy_block_list)))
             return
 
@@ -161,7 +156,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             name="Shatter!",
             icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
         )
-        embed.set_footer(text=self.client.footer)
         embed_message = await ctx.send(embed=embed)
         if did_shatter == "hit":
             await embed_message.add_reaction("🔨")
@@ -171,7 +165,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="nano", description="Nano Boost a user in the server!")
     async def nano_execute(self, ctx, target_user=None):
-
         nano_boost_sayings = [
             "Nano Boost administered",
             "You're powered up, get in there",
@@ -181,9 +174,9 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         if target_user == None or target_user == "":
             return
 
-        await ctx.typing()
+        
         if len(target_user) > 500:
-            await ctx.typing()
+            
             await ctx.send("Username is too long!")
             return
 
@@ -196,7 +189,6 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             name="Nano Boost!",
             icon_url=f"https://i.gyazo.com/ac15d47b93ebf141deb5b8b7846e46a5.png",
         )
-        embed.set_footer(text=self.client.footer)
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -219,7 +211,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Immortality field down",
             "Immortality field's down. Watch yourself!",
         ]
-        await ctx.typing()
+        
         await ctx.send(random.choice(lamp_sayings))
         await asyncio.sleep(2)
         await ctx.send(random.choice(lamp_answers))
@@ -241,7 +233,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             "Step to this",
         ]
         random.seed(get_time_string())
-        await ctx.typing()
+        
         await ctx.send(f"{random.choice(list(boop_sayings))}, {target_user}")
 
 
