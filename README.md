@@ -1,10 +1,11 @@
 # LhBot
-  
+
+[![LhBot](https://i.gyazo.com/632f0e60dc0535128971887acad98993.png)](https://twitter.com/PetraYle)
+
 ![Discord](https://img.shields.io/discord/766217366568304660)
 [![Twitch Status](https://img.shields.io/twitch/status/lhcloudy27?color=6441a5&logo=twitch&logoColor=white)](https://www.twitch.tv/lhcloudy27)
 [![Twitter Follow](https://img.shields.io/twitter/follow/lhcloudy?color=1DA1F2&logo=twitter&style=flat-square)](https://twitter.com/LhCloudy)
 ![GitHub](https://img.shields.io/github/license/alexraskin/lhbot?color=blue)
-[![LhBot](https://i.gyazo.com/632f0e60dc0535128971887acad98993.png)](https://twitter.com/PetraYle)
 
 ## Why did I make LhBot?
 
