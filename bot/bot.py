@@ -104,7 +104,7 @@ class LhBot(AutoShardedBot):
 
     @property
     def owner(self) -> User:
-        return self.bot_app_info.owner.name
+        return self.bot_app_info.owner
 
 
 client = LhBot(
