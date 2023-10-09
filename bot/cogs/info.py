@@ -1,5 +1,4 @@
-import platform
-
+import os
 import discord
 import pkg_resources
 from discord import Colour, Embed, Member, app_commands
@@ -22,7 +21,6 @@ class Info(commands.Cog, name="Info"):
         )
         embed.colour = Colour.blurple()
         embed.set_thumbnail(url=self.client.user.avatar.url)
-
         await ctx.send(embed=embed)
 
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -45,14 +43,15 @@ class Info(commands.Cog, name="Info"):
     async def get_info(self, ctx: commands.Context) -> None:
         version = pkg_resources.get_distribution("discord.py").version
         embed = Embed(
-            description=self.client.description,
             timestamp=ctx.message.created_at,
         )
         embed.title = "LhBot"
         embed.url = "https://lhbot.twizy.dev/"
         embed.colour = Colour.blurple()
+        message = f"Latest Changes:\n`{self.client.git_revision}`, {os.getenv('RAILWAY_GIT_COMMIT_MESSAGE')}"
+        embed.description = message
         embed.set_author(
-            name=str(self.client.owner), icon_url=self.client.owner.display_avatar.url
+            name=str(self.client.owner).strip('#'), icon_url=self.client.owner.display_avatar.url
         )
         embed.add_field(
             name="Process",
@@ -61,7 +60,6 @@ class Info(commands.Cog, name="Info"):
         embed.add_field(name="Uptime", value=self.client.get_uptime)
         embed.add_field(name="Bot Version", value=self.client.version)
         embed.add_field(name="Git Revision", value=self.client.git_revision)
-        embed.add_field(name="Python Version", value=platform.python_version())
         embed.set_footer(
             text=f"Made with discord.py v{version}",
             icon_url="http://i.imgur.com/5BFecvA.png",
