@@ -48,7 +48,7 @@ class Info(commands.Cog, name="Info"):
         embed.title = "LhBot"
         embed.url = "https://lhbot.twizy.dev/"
         embed.colour = Colour.blurple()
-        message = f"Latest Changes:\n`{self.client.git_revision}`, {os.getenv('RAILWAY_GIT_COMMIT_MESSAGE')}"
+        message = f"Latest Changes:\n{self.client.git_revision}, {os.getenv('RAILWAY_GIT_COMMIT_MESSAGE')}"
         embed.description = message
         embed.set_author(
             name=str(self.client.owner).strip('#'), icon_url=self.client.owner.display_avatar.url
