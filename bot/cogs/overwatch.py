@@ -2,7 +2,7 @@ import asyncio
 import random
 from typing import Literal, Union
 
-from discord import Embed, Interaction, Member, User, app_commands
+from discord import Embed, Interaction, Member, User, app_commands, Colour
 from discord.ext import commands
 from utils.bot_utils import get_time_string
 from utils.reinquotes import quotes
@@ -105,7 +105,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.guild_only()
     @app_commands.guild_only()
     async def shatter(
-        self, ctx: commands.Context, target_user: Union[Member, User] = None
+        self, ctx: commands.Context, target_user: Union[Member, User]
     ):
         lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
         lh_cloudy_block_list = [
@@ -118,44 +118,40 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
 
         miss = "You shattered no one, so it missed. Your team is now flaming you, and the enemy mercy typed MTD."
 
-        if ctx.interaction:
-            if target_user is None or target_user == "":
-                await ctx.send(miss)
-                return
-
-            if target_user in lh_cloudy_list:
-                await ctx.send(random.choice(lh_cloudy_block_list))
-                return
-
-        if target_user == None or target_user == "":
-            await ctx.send(miss)
-            return
-
-        if len(target_user) > 500:
-            await ctx.send("Username is too long!")
-            return
-
-        if target_user.lower() in lh_cloudy_list:
+        if target_user.name in lh_cloudy_list:
             await ctx.send(random.choice(list(lh_cloudy_block_list)))
             return
 
         random.seed(get_time_string())
-        roll_shatter = random.randint(0, 100)
-        did_shatter = "hit" if roll_shatter < 25 else "was blocked by"
+        match random.choice(['hit', miss, "was blocked by"]):
+            
+            case "hit":
+                message = f"Your shatter hit {target_user.mention}! 💥🔨"
+                color = Colour.green()
+                emoji = "💥"
+
+            case "was blocked by":
+                message = f"Your shatter was blocked by {target_user.mention}, the enemy mercy typed MTD."
+                color = Colour.red()
+                emoji = "🧱"
+            
+            case _:
+                message = miss
+                color = Colour.red()
+                emoji = "🤡"
 
         embed = Embed(
-            description=f"Your shatter {did_shatter} {target_user.mention}.",
-            color=random.randint(0, 0xFFFFFF),
+            description=message,
+            timestamp=ctx.message.created_at,
         )
+        embed.colour = color
         embed.set_author(
-            name="Shatter!",
-            icon_url=f"https://i.gyazo.com/2efdc733e050027c24b6670aaf4f9684.png",
+            name="Earthshatter 🔨",
+            icon_url=f"https://i.gyazo.com/cc82531d22c9b608d745b296048c8f48.png",
         )
-        embed_message = await ctx.send(embed=embed)
-        if did_shatter == "hit":
-            await embed_message.add_reaction("🔨")
-        else:
-            await embed_message.add_reaction("🥶")
+        embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
+        d_message = await ctx.send(embed=embed)
+        await d_message.add_reaction(emoji)
 
     @commands.hybrid_command(
         name="nano", description="Nano Boost a user in the server!"

@@ -1,7 +1,8 @@
 import asyncio
 import random
+from typing import Union
 
-from discord import Embed, Member, app_commands
+from discord import Embed, Member, app_commands, User
 from discord.ext import commands
 
 
@@ -19,7 +20,7 @@ class OneVOne(commands.Cog, name="OneVOne"):
     async def one_v_one(
         self,
         ctx: commands.Context,
-        user: Member = None,
+        user: Union[Member, User]
     ):
         if user is None or "":
             await ctx.send("Please target another user to 1v1")
@@ -67,11 +68,11 @@ class OneVOne(commands.Cog, name="OneVOne"):
         )
 
         embed.add_field(
-            name=f"{str(ctx.author.name)} is playing",
+            name=f"{str(ctx.author.display_name)} is playing",
             value=f"{hero_one_name} with {hero_one_health} health",
         )
         embed.add_field(
-            name=f"{user} is playing",
+            name=f"{user.name} is playing",
             value=f"{hero_two_name} with {hero_two_health} health",
         )
         first_message = await ctx.send(embed=embed)
@@ -84,17 +85,14 @@ class OneVOne(commands.Cog, name="OneVOne"):
             )
             hero_one_health -= random.randint(0, hero_one_health)
             hero_two_health -= random.randint(0, hero_two_health)
-            await asyncio.sleep(1)
+            await asyncio.sleep(random.randint(1, 3))
             second_embed.add_field(
-                name=f"{ctx.author.name}",
+                name=f"{ctx.author.display_name}",
                 value=f"Playing {hero_one_name} with {hero_one_health} health",
             )
             second_embed.add_field(
-                name=f"{user}",
+                name=f"{user.name}",
                 value=f"Playing {hero_two_name} with {hero_two_health} health",
-            )
-            second_embed.set_footer(
-                text=self.client.footer, icon_url=self.client.logo_url
             )
             final = await first_message.edit(embed=second_embed)
             win_embed = Embed(
@@ -104,12 +102,12 @@ class OneVOne(commands.Cog, name="OneVOne"):
             )
 
         if hero_one_health == 0:
-            win_embed.add_field(name=ctx.author, value=f"Won, playing {hero_one_name}!")
-            win_embed.add_field(name=user, value=f"Lost, playing {hero_two_name}")
+            win_embed.add_field(name=ctx.author.display_name, value=f"Won, playing {hero_one_name}!")
+            win_embed.add_field(name=user.name, value=f"Lost, playing {hero_two_name}")
 
         elif hero_two_health == 0:
-            win_embed.add_field(name=ctx.author, value=f"Lost, playing {hero_one_name}")
-            win_embed.add_field(name=user, value=f"Won, playing {hero_two_name}")
+            win_embed.add_field(name=ctx.author.display_name, value=f"Lost, playing {hero_one_name}")
+            win_embed.add_field(name=user.name, value=f"Won, playing {hero_two_name}")
 
         await final.edit(embed=win_embed)
 
