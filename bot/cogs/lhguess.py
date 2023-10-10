@@ -66,9 +66,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Take a guess at what LH means.
         """
-        if not ctx.channel.guild.id or ctx.interaction.channel.guild.id != self.client.main_guild:
-            await ctx.send("This command is only available in Cloudy's Server!", ephemeral=True)
-            return
         if guess is None:
           if ctx.interaction is None:
               await ctx.send("Please provide a guess!")
@@ -117,9 +114,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Get the current guess count.
         """
-        if not ctx.channel.guild.id == self.client.main_guild:
-            return
-
         embed = Embed(title="LhGuess Count", color=self.success_color)
         embed.add_field(
             name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
@@ -133,8 +127,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Generate a PDF report of all the guesses.
         """
-        if not ctx.channel.guild.id == self.client.main_guild:
-            return
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
@@ -152,8 +144,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Get a random hint.
         """
-        if not ctx.channel.guild.id == self.client.main_guild:
-            return
         embed = Embed(title="Random LH Hint", color=self.success_color)
         random_hint = random.choice(list(self.hints))
         embed.add_field(name="Hint:", value=random_hint, inline=True)
@@ -169,9 +159,6 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Delete a guess from the database.
         """
-        if not ctx.channel.guild.id == self.client.main_guild:
-            return
-
         guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
 
         if not guess:
