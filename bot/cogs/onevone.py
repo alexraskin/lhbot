@@ -2,18 +2,20 @@ import asyncio
 import random
 from typing import Union
 
-from discord import Embed, Member, app_commands, User
+from discord import Embed, Member, app_commands, User, File
 from discord.ext import commands
 
+from utils.generatevs import GenerateVS
 
 class OneVOne(commands.Cog, name="OneVOne"):
     def __init__(self, client: commands.Bot):
-        self.client = client
-        self.roles = ["tank", "damage", "support"]
+        self.client: commands.AutoShardedBot = client
+        self.roles: list = ["tank", "damage", "support"]
 
     @commands.hybrid_command(
         name="1v1",
         description="Random Overwatch Hero 1v1",
+        aliases=["onevone", "1vs1"],
     )
     @commands.guild_only()
     @app_commands.guild_only()
@@ -52,64 +54,64 @@ class OneVOne(commands.Cog, name="OneVOne"):
         hero_two_health_data = await self.client.session.get(
             f"https://overfast-api.tekrop.fr/heroes/{str(hero_two).replace('.', '')}?locale=en-us"
         )
-
         hero_one_health_json = await hero_one_health_data.json()
         hero_two_health_json = await hero_two_health_data.json()
-
         hero_one_health = hero_one_health_json["hitpoints"]["health"]
         hero_one_name = hero_one_health_json["name"]
         hero_two_health = hero_two_health_json["hitpoints"]["health"]
         hero_two_name = hero_two_health_json["name"]
+        hero_one_image = await self.client.session.get(hero_one_health_json["portrait"])
+        hero_two_image = await self.client.session.get(hero_two_health_json["portrait"])
+        hero_one_image = await hero_one_image.read()
+        hero_two_image = await hero_two_image.read()
+
+        image = GenerateVS(hero_one_image, hero_two_image)
+        file = File(image.generate_vs_image(), filename="vs.png")
 
         embed = Embed(
             title="Overwatch Random Hero 1v1",
             color=0x00FF00,
             timestamp=ctx.message.created_at,
         )
-
+        embed.set_image(url="attachment://vs.png")
         embed.add_field(
-            name=f"{str(ctx.author.display_name)} is playing",
-            value=f"{hero_one_name} with {hero_one_health} health",
+            name=f"{str(ctx.author.display_name)}",
+            value=f"You are playing **{hero_one_name}** with **{hero_one_health}** health",
         )
         embed.add_field(
-            name=f"{user.name} is playing",
-            value=f"{hero_two_name} with {hero_two_health} health",
+            name=f"{user.name}",
+            value=f"Is play **{hero_two_name}** with **{hero_two_health}** health",
         )
-        first_message = await ctx.send(embed=embed)
-
-        while hero_one_health > 0 and hero_two_health > 0:
-            second_embed = Embed(
-                title="Overwatch Random Hero 1v1",
-                color=0x00FF00,
-                timestamp=ctx.message.created_at,
-            )
-            hero_one_health -= random.randint(0, hero_one_health)
-            hero_two_health -= random.randint(0, hero_two_health)
-            await asyncio.sleep(random.randint(1, 3))
-            second_embed.add_field(
-                name=f"{ctx.author.display_name}",
-                value=f"Playing {hero_one_name} with {hero_one_health} health",
-            )
-            second_embed.add_field(
-                name=f"{user.name}",
-                value=f"Playing {hero_two_name} with {hero_two_health} health",
-            )
-            final = await first_message.edit(embed=second_embed)
-            win_embed = Embed(
-                title="Overwatch Random Hero 1v1",
-                color=0x00FF00,
-                timestamp=ctx.message.created_at,
-            )
-
+        message = await ctx.send(embed=embed, file=file)
+        game = True
+        while game:
+            for _ in range(3):
+              hero_one_health -= random.randint(0, hero_one_health)
+              hero_two_health -= random.randint(0, hero_two_health)
+              if hero_one_health == 0 or hero_two_health == 0:
+                  game = False
+                  break
+              await asyncio.sleep(random.randint(1, 3))
+              embed.set_field_at(0,
+                  name=f"{ctx.author.display_name}",
+                  value=f"Spectating **{hero_one_name}** with **{hero_one_health}** health",
+              )
+              embed.set_field_at(1,
+                  name=f"{user.name}",
+                  value=f"Spectating **{hero_two_name}** with **{hero_two_health}** health",
+              )
+              embed.set_image(url="attachment://vs.png")
+              await message.edit(embed=embed)
         if hero_one_health == 0:
-            win_embed.add_field(name=ctx.author.display_name, value=f"Won, playing {hero_one_name}!")
-            win_embed.add_field(name=user.name, value=f"Lost, playing {hero_two_name}")
+            embed.set_field_at(0, name=ctx.author.display_name, value=f"**Won**, playing **{hero_one_name}**!")
+            embed.set_field_at(1, name=user.name, value=f"**Lost**, playing **{hero_two_name}**!")
 
         elif hero_two_health == 0:
-            win_embed.add_field(name=ctx.author.display_name, value=f"Lost, playing {hero_one_name}")
-            win_embed.add_field(name=user.name, value=f"Won, playing {hero_two_name}")
-
-        await final.edit(embed=win_embed)
+            embed.set_field_at(0, name=ctx.author.display_name, value=f"**Lost**, playing **{hero_one_name}**!")
+            embed.set_field_at(1, name=user.name, value=f"**Won**, playing **{hero_two_name}**!")
+        embed.set_image(url="attachment://vs.png")
+        await message.edit(embed=embed)
+        image.delete_images()
 
 
 async def setup(client: commands.Bot):
