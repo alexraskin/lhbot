@@ -41,7 +41,7 @@ class LhBot(AutoShardedBot):
         self.start_time = None
         self.version = config.bot_version
         self.config = config
-        self.main_guild = 1020830000104099860
+        self.main_guild = 766217366568304660
         self.pid = os.getpid()
         self.status = Status.online
         self.logger = logging.getLogger("discord")
