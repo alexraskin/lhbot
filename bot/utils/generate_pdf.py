@@ -8,6 +8,12 @@ class PdfReport:
         self.filename = filename
         self.guesses = guesses
 
+    def __repr__(self) -> str:
+        return f"<PdfReport filename={self.filename}>"
+
+    def __str__(self) -> str:
+        return f"<PdfReport filename={self.filename}>"
+
     def generate(self) -> FPDF:
         pdf = FPDF(orientation="P", unit="pt", format="A4")
         pdf.add_page()
@@ -20,3 +26,7 @@ class PdfReport:
             pdf.multi_cell(w=100, h=20, txt=guess, border=0, align="C")
         os.chdir("./bot/files")
         pdf.output(self.filename)
+    
+    @property
+    def file_path(self) -> str:
+        return os.path.join("./bot/files", self.filename)

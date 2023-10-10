@@ -31,6 +31,9 @@ sentry_sdk.init(config.sentry_dsn, traces_sample_rate=1.0)
 
 
 class LhBot(AutoShardedBot):
+    """
+    Main bot class
+    """
     def __init__(self, *args, **options) -> None:
         super().__init__(*args, **options)
         self.session = None
@@ -38,11 +41,12 @@ class LhBot(AutoShardedBot):
         self.start_time = None
         self.version = config.bot_version
         self.config = config
+        self.main_guild = 1020830000104099860
         self.pid = os.getpid()
         self.status = Status.online
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
-        self.logo_url = "https://i.gyazo.com/632f0e60dc0535128971887acad98993.png"
+        self.logo_url: str = "https://i.gyazo.com/632f0e60dc0535128971887acad98993.png"
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
