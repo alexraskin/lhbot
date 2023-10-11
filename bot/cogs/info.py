@@ -46,7 +46,7 @@ class Info(commands.Cog, name="Info"):
             timestamp=ctx.message.created_at,
         )
         embed.title = "LhBot"
-        embed.url = "https://lhbot.twizy.dev/"
+        embed.url = "https://lhbot.dev/"
         embed.colour = Colour.blurple()
         message = f"Latest Changes:\n{self.client.git_revision}, {os.getenv('RAILWAY_GIT_COMMIT_MESSAGE')}"
         embed.description = message
@@ -58,6 +58,8 @@ class Info(commands.Cog, name="Info"):
             value=f"{self.client.memory_usage:.2f} MiB\n{self.client.cpu_usage:.2f}% CPU",
         )
         embed.add_field(name="Uptime", value=self.client.get_uptime)
+        embed.add_field(name="Latency", value=f"{self.client.get_bot_latency}ms")
+        embed.add_field(name="Status", value="https://status.lhbot.dev/")
         embed.add_field(name="Bot Version", value=self.client.version)
         embed.add_field(name="Git Revision", value=self.client.git_revision)
         embed.set_footer(
