@@ -104,9 +104,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.hybrid_command(name="shatter", description="Shatter a user")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def shatter(
-        self, ctx: commands.Context, target_user: Union[Member, User]
-    ):
+    async def shatter(self, ctx: commands.Context, target_user: Union[Member, User]):
         lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
         lh_cloudy_block_list = [
             "Blocked.. cloudy is immune to your shatter!",
@@ -123,8 +121,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
             return
 
         random.seed(get_time_string())
-        match random.choice(['hit', miss, "was blocked by"]):
-            
+        match random.choice(["hit", miss, "was blocked by"]):
             case "hit":
                 message = f"Your shatter hit {target_user.mention}! 💥🔨"
                 color = Colour.green()
@@ -134,7 +131,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
                 message = f"Your shatter was blocked by {target_user.mention}, the enemy mercy typed MTD."
                 color = Colour.red()
                 emoji = "🧱"
-            
+
             case _:
                 message = miss
                 color = Colour.red()

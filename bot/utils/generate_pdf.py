@@ -26,7 +26,7 @@ class PdfReport:
             pdf.multi_cell(w=100, h=20, txt=guess, border=0, align="C")
         os.chdir("./bot/files")
         pdf.output(self.filename)
-    
+
     @property
     def file_path(self) -> str:
         return os.path.join("./bot/files", self.filename)

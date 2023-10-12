@@ -23,14 +23,16 @@ class WebServer(commands.Cog, name="WebServer"):
         self.client.logger.info(f"Webserver request from {request.remote}")
         self.client.logger.info(f"Webserver request for {request.path}")
         self.client.logger.info(f"Webserver request for {request.query_string}")
-        return web.json_response({
-            "discord_version": discord_version,
-            "bot_version": self.client.config.bot_version,
-            "bot_latency": f"{self.client.get_bot_latency}ms",
-            "bot_uptime": self.client.get_uptime,
-            "bot_ram": f"{self.client.memory_usage}MB",
-            "bot_cpu": f"{self.client.cpu_usage}%",
-        })
+        return web.json_response(
+            {
+                "discord_version": discord_version,
+                "bot_version": self.client.config.bot_version,
+                "bot_latency": f"{self.client.get_bot_latency}ms",
+                "bot_uptime": self.client.get_uptime,
+                "bot_ram": f"{self.client.memory_usage}MB",
+                "bot_cpu": f"{self.client.cpu_usage}%",
+            }
+        )
 
     async def webserver(self) -> None:
         app = web.Application()

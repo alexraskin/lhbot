@@ -21,6 +21,7 @@ class GuessView(ui.Modal, title="LhGuess"):
         min_length=1,
         max_length=180,
     )
+
     def __init__(self):
         self.guess_text = None
         super().__init__(timeout=60)
@@ -29,6 +30,7 @@ class GuessView(ui.Modal, title="LhGuess"):
         self.interaction = interaction
         self.guess_text = str(self.guess)
         self.stop()
+
 
 class LhGuess(commands.Cog, name="LhGuess"):
     def __init__(self, client: commands.Bot) -> None:
@@ -56,26 +58,27 @@ class LhGuess(commands.Cog, name="LhGuess"):
         if str(guess).lower() in self.banned_words_list:
             return False
         return True
-                
 
     @commands.hybrid_command()
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess="Take a guess at what LH means")
-    async def lhguess(self, ctx: commands.Context, guess: Optional[str] = None) -> Embed:
+    async def lhguess(
+        self, ctx: commands.Context, guess: Optional[str] = None
+    ) -> Embed:
         """
         Take a guess at what LH means.
         """
         if guess is None:
-          if ctx.interaction is None:
-              await ctx.send("Please provide a guess!")
-              return
-          else:
-              modal = GuessView()
-              await ctx.interaction.response.send_modal(modal)
-              await modal.wait()
-              guess = modal.guess_text
-              ctx.interaction = modal.interaction
+            if ctx.interaction is None:
+                await ctx.send("Please provide a guess!")
+                return
+            else:
+                modal = GuessView()
+                await ctx.interaction.response.send_modal(modal)
+                await modal.wait()
+                guess = modal.guess_text
+                ctx.interaction = modal.interaction
         if self.check(guess) is False:
             await ctx.send("That is not a valid guess!", ephemeral=True)
             return
@@ -85,7 +88,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 title="This has already been guessed 🚨",
                 description=f"LhGuess: {guess}",
                 color=self.error_color,
-              )
+            )
             await ctx.send(embed=embed)
             return
         else:

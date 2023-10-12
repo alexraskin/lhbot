@@ -34,6 +34,7 @@ class LhBot(AutoShardedBot):
     """
     Main bot class
     """
+
     def __init__(self, *args, **options) -> None:
         super().__init__(*args, **options)
         self.session = None
