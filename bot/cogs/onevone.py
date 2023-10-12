@@ -2,10 +2,78 @@ import asyncio
 import random
 from typing import Union
 
-from discord import Embed, Member, app_commands, User, File
+from discord import Embed, Member, app_commands, User, File, Colour
 from discord.ext import commands
 
 from utils.generatevs import GenerateVS
+
+
+class OverwatchHero:
+    API_BASE_URL = "https://overfast-api.tekrop.fr/heroes"
+
+    def __init__(self, key, name, portrait, role, health, story, session):
+        self.key = key
+        self.name = name
+        self.portrait = portrait
+        self.role = role
+        self.health = health
+        self.story = story
+        self.session = session
+
+    @staticmethod
+    def calculate_damage(health) -> int:
+        min_damage = 10
+        max_damage = 50
+
+        damage = random.randint(min_damage, max_damage)
+
+        damage = damage * (health / 100)
+
+        return damage
+
+    @classmethod
+    async def get_random_hero(cls, session) -> str:
+        url = f"{cls.API_BASE_URL}?role={cls.get_random_role()}&locale=en-us"
+        async with session.get(url) as response:
+            if response.status == 200:
+                hero_data = await response.json()
+                hero_list = [hero_data["key"] for hero_data in hero_data]
+                return random.choice(hero_list)
+
+    @classmethod
+    async def fetch_hero_data(cls, session):
+        random_hero = await cls.get_random_hero(session=session)
+        url = f"{cls.API_BASE_URL}/{random_hero.replace('.', '')}?locale=en-us"
+        async with session.get(url) as response:
+            if response.status == 200:
+                hero_data = await response.json()
+                return cls(
+                    key=hero_data.get("key"),
+                    name=hero_data.get("name"),
+                    portrait=hero_data.get("portrait"),
+                    role=hero_data.get("role"),
+                    health=hero_data["hitpoints"].get("total"),
+                    story=hero_data["story"].get("summary"),
+                    session=session,
+                )
+            else:
+                return None
+
+    async def fetch_hero_image(self):
+        async with self.session.get(self.portrait) as response:
+            if response.status == 200:
+                return await response.read()
+            else:
+                return None
+
+    @classmethod
+    def get_random_role(cls):
+        roles = ["tank", "damage", "support"]
+        return random.choice(roles)
+
+    def __str__(self):
+        return f"Hero: {self.name}\nRole: {self.role}\nPortrait: {self.portrait} \nHealth: {self.health}\nStory: {self.story}"
+
 
 class OneVOne(commands.Cog, name="OneVOne"):
     def __init__(self, client: commands.Bot):
@@ -19,53 +87,16 @@ class OneVOne(commands.Cog, name="OneVOne"):
     )
     @commands.guild_only()
     @app_commands.guild_only()
-    async def one_v_one(
-        self,
-        ctx: commands.Context,
-        user: Union[Member, User]
-    ):
+    async def one_v_one(self, ctx: commands.Context, user: Union[Member, User]):
         if user is None or "":
             await ctx.send("Please target another user to 1v1")
             return
-        hero_one = await self.client.session.get(
-            f"https://overfast-api.tekrop.fr/heroes?role={random.choice(list(self.roles))}&locale=en-us"
+        hero_one = await OverwatchHero.fetch_hero_data(self.client.session)
+        hero_two = await OverwatchHero.fetch_hero_data(self.client.session)
+
+        image = GenerateVS(
+            await hero_one.fetch_hero_image(), await hero_two.fetch_hero_image()
         )
-        hero_two = await self.client.session.get(
-            f"https://overfast-api.tekrop.fr/heroes?role={random.choice(list(self.roles))}&locale=en-us"
-        )
-
-        hero_one_list = []
-        hero_one_json = await hero_one.json()
-        for i in hero_one_json:
-            hero_one_list.append(i["key"].lower())
-
-        hero_two_list = []
-        hero_two_json = await hero_two.json()
-
-        for i in hero_two_json:
-            hero_two_list.append(i["key"].lower())
-
-        hero_one = random.choice(list(hero_one_list))
-        hero_two = random.choice(list(hero_two_list))
-
-        hero_one_health_data = await self.client.session.get(
-            f"https://overfast-api.tekrop.fr/heroes/{str(hero_one).replace('.', '')}?locale=en-us"
-        )
-        hero_two_health_data = await self.client.session.get(
-            f"https://overfast-api.tekrop.fr/heroes/{str(hero_two).replace('.', '')}?locale=en-us"
-        )
-        hero_one_health_json = await hero_one_health_data.json()
-        hero_two_health_json = await hero_two_health_data.json()
-        hero_one_health = hero_one_health_json["hitpoints"]["health"]
-        hero_one_name = hero_one_health_json["name"]
-        hero_two_health = hero_two_health_json["hitpoints"]["health"]
-        hero_two_name = hero_two_health_json["name"]
-        hero_one_image = await self.client.session.get(hero_one_health_json["portrait"])
-        hero_two_image = await self.client.session.get(hero_two_health_json["portrait"])
-        hero_one_image = await hero_one_image.read()
-        hero_two_image = await hero_two_image.read()
-
-        image = GenerateVS(hero_one_image, hero_two_image)
         file = File(image.generate_vs_image(), filename="vs.png")
 
         embed = Embed(
@@ -76,42 +107,107 @@ class OneVOne(commands.Cog, name="OneVOne"):
         embed.set_image(url="attachment://vs.png")
         embed.add_field(
             name=f"{str(ctx.author.display_name)}",
-            value=f"You are playing **{hero_one_name}** with **{hero_one_health}** health",
+            value=f"You are playing **{hero_one.name}** with **{hero_one.health}** health",
         )
         embed.add_field(
             name=f"{user.name}",
-            value=f"Is play **{hero_two_name}** with **{hero_two_health}** health",
+            value=f"Is play **{hero_two.name}** with **{hero_two.health}** health",
         )
         message = await ctx.send(embed=embed, file=file)
-        game = True
-        while game:
+        hero_one_health = hero_one.health
+        hero_two_health = hero_two.health
+        while hero_one_health > 0 and hero_two_health > 0:
             for _ in range(3):
-              hero_one_health -= random.randint(0, hero_one_health)
-              hero_two_health -= random.randint(0, hero_two_health)
-              if hero_one_health == 0 or hero_two_health == 0:
-                  game = False
-                  break
-              await asyncio.sleep(random.randint(1, 3))
-              embed.set_field_at(0,
-                  name=f"{ctx.author.display_name}",
-                  value=f"Spectating **{hero_one_name}** with **{hero_one_health}** health",
-              )
-              embed.set_field_at(1,
-                  name=f"{user.name}",
-                  value=f"Spectating **{hero_two_name}** with **{hero_two_health}** health",
-              )
-              embed.set_image(url="attachment://vs.png")
-              await message.edit(embed=embed)
-        if hero_one_health == 0:
-            embed.set_field_at(0, name=ctx.author.display_name, value=f"**Won**, playing **{hero_one_name}**!")
-            embed.set_field_at(1, name=user.name, value=f"**Lost**, playing **{hero_two_name}**!")
+                damage_to_hero_one = hero_two.calculate_damage(health=hero_two_health)
+                damage_to_hero_two = hero_one.calculate_damage(health=hero_one_health)
 
-        elif hero_two_health == 0:
-            embed.set_field_at(0, name=ctx.author.display_name, value=f"**Lost**, playing **{hero_one_name}**!")
-            embed.set_field_at(1, name=user.name, value=f"**Won**, playing **{hero_two_name}**!")
+                hero_one_health -= damage_to_hero_one
+                hero_two_health -= damage_to_hero_two
+
+                hero_one_health = max(0, round(hero_one_health))
+                hero_two_health = max(0, round(hero_two_health))
+
+                if hero_one_health <= 0 or hero_two_health <= 0:
+                    break
+
+                await asyncio.sleep(random.randint(1, 3))
+                embed.set_field_at(
+                    0,
+                    name=f"{ctx.author.display_name}",
+                    value=f"Spectating **{hero_one.name}** with **{round(hero_one_health)}** health",
+                )
+                embed.set_field_at(
+                    1,
+                    name=f"{user.name}",
+                    value=f"Spectating **{hero_two.name}** with **{round(hero_two_health)}** health",
+                )
+                embed.set_image(url="attachment://vs.png")
+                await message.edit(embed=embed)
+        if hero_one_health <= 0:
+            embed.set_field_at(
+                0,
+                name=ctx.author.display_name,
+                value=f"**Won**, playing **{hero_one.name}**!",
+            )
+            embed.set_field_at(
+                1, name=user.name, value=f"**Lost**, playing **{hero_two.name}**!"
+            )
+
+        else:
+            embed.set_field_at(
+                0,
+                name=ctx.author.display_name,
+                value=f"**Lost**, playing **{hero_one.name}**!",
+            )
+            embed.set_field_at(
+                1, name=user.name, value=f"**Won**, playing **{hero_two.name}**!"
+            )
         embed.set_image(url="attachment://vs.png")
         await message.edit(embed=embed)
         image.delete_images()
+
+    @one_v_one.error
+    async def one_v_one_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.UserNotFound):
+            await ctx.send("Please target another user to 1v1")
+        else:
+            raise error
+
+    @commands.hybrid_command(name="1v1info", description="Random Overwatch Hero")
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def one_v_one_info(self, ctx: commands.Context):
+        embed = Embed(
+            title="Welcome to the Overwatch Hero Showdown!",
+            description="Engage in epic battles with Overwatch heroes.",
+            color=Colour.blurple(),
+            timestamp=ctx.message.created_at,
+        )
+
+        embed.add_field(
+            name="How to Play",
+            value="1. Two Overwatch heroes will be randomly selected.\n"
+            "2. They will take turns attacking each other.\n"
+            "3. The game ends when one hero's health drops to 0\n"
+            "4. The player with the winning hero is declared the champion.",
+        )
+
+        embed.add_field(
+            name="Commands",
+            value="Use the following command to start a game:\n"
+            "`!1v1 <@user>`\n or \n`/1v1 <@user>`\n",
+        )
+
+        embed.add_field(
+            name="Additional Notes",
+            value="- Hero damage is influenced by their health and a touch of randomness.\n"
+            "- You might need some luck to secure victory!\n"
+            "- Enjoy the Overwatch-themed showdown!",
+        )
+
+        embed.set_image(url="https://i.gyazo.com/de5ef721b1e5f33c3995dbabad22026d.png")
+        embed.set_footer(text="All data is provided by https://overfast-api.tekrop.fr/")
+        await ctx.send(embed=embed)
 
 
 async def setup(client: commands.Bot):
