@@ -31,7 +31,7 @@ A few things you will need:
 
 Take a look in the [`/example-files`](https://github.com/alexraskin/lhbot/tree/main/example-files) folder for examples of the files you will need to create.
 
-## Deploying the bot to AWS via Terraform
+## Deploying the bot to Railway via Terraform
 
 1. Clone the repository
 2. Change `dir` to `infrastructure/terraform/bot`
