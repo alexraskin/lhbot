@@ -1,14 +1,18 @@
 import random
+import os
 
 import discord
 from discord.ext import commands, tasks
 from sentry_sdk import capture_exception
 
+from utils import gpt
 
 class General(commands.Cog, name="General"):
     def __init__(self, client: commands.Bot):
         self.client = client
         self.streamer_name = "lhcloudy27"
+        self.cloudflare_url = os.environ.get("CLOUDFLARE_URL")
+        self.cloudflare_token = os.environ.get('CLOUDFLARE_TOKEN')
         self.twitch_url = "https://www.twitch.tv/lhcloudy27"
         self.body = {
             "client_id": self.client.config.twitch_client_id,
@@ -112,21 +116,48 @@ class General(commands.Cog, name="General"):
             self.client.logger.error(error)
             capture_exception(error)
             return
+    
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
-
-        if isinstance(message.channel, discord.DMChannel):
-            try:
-                await message.author.send(
-                    f"{message.command} can not be used in Private Messages."
+        
+        if self.client.user.mentioned_in(message):
+            if message.author.nick:
+                name = message.author.nick
+            else:
+                name = message.author.name
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + self.cloudflare_token,
+            }
+            payload = {
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": gpt.context + f"when you answer someone, answer them by {name}",
+                    },
+                    {
+                        "role": "user",
+                        "content": message.content.strip(f"<@!{self.client.user.id}>"),
+                    },
+                ]
+            }
+            await message.channel.typing()
+            response = await self.client.session.post(
+                url=self.cloudflare_url, headers=headers, json=payload
+            )
+            if response.status == 200:
+                json_response = await response.json()
+                await message.channel.send(json_response["result"]["response"])
+            else:
+                self.client.logger.error(
+                    f"Error while trying to send message to Cloudflare: {response.status}, {response.reason}"
                 )
-            except discord.HTTPException as e:
-                capture_exception(e)
-                self.client.logger.error(f"Failed to send message to {message.author}")
-                pass
+                await message.channel.send(
+                    "I couldn't respond to that, please try again later."
+                )
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx) -> None:

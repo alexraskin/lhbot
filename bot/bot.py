@@ -113,7 +113,7 @@ class LhBot(AutoShardedBot):
 
 
 client = LhBot(
-    command_prefix=when_mentioned_or(config.bot_prefix),
+    command_prefix=config.bot_prefix,
     description="Hi, I am LhBot!",
     max_messages=15000,
     intents=Intents.all(),
