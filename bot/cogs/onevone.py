@@ -11,7 +11,7 @@ from utils.generatevs import GenerateVS
 class OverwatchHero:
     API_BASE_URL = "https://overfast-api.tekrop.fr/heroes"
 
-    def __init__(self, key, name, portrait, role, health, story, session):
+    def __init__(self, key: str, name: str, portrait: str, role: str, health: int, story: str, session):
         self.key = key
         self.name = name
         self.portrait = portrait

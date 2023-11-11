@@ -13,7 +13,8 @@ class Info(commands.Cog, name="Info"):
     @commands.command(
         name="uptime", aliases=["up"], description="Shows the uptime of the bot"
     )
-    async def uptime(self, ctx):
+    @commands.guild_only()
+    async def uptime(self, ctx: commands.Context):
         embed = discord.Embed(
             title="Bot Uptime",
             description=f"Uptime: {self.client.get_uptime}",
@@ -23,9 +24,9 @@ class Info(commands.Cog, name="Info"):
         embed.set_thumbnail(url=self.client.user.avatar.url)
         await ctx.send(embed=embed)
 
-    @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.command(name="ping")
-    async def ping(self, ctx):
+    @commands.guild_only()
+    async def ping(self, ctx: commands.Context):
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency}ms.",
@@ -67,7 +68,7 @@ class Info(commands.Cog, name="Info"):
             text=f"Made with discord.py v{version}",
             icon_url="http://i.imgur.com/5BFecvA.png",
         )
-        embed.set_thumbnail(url=self.client.logo_url)
+        embed.set_thumbnail(url=self.client.user.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.hybrid_command(name="serverinfo", aliases=["guildinfo"])

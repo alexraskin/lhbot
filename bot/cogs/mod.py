@@ -14,6 +14,7 @@ class Mod(commands.Cog, name="Mod"):
         self.client: commands.Bot = client
 
     @app_commands.command(description="Check if you are a mod")
+    @app_commands.guild_only()
     async def amimod(self, interaction: Interaction) -> None:
         if (
             interaction.user.guild_permissions.administrator
@@ -40,6 +41,7 @@ class Mod(commands.Cog, name="Mod"):
 
     @mod.command(name="ban", description="Ban a user", hidden=True)
     @checks.is_mod()
+    @app_commands.guild_only()
     @app_commands.describe(member="The member to ban")
     @app_commands.describe(reason="The reason for the ban")
     async def ban(

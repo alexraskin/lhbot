@@ -1,7 +1,7 @@
 import random
 from typing import Union
 
-from discord import Colour, Embed
+from discord import Colour, Embed, app_commands
 from discord.ext import commands, tasks
 from utils import bot_utils
 
@@ -21,7 +21,9 @@ class Fun(commands.Cog, name="Fun"):
         self.chuck_categories = [x for x in categories if x != "explicit"]
 
     @commands.hybrid_command(with_app_command=True)
-    async def chucknorris(self, ctx, category: str = None) -> Union[Embed, None]:
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def chucknorris(self, ctx: commands.Context, category: str = None) -> Union[Embed, None]:
         """
         Get a random Chuck Norris fact
         """
@@ -58,7 +60,9 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send(embed=embed)
 
     @commands.hybrid_command(with_app_command=True)
-    async def cat(self, ctx):
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def cat(self, ctx: commands.Context):
         """
         Get a random cat from cataas.com
         """
@@ -74,6 +78,8 @@ class Fun(commands.Cog, name="Fun"):
     @commands.hybrid_command(
         name="dog", aliases=["dogpic", "doggo"], with_app_command=True
     )
+    @commands.guild_only()
+    @app_commands.guild_only()
     async def dog(self, ctx: commands.Context):
         """
         Get a random dog from random.dog
@@ -87,6 +93,8 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send(data["url"])
 
     @commands.hybrid_command(name="meme", aliases=["memer"], with_app_command=True)
+    @commands.guild_only()
+    @app_commands.guild_only()
     async def get_meme(self, ctx: commands.Context):
         """
         Get a random meme from meme-api.com
@@ -100,6 +108,8 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send(data["url"])
 
     @commands.hybrid_command(name="joke", aliases=["dadjoke"], with_app_command=True)
+    @commands.guild_only()
+    @app_commands.guild_only()
     async def random_joke(self, ctx: commands.Context):
         """
         Get a random dad joke from icanhazdadjoke.com
@@ -120,6 +130,8 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send(embed=embed)
 
     @commands.hybrid_command(name="waifu", aliases=["getwaifu"], with_app_command=True)
+    @commands.guild_only()
+    @app_commands.guild_only()
     async def random_waifu(
         self, ctx: commands.Context, category: str = None
     ) -> Union[Embed, None]:
@@ -154,6 +166,8 @@ class Fun(commands.Cog, name="Fun"):
     @commands.hybrid_command(
         name="year", aliases=["yearprogress"], with_app_command=True
     )
+    @commands.guild_only()
+    @app_commands.guild_only()
     async def year(self, ctx: commands.Context):
         """
         Get the progress of the year

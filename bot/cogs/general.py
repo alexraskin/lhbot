@@ -160,7 +160,7 @@ class General(commands.Cog, name="General"):
                 )
 
     @commands.Cog.listener()
-    async def on_command_completion(self, ctx) -> None:
+    async def on_command_completion(self, ctx: commands.Context) -> None:
         full_command_name = ctx.command.qualified_name
         split = full_command_name.split(" ")
         executed_command = str(split[0])

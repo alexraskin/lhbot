@@ -47,7 +47,6 @@ class LhBot(AutoShardedBot):
         self.status = Status.online
         self.logger = logging.getLogger("discord")
         self.start_time = time.time()
-        self.logo_url: str = "https://i.gyazo.com/632f0e60dc0535128971887acad98993.png"
         self.user_agent = (
             f"{self.config.bot_name}/{self.config.bot_version}:{platform.system()}"
         )
