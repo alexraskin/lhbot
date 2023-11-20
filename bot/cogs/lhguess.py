@@ -80,15 +80,29 @@ class LhGuess(commands.Cog, name="LhGuess"):
                 guess = modal.guess_text
                 ctx.interaction = modal.interaction
         if self.check(guess) is False:
-            await ctx.send("That is not a valid guess!", ephemeral=True)
+            embed = Embed()
+            embed.title = "That is not a valid guess 🚨"
+            embed.description = "You must start your guess with `L` and it cannot be a banned word."
+            embed.color = self.error_color
+            embed.timestamp = ctx.message.created_at
+            await ctx.send(embed=embed)
             return
         guessed = await self.collection.count_documents({"lhguess": str(guess).lower()})
         if guessed > 0:
+            guessed_by = await self.collection.find_one({"lhguess": str(guess).lower()})
+            pretty_guessed_by = helper(guessed_by)
             embed = Embed(
                 title="This has already been guessed 🚨",
                 description=f"LhGuess: {guess}",
                 color=self.error_color,
             )
+            embed.add_field(
+                name="Guessed by:", value=pretty_guessed_by["guessedBy"], inline=True
+            )
+            embed.add_field(
+                name="Guess ID:", value=pretty_guessed_by["id"], inline=True
+            )
+            embed.timestamp = ctx.message.created_at
             await ctx.send(embed=embed)
             return
         else:
@@ -113,7 +127,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.hybrid_command(description="Get the current guess count.")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def count(self, ctx: commands.Context) -> Embed:
+    async def lhcount(self, ctx: commands.Context) -> Embed:
         """
         Get the current guess count.
         """
@@ -126,7 +140,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.hybrid_command(description="Generate a PDF report of all the guesses.")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def report(self, ctx: commands.Context) -> Embed:
+    async def lhreport(self, ctx: commands.Context) -> Embed:
         """
         Generate a PDF report of all the guesses.
         """
@@ -143,7 +157,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.hybrid_command(description="Get a random hint.")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def hints(self, ctx: commands.Context) -> Embed:
+    async def lhhints(self, ctx: commands.Context) -> Embed:
         """
         Get a random hint.
         """
@@ -158,7 +172,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess_id="Delete a guess from the database")
-    async def delete(self, ctx: commands.Context, guess_id: int) -> Embed:
+    async def lhdelete(self, ctx: commands.Context, guess_id: int) -> Embed:
         """
         Delete a guess from the database.
         """
