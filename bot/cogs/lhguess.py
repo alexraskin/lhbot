@@ -64,7 +64,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @app_commands.guild_only()
     @app_commands.describe(guess="Take a guess at what LH means")
     async def lhguess(
-        self, ctx: commands.Context, guess: Optional[str] = None
+        self, ctx: commands.Context, *, guess: Optional[str] = None
     ) -> Embed:
         """
         Take a guess at what LH means.
