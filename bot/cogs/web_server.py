@@ -16,8 +16,12 @@ class WebServer(commands.Cog, name="WebServer"):
     async def on_ready(self):
         self.client.logger.info(f"Webserver ready on port {self.client.config.port}")
 
-    def html_response(self, text: str) -> web.Response:
-        return web.Response(text=text, content_type="text/html")
+    async def get_all_commands(self) -> list:
+      commands: list = []
+      for command in self.client.commands:
+          if command.hidden is False:
+              commands.append({"name": command.name, "description": command.help})
+      return commands
 
     async def index_handler(self, request: web.Request) -> web.json_response:
         self.client.logger.info(f"Webserver request from {request.remote}")
@@ -31,6 +35,7 @@ class WebServer(commands.Cog, name="WebServer"):
                 "bot_uptime": self.client.get_uptime,
                 "bot_ram": f"{self.client.memory_usage}MB",
                 "bot_cpu": f"{self.client.cpu_usage}%",
+                "commands": await self.get_all_commands(),
             }
         )
 
