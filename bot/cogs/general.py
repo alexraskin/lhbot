@@ -3,6 +3,7 @@ import os
 
 import discord
 from discord.ext import commands, tasks
+from discord.utils import oauth_url
 from sentry_sdk import capture_exception
 
 from utils import gpt
@@ -158,6 +159,28 @@ class General(commands.Cog, name="General"):
                 await message.channel.send(
                     "I couldn't respond to that, please try again later."
                 )
+
+    @commands.hybrid_command("join", with_app_command=True)
+    async def join(self, ctx: commands.Context):
+        """Posts my invite to allow you to invite me"""
+        perms = discord.Permissions.none()
+        perms.read_messages = True
+        perms.external_emojis = True
+        perms.send_messages = True
+        perms.manage_roles = True
+        perms.manage_channels = True
+        perms.ban_members = True
+        perms.kick_members = True
+        perms.manage_messages = True
+        perms.manage_expressions = True
+        perms.embed_links = True
+        perms.speak = True
+        perms.connect = True
+        perms.read_message_history = True
+        perms.attach_files = True
+        perms.add_reactions = True
+        perms.use_application_commands = True
+        await ctx.send(f"<{oauth_url(self.client_id, permissions=perms)}>")
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx: commands.Context) -> None:
