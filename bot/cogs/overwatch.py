@@ -36,6 +36,9 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         region: Literal["us", "eu", "kr"],
         battletag: str,
     ) -> Embed:
+        """
+        Get Overwatch profile details
+        """
         url = f'{self.base_url}/profile/{platform}/{region}/{str(battletag).replace("#", "-")}'
         interaction.response.defer()
         async with self.client.session.get(url) as response:
@@ -90,6 +93,9 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.guild_only()
     @app_commands.guild_only()
     async def random_rein_quote(self, ctx: commands.Context) -> Embed:
+        """
+        Random Rein Quote
+        """
         embed = Embed(
             color=random.randint(0, 0xFFFFFF),
         )
