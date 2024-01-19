@@ -13,7 +13,7 @@ from cogs import EXTENSIONS
 from config import Settings
 from discord import AllowedMentions, Intents, Status, User
 from discord.ext import tasks
-from discord.ext.commands import AutoShardedBot, when_mentioned_or
+from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
 from utils.clear_dir import clean_cache
 
@@ -99,7 +99,7 @@ class LhBot(AutoShardedBot):
         return psutil.cpu_percent(interval=1)
 
     @property
-    def git_revision(self):
+    def git_revision(self) -> str:
         latest_revision = os.getenv("RAILWAY_GIT_COMMIT_SHA")
         if latest_revision is None:
             return None
