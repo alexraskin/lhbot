@@ -23,6 +23,7 @@ class Fun(commands.Cog, name="Fun"):
     @commands.hybrid_command(with_app_command=True)
     @commands.guild_only()
     @app_commands.guild_only()
+    @app_commands.describe(category="Category of Chuck Norris fact")
     async def chucknorris(self, ctx: commands.Context, category: str = None) -> Union[Embed, None]:
         """
         Get a random Chuck Norris fact
@@ -73,7 +74,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send("Could not find a cat!")
             return
         else:
-            await ctx.send(f"{cat_url}{data['url']}")
+            await ctx.send(f"{cat_url}/cat/{data['id']}")
 
     @commands.hybrid_command(
         name="dog", aliases=["dogpic", "doggo"], with_app_command=True
