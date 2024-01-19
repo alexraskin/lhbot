@@ -69,6 +69,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Take a guess at what LH means.
         """
+        if ctx.guild.id != self.client.config.main_guild:
+            await ctx.send("This command can only be used in Cloudy's Discord.")
+            return
         if guess is None:
             if ctx.interaction is None:
                 await ctx.send("Please provide a guess!")
@@ -144,6 +147,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Generate a PDF report of all the guesses.
         """
+        if ctx.guild.id != self.client.config.main_guild:
+            await ctx.send("This command can only be used in Cloudy's Discord.")
+            return
         report = PdfReport(
             filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
         )
@@ -176,6 +182,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         """
         Delete a guess from the database.
         """
+        if ctx.guild.id != self.client.config.main_guild:
+            await ctx.send("This command can only be used in Cloudy's Discord.")
+            return
         guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
 
         if not guess:
@@ -188,6 +197,25 @@ class LhGuess(commands.Cog, name="LhGuess"):
             await self.collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)
             return
+
+    @commands.hybrid_command()
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def latest(self, ctx: commands.Context) -> Embed:
+        """
+        Get the 5 latest guesses.
+        """
+        if ctx.guild.id != self.client.config.main_guild:
+            await ctx.send("This command can only be used in Cloudy's Discord.")
+            return
+        embed = Embed(title="Latest LhGuesses", color=self.success_color)
+        for guess in self.guess_list[-5:]:
+            embed.add_field(
+                name=f"LhGuess: {guess['guess']}",
+                value=f"Guessed by: {guess['guessedBy']}",
+                inline=False,
+            )
+        await ctx.send(embed=embed)
 
 
 async def setup(client) -> None:
