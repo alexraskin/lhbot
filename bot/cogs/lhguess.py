@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import random
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from bson.objectid import ObjectId
 from discord import Embed, app_commands, ui, TextStyle, Interaction
@@ -10,6 +12,9 @@ from utils.generate_pdf import PdfReport
 from utils.hints import lh_hints
 from utils.return_helper import helper
 from utils.s3_client import S3Upload
+
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
 
 class GuessView(ui.Modal, title="LhGuess"):
@@ -22,7 +27,7 @@ class GuessView(ui.Modal, title="LhGuess"):
         max_length=180,
     )
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.guess_text = None
         super().__init__(timeout=60)
 
@@ -32,14 +37,14 @@ class GuessView(ui.Modal, title="LhGuess"):
         self.stop()
 
 
-class LhGuess(commands.Cog, name="LhGuess"):
-    def __init__(self, client: commands.Bot) -> None:
-        self.client = client
+class LhGuess(commands.Cog):
+    def __init__(self, client: LhBot) -> None:
+        self.client: LhBot = client
         self.banned_words_list = banned_words.split("\n")
         self.hints = lh_hints.split("\n")
         self.error_color = 0xE74C3C
         self.success_color = 0x42F56C
-        self.database = self.client.db_client.lhbot
+        self.database = self.client.db_client.lhbot  # type: ignore
         self.collection = self.database.get_collection("lhbot_collection")
         self.load_collection_list.start()
 
@@ -65,7 +70,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @app_commands.describe(guess="Take a guess at what LH means")
     async def lhguess(
         self, ctx: commands.Context, *, guess: Optional[str] = None
-    ) -> Embed:
+    ) -> None:
         """
         Take a guess at what LH means.
         """
@@ -85,7 +90,9 @@ class LhGuess(commands.Cog, name="LhGuess"):
         if self.check(guess) is False:
             embed = Embed()
             embed.title = "That is not a valid guess 🚨"
-            embed.description = "You must start your guess with `L` and it cannot be a banned word."
+            embed.description = (
+                "You must start your guess with `L` and it cannot be a banned word."
+            )
             embed.color = self.error_color
             embed.timestamp = ctx.message.created_at
             await ctx.send(embed=embed)
@@ -130,7 +137,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.hybrid_command(description="Get the current guess count.")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def lhcount(self, ctx: commands.Context) -> Embed:
+    async def lhcount(self, ctx: commands.Context):
         """
         Get the current guess count.
         """
@@ -143,7 +150,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.hybrid_command(description="Generate a PDF report of all the guesses.")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def lhreport(self, ctx: commands.Context) -> Embed:
+    async def lhreport(self, ctx: commands.Context):
         """
         Generate a PDF report of all the guesses.
         """
@@ -163,7 +170,7 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.hybrid_command(description="Get a random hint.")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def lhhints(self, ctx: commands.Context) -> Embed:
+    async def lhhints(self, ctx: commands.Context):
         """
         Get a random hint.
         """
@@ -178,14 +185,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess_id="Delete a guess from the database")
-    async def lhdelete(self, ctx: commands.Context, guess_id: int) -> Embed:
+    async def lhdelete(self, ctx: commands.Context, guess_id: int):
         """
         Delete a guess from the database.
         """
         if ctx.guild.id != self.client.config.main_guild:
             await ctx.send("This command can only be used in Cloudy's Discord.")
             return
-        guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
+        guess = await self.collection.find_one({"_id": ObjectId(guess_id)})  # type: ignore
 
         if not guess:
             raise commands.BadArgument("Could not find a guess with that ID!")
@@ -194,14 +201,14 @@ class LhGuess(commands.Cog, name="LhGuess"):
             embed.add_field(
                 name="Succesfully Deleted LhGuess:", value=guess_id, inline=True
             )
-            await self.collection.delete_one({"_id": ObjectId(guess_id)})
+            await self.collection.delete_one({"_id": ObjectId(guess_id)})  # type: ignore
             embed_message = await ctx.send(embed=embed)
             return
 
     @commands.hybrid_command()
     @commands.guild_only()
     @app_commands.guild_only()
-    async def latest(self, ctx: commands.Context) -> Embed:
+    async def latest(self, ctx: commands.Context):
         """
         Get the 5 latest guesses.
         """
@@ -218,5 +225,5 @@ class LhGuess(commands.Cog, name="LhGuess"):
         await ctx.send(embed=embed)
 
 
-async def setup(client) -> None:
+async def setup(client: LhBot) -> None:
     await client.add_cog(LhGuess(client))

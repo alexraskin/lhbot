@@ -1,17 +1,31 @@
+from __future__ import annotations
+
 import asyncio
 import random
-from typing import Union
+from typing import Union, TYPE_CHECKING
 
 from discord import Embed, Member, app_commands, User, File, Colour
 from discord.ext import commands
 
 from utils.generatevs import GenerateVS
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
+
 
 class OverwatchHero:
     API_BASE_URL = "https://overfast-api.tekrop.fr/heroes"
 
-    def __init__(self, key: str, name: str, portrait: str, role: str, health: int, story: str, session):
+    def __init__(
+        self,
+        key: str,
+        name: str,
+        portrait: str,
+        role: str,
+        health: int,
+        story: str,
+        session,
+    ):
         self.key = key
         self.name = name
         self.portrait = portrait
@@ -21,7 +35,7 @@ class OverwatchHero:
         self.session = session
 
     @staticmethod
-    def calculate_damage(health) -> int:
+    def calculate_damage(health: float) -> int:
         min_damage = 10
         max_damage = 50
 
@@ -32,7 +46,7 @@ class OverwatchHero:
         return damage
 
     @classmethod
-    async def get_random_hero(cls, session) -> str:
+    async def get_random_hero(cls, session) -> Union[str, None]:
         url = f"{cls.API_BASE_URL}?role={cls.get_random_role()}&locale=en-us"
         async with session.get(url) as response:
             if response.status == 200:
@@ -41,7 +55,7 @@ class OverwatchHero:
                 return random.choice(hero_list)
 
     @classmethod
-    async def fetch_hero_data(cls, session):
+    async def fetch_hero_data(cls, session) -> Union[OverwatchHero, None]:
         random_hero = await cls.get_random_hero(session=session)
         url = f"{cls.API_BASE_URL}/{random_hero.replace('.', '')}?locale=en-us"
         async with session.get(url) as response:
@@ -59,7 +73,7 @@ class OverwatchHero:
             else:
                 return None
 
-    async def fetch_hero_image(self):
+    async def fetch_hero_image(self) -> Union[bytes, None]:
         async with self.session.get(self.portrait) as response:
             if response.status == 200:
                 return await response.read()
@@ -67,17 +81,17 @@ class OverwatchHero:
                 return None
 
     @classmethod
-    def get_random_role(cls):
+    def get_random_role(cls) -> str:
         roles = ["tank", "damage", "support"]
         return random.choice(roles)
 
     def __str__(self):
-        return f"Hero: {self.name}\nRole: {self.role}\nPortrait: {self.portrait} \nHealth: {self.health}\nStory: {self.story}"
+        return f"{self.name}"
 
 
-class OneVOne(commands.Cog, name="OneVOne"):
-    def __init__(self, client: commands.Bot):
-        self.client: commands.AutoShardedBot = client
+class OneVOne(commands.Cog):
+    def __init__(self, client: LhBot):
+        self.client: LhBot = client
         self.roles: list = ["tank", "damage", "support"]
 
     @commands.hybrid_command(
@@ -93,7 +107,6 @@ class OneVOne(commands.Cog, name="OneVOne"):
             return
         hero_one = await OverwatchHero.fetch_hero_data(self.client.session)
         hero_two = await OverwatchHero.fetch_hero_data(self.client.session)
-
         image = GenerateVS(
             await hero_one.fetch_hero_image(), await hero_two.fetch_hero_image()
         )
@@ -167,7 +180,9 @@ class OneVOne(commands.Cog, name="OneVOne"):
         image.delete_images()
 
     @one_v_one.error
-    async def one_v_one_error(self, ctx: commands.Context, error):
+    async def one_v_one_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
         if isinstance(error, commands.UserNotFound):
             await ctx.send("Please target another user to 1v1")
         else:
@@ -210,5 +225,5 @@ class OneVOne(commands.Cog, name="OneVOne"):
         await ctx.send(embed=embed)
 
 
-async def setup(client: commands.Bot):
+async def setup(client: LhBot):
     await client.add_cog(OneVOne(client))

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 import os
 
@@ -13,12 +15,13 @@ from utils import gpt
 if TYPE_CHECKING:
     from ..bot import LhBot
 
+
 class General(commands.Cog, name="General"):
     def __init__(self, client: LhBot):
         self.client: LhBot = client
         self.streamer_name = "lhcloudy27"
         self.cloudflare_url = os.environ.get("CLOUDFLARE_URL")
-        self.cloudflare_token = os.environ.get('CLOUDFLARE_TOKEN')
+        self.cloudflare_token = os.environ.get("CLOUDFLARE_TOKEN")
         self.twitch_url = "https://www.twitch.tv/lhcloudy27"
         self.body = {
             "client_id": self.client.config.twitch_client_id,
@@ -27,7 +30,9 @@ class General(commands.Cog, name="General"):
         }
         self.status_task.start()
 
-    async def check_if_live(self) -> Union[Tuple[bool, str, str, str], Tuple[bool, None, None, None]]:
+    async def check_if_live(
+        self,
+    ) -> Union[Tuple[bool, str, str, str], Tuple[bool, None, None, None]]:
         async with self.client.session.post(
             "https://id.twitch.tv/oauth2/token", data=self.body
         ) as response:
@@ -123,7 +128,6 @@ class General(commands.Cog, name="General"):
             capture_exception(error)
             return
 
-
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         if message.author.bot:
@@ -142,7 +146,8 @@ class General(commands.Cog, name="General"):
                 "messages": [
                     {
                         "role": "system",
-                        "content": gpt.context + f"when you answer someone, answer them by {name}",
+                        "content": gpt.context
+                        + f"when you answer someone, answer them by {name}",
                     },
                     {
                         "role": "user",
@@ -196,5 +201,5 @@ class General(commands.Cog, name="General"):
         )
 
 
-async def setup(client):
+async def setup(client: LhBot):
     await client.add_cog(General(client))

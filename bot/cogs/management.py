@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 from discord import Embed
@@ -19,10 +21,10 @@ class Management(commands.Cog, name="Management"):
     @commands.command(name="reload", hidden=True)
     async def reload(self, ctx, extension=None):
         if extension is None:
-            for cog in self.client.extensions.copy():
+            for cog in self.client.extensions.copy():  # type: ignore
                 await self.client.unload_extension(cog)
                 await self.client.load_extension(cog)
-            self.client.logger.info(f"Reload Command Executed by {ctx.author}")
+            self.client.logger.info(f"Reload Command Executed by {ctx.author}")  # type: ignore
             embed = Embed(
                 title="Cog Reload 🔃",
                 description="I have reloaded all the cogs successfully ✅",

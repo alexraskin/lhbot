@@ -1,18 +1,23 @@
+from __future__ import annotations
+
 import asyncio
 import random
-from typing import Literal, Union
+from typing import Literal, Union, TYPE_CHECKING
 
 from discord import Embed, Interaction, Member, User, app_commands, Colour
 from discord.ext import commands
 from utils.bot_utils import get_time_string
 from utils.reinquotes import quotes
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
-class OverwatchAPI(commands.Cog, name="Overwatch"):
+
+class OverwatchAPI(commands.Cog):
     """Overwatch specify commands"""
 
-    def __init__(self, client: commands.Bot):
-        self.client = client
+    def __init__(self, client: LhBot):
+        self.client: LhBot = client
         self.rein_quotes = quotes.split("\n")
         self.base_url = "https://owapi.io"
 
@@ -35,12 +40,12 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         platform: Literal["pc", "xbl", "psn", "nintendo-switch"],
         region: Literal["us", "eu", "kr"],
         battletag: str,
-    ) -> Embed:
+    ) -> None:
         """
         Get Overwatch profile details
         """
         url = f'{self.base_url}/profile/{platform}/{region}/{str(battletag).replace("#", "-")}'
-        interaction.response.defer()
+        await interaction.response.defer()
         async with self.client.session.get(url) as response:
             if response.status != 200:
                 self.client.logger.error("Error getting Overwatch profile")
@@ -92,7 +97,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.command(name="reinquote", description="Random Rein Quote")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def random_rein_quote(self, ctx: commands.Context) -> Embed:
+    async def random_rein_quote(self, ctx: commands.Context) -> None:
         """
         Random Rein Quote
         """
@@ -110,7 +115,9 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.hybrid_command(name="shatter", description="Shatter a user")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def shatter(self, ctx: commands.Context, target_user: Union[Member, User]):
+    async def shatter(
+        self, ctx: commands.Context, target_user: Union[Member, User]
+    ) -> None:
         lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
         lh_cloudy_block_list = [
             "Blocked.. cloudy is immune to your shatter!",
@@ -161,9 +168,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     )
     @commands.guild_only()
     @app_commands.guild_only()
-    async def nano(
-        self, ctx: commands.Context, target_user: Union[Member, User] = None
-    ):
+    async def nano(self, ctx: commands.Context, target_user: Union[Member, User]):
         nano_boost_sayings = [
             "Nano Boost administered",
             "You're powered up, get in there",
@@ -191,9 +196,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
     @commands.hybrid_command(name="lamp", description="Lamp a user in the server!")
     @commands.guild_only()
     @app_commands.guild_only()
-    async def lamp(
-        self, ctx: commands.Context, target_user: Union[Member, User] = None
-    ):
+    async def lamp(self, ctx: commands.Context, target_user: Union[Member, User]):
         random.seed(get_time_string())
         lamp_sayings = [
             f"Get in the Immortality Field {target_user.mention}!",
@@ -217,9 +220,7 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         await ctx.send(random.choice(lamp_answers))
 
     @commands.command(name="boop", description="Boop a user in the server!")
-    async def boop(
-        self, ctx: commands.Context, target_user: Union[Member, User] = None
-    ):
+    async def boop(self, ctx: commands.Context, target_user: Union[Member, User]):
         boop_sayings = [
             "That was the sound of science",
             "I could do this with my eyes closed",
@@ -238,5 +239,5 @@ class OverwatchAPI(commands.Cog, name="Overwatch"):
         await ctx.send(f"{random.choice(list(boop_sayings))}, {target_user.mention}")
 
 
-async def setup(client):
+async def setup(client: LhBot):
     await client.add_cog(OverwatchAPI(client))
