@@ -1,17 +1,20 @@
 from __future__ import annotations
 
 import datetime
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from discord import Embed, Interaction, Member, TextChannel, app_commands
 from discord.ext import commands
 from sentry_sdk import capture_exception
 from utils import checks
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
+
 
 class Mod(commands.Cog, name="Mod"):
-    def __init__(self, client: commands.Bot) -> None:
-        self.client: commands.Bot = client
+    def __init__(self, client: LhBot) -> None:
+        self.client: LhBot = client
 
     @app_commands.command(description="Check if you are a mod")
     @app_commands.guild_only()
@@ -36,7 +39,7 @@ class Mod(commands.Cog, name="Mod"):
     @app_commands.guild_only()
     async def mod(self, ctx: commands.Context) -> None:
         if ctx.invoked_subcommand is None:
-            if ctx.author.guild_permissions.manage_guild:
+            if ctx.author.guild_permissions.manage_guild:  # type: ignore
                 await ctx.send_help(ctx.command)
 
     @mod.command(name="ban", description="Ban a user", hidden=True)
@@ -48,11 +51,11 @@ class Mod(commands.Cog, name="Mod"):
         self, ctx: commands.Context, member: Member, reason: Optional[str]
     ) -> None:
         try:
-            await ctx.guild.ban(member, reason=reason)
+            await ctx.guild.ban(member, reason=reason)  # type: ignore
             await ctx.reply(f"Banned {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.reply("An error occurred while banning the user.", ephemeral=True)
             return
 
@@ -64,12 +67,12 @@ class Mod(commands.Cog, name="Mod"):
         self, ctx: commands.Context, member: Member, reason: Optional[str]
     ) -> None:
         try:
-            await ctx.guild.ban(member, reason=reason)
-            await ctx.guild.unban(member, reason=reason)
+            await ctx.guild.ban(member, reason=reason)  # type: ignore
+            await ctx.guild.unban(member, reason=reason)  # type: ignore
             await ctx.reply(f"Softbanned {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.reply(
                 "An error occurred while softbanning the user.", ephemeral=True
             )
@@ -81,11 +84,11 @@ class Mod(commands.Cog, name="Mod"):
     @app_commands.describe(reason="The reason for the kick")
     async def kick(self, ctx: commands.Context, member: Member, reason: str) -> None:
         try:
-            await ctx.guild.kick(member, reason=reason)
+            await ctx.guild.kick(member, reason=reason)  # type: ignore
             await ctx.reply(f"Kicked {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.reply("An error occurred while kicking the user.", ephemeral=True)
             return
 
@@ -103,11 +106,11 @@ class Mod(commands.Cog, name="Mod"):
     ) -> None:
         unmute_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
         try:
-            await member.timeout(until=unmute_time, reason=reason)
+            await member.timeout(until=unmute_time, reason=reason)  # type: ignore
             await ctx.reply(f"Timed out {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.reply(
                 "An error occurred while timing out the user.", ephemeral=True
             )
@@ -119,11 +122,11 @@ class Mod(commands.Cog, name="Mod"):
     @app_commands.describe(reason="The reason for the unban")
     async def unban(self, ctx: commands.Context, member: Member, reason: str) -> None:
         try:
-            await ctx.guild.unban(member, reason=reason)
+            await ctx.guild.unban(member, reason=reason)  # type: ignore
             await ctx.reply(f"Unbanned {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.reply(
                 "An error occurred while unbanning the user.", ephemeral=True
             )
@@ -156,7 +159,7 @@ class Mod(commands.Cog, name="Mod"):
             await ctx.reply(embed=embed, delete_after=5)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.reply("An error occurred while purging messages.", ephemeral=True)
             return
 
@@ -178,9 +181,9 @@ class Mod(commands.Cog, name="Mod"):
         """
         Lockdowns a specified channel.
         """
-        channel = channel or ctx.channel
+        channel = channel or ctx.channel  # type: ignore
         try:
-            await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+            await channel.set_permissions(ctx.guild.default_role, send_messages=False)  # type: ignore
             embed = Embed(
                 title="Lockdown Notice 🔒",
                 description=f"This channel is currently under lockdown.",
@@ -193,7 +196,7 @@ class Mod(commands.Cog, name="Mod"):
             await ctx.send(embed=embed)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.send(
                 "An error occurred while locking down the channel.", ephemeral=True
             )
@@ -219,10 +222,10 @@ class Mod(commands.Cog, name="Mod"):
         """
         Unlocks a specified channel.
         """
-        channel = channel or ctx.channel
+        channel = channel or ctx.channel  # type: ignore
         try:
-            await channel.set_permissions(
-                ctx.guild.default_role, send_messages=True, reason=reason
+            await channel.set_permissions(  # type: ignore
+                ctx.guild.default_role, send_messages=True, reason=reason  # type: ignore
             )
             embed = Embed(
                 title="Lockdown Ended 🔓",
@@ -236,12 +239,12 @@ class Mod(commands.Cog, name="Mod"):
             await ctx.send(embed=embed)
         except Exception as e:
             capture_exception(e)
-            self.client.log.error(f"Error: {e}")
+            self.client.logger.error(f"Error: {e}")
             await ctx.send(
                 "An error occurred while unlocking the channel.", ephemeral=True
             )
             return
 
 
-async def setup(client: commands.Bot) -> None:
+async def setup(client: LhBot) -> None:
     await client.add_cog(Mod(client))

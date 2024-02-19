@@ -1,8 +1,15 @@
+from __future__ import annotations
+
 import itertools
+
+from typing import TYPE_CHECKING
 
 from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import DefaultHelpCommand, HelpCommand
+
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
 
 class myHelpCommand(HelpCommand):
@@ -16,7 +23,7 @@ class myHelpCommand(HelpCommand):
         embed = Embed(color=0x2ECC71, timestamp=self.context.message.created_at)
         if header:
             embed.set_author(name=self.context.bot.description)
-        for category, entries in self.paginator:
+        for category, entries in self.paginator:  # type: ignore
             embed.add_field(name=category, value=entries, inline=False)
         if footer:
             embed.set_footer(text="Use !help <command/category> for more information.")
@@ -44,7 +51,7 @@ class myHelpCommand(HelpCommand):
                     entries += " | ".join([cmd.name for cmd in cmds[0:8]])
                     cmds = cmds[8:]
                     entries += "\n" if cmds else ""
-            self.paginator.append((category, entries))
+            self.paginator.append((category, entries))  # type: ignore
         await self.send_pages(header=True, footer=True)
 
     async def send_cog_help(self, cog):
@@ -60,7 +67,7 @@ class myHelpCommand(HelpCommand):
             + f"**{command.name}** → {command.short_doc or command.description}"
             for command in filtered
         )
-        self.paginator.append((category, entries))
+        self.paginator.append((category, entries))  # type: ignore
         await self.send_pages(footer=True)
 
     async def send_group_help(self, group):
@@ -75,13 +82,13 @@ class myHelpCommand(HelpCommand):
             self.spacer + f"**{command.name}** → {command.short_doc}"
             for command in filtered
         )
-        self.paginator.append((category, entries))
+        self.paginator.append((category, entries))  # type: ignore
         await self.send_pages(footer=True)
 
     async def send_command_help(self, command):
         signature = self.get_command_signature(command)
         helptext = command.help or command.description or "No help Text"
-        self.paginator.append((signature, helptext))
+        self.paginator.append((signature, helptext))  # type: ignores
         await self.send_pages()
 
     async def prepare_help_command(self, ctx, command=None):
@@ -90,8 +97,8 @@ class myHelpCommand(HelpCommand):
 
 
 class Help(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, client: LhBot):
+        self.client: LhBot = client
         self.client.help_command = myHelpCommand(
             command_attrs={
                 "aliases": ["halp"],
@@ -99,11 +106,11 @@ class Help(commands.Cog):
             }
         )
 
-    async def cog_check(self, ctx):
-        return self.client.user_is_admin(ctx.author)
+    async def cog_check(self, ctx):  # type: ignore
+        return self.client.user_is_admin(ctx.author)  # type: ignore
 
-    def cog_unload(self):
-        self.client.get_command("help").hidden = False
+    def cog_unload(self):  # type: ignore
+        self.client.get_command("help").hidden = False  # type: ignore
         self.client.help_command = DefaultHelpCommand()
 
     @commands.command(aliases=["halpall"], hidden=True)
@@ -116,5 +123,5 @@ class Help(commands.Cog):
         self.client.help_command = myHelpCommand()
 
 
-async def setup(client):
+async def setup(client: LhBot):
     await client.add_cog(Help(client))

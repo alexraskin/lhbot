@@ -1,13 +1,20 @@
+from __future__ import annotations
+
 import datetime
 import sys
+
+from typing import Optional, TYPE_CHECKING
 
 from discord import Colour, Embed
 from discord.ext import commands
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
-class LhCloudy(commands.Cog, name="LhCloudy"):
-    def __init__(self, client: commands.Bot):
-        self.client = client
+
+class LhCloudy(commands.Cog):
+    def __init__(self, client: LhBot):
+        self.client: LhBot = client
 
     @commands.hybrid_group(invoke_without_command=True)
     async def twitch(self, ctx):
@@ -17,14 +24,14 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
             )
 
     @twitch.command(name="lhfurry", with_app_command=True)
-    async def lhfurry(self, ctx: commands.Context):
+    async def lhfurry(self, ctx: commands.Context) -> None:
         """
         LhCloudy's furry side
         """
         await ctx.send("https://i.gyazo.com/3ae8376713000ab829a2853d0f31e6f2.png")
 
     @twitch.command(name="code", aliases=["workshop"], with_app_command=True)
-    async def code(self, ctx: commands.Context):
+    async def code(self, ctx: commands.Context) -> None:
         """
         LhCloudy's workshop code
         """
@@ -106,7 +113,7 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         await ctx.send("kotka of south eastern finland of the continent of europe")
 
     @twitch.command(name="links", aliases=["urls"], with_app_command=True)
-    async def links(self, ctx: commands.Context):
+    async def links(self, ctx: commands.Context) -> None:
         """
         Get a list of LhCloudy's links
         """
@@ -123,5 +130,5 @@ class LhCloudy(commands.Cog, name="LhCloudy"):
         await ctx.send(embed=embed)
 
 
-async def setup(client):
+async def setup(client: LhBot):
     await client.add_cog(LhCloudy(client))

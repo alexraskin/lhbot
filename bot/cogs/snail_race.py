@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import asyncio
 import random
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, TYPE_CHECKING
 
 import discord
 from discord import Interaction, Member, app_commands
@@ -9,6 +11,9 @@ from discord.ext import commands
 shuffled_participants: List = []
 running_guilds: List = []
 snail_positions: Dict = {}
+
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
 
 class RaceButton(discord.ui.View):
@@ -33,16 +38,16 @@ class RaceButton(discord.ui.View):
             )
 
 
-class SnailRace(commands.Cog, name="Snail Racing"):
-    def __init__(self, client: commands.Bot) -> None:
-        self.client: commands.Bot = client
+class SnailRace(commands.Cog):
+    def __init__(self, client: LhBot) -> None:
+        self.client: LhBot = client
 
     async def randomize_snails(self) -> None:
         global shuffled_participants
         shuffled_participants = random.sample(
             shuffled_participants, len(shuffled_participants)
         )
-        return shuffled_participants
+        return shuffled_participants  # type: ignore
 
     async def simulate_race(self, interaction: Interaction) -> None:
         global snail_positions
@@ -50,23 +55,23 @@ class SnailRace(commands.Cog, name="Snail Racing"):
         winner: Member = None
         race_length: int = 10
         if len(shuffled_participants) <= 0:
-            await interaction.channel.send(content="No one joined the race! 😢")
+            await interaction.channel.send(content="No one joined the race! 😢")  # type: ignore
             return
-        message = await interaction.channel.send("The Race is starting! 🚩")
-        shuffled_participants.append(self.client.user.id)
+        message = await interaction.channel.send("The Race is starting! 🚩")  # type: ignore
+        shuffled_participants.append(self.client.user.id)  # type: ignore
         randomize_snail = await self.randomize_snails()
-        snail_positions = {user_id: 0 for user_id in randomize_snail}
+        snail_positions = {user_id: 0 for user_id in randomize_snail}  # type: ignore
         while not winner:
             for user_id in snail_positions:
                 snail_positions[user_id] += random.randint(1, 3)
 
                 if snail_positions[user_id] >= race_length:
-                    winner = self.client.get_user(user_id)
+                    winner = self.client.get_user(user_id)  # type: ignore
                     break
             race_progress: str = ""
             for user_id, position in snail_positions.items():
                 user = self.client.get_user(user_id)
-                race_progress += f"[{user.name}]: {'🐌' * position}\n"
+                race_progress += f"[{user.name}]: {'🐌' * position}\n"  # type: ignore
             await asyncio.sleep(random.randint(1, 3))
             await message.edit(
                 content=f"🏁 **The race is now in progress!** 🏁\n{race_progress}"
@@ -78,7 +83,7 @@ class SnailRace(commands.Cog, name="Snail Racing"):
             timestamp=interaction.created_at,
         )
         embed.set_thumbnail(url=winner.display_avatar.url)
-        await interaction.channel.send(embed=embed)
+        await interaction.channel.send(embed=embed)  # type: ignore
 
     @app_commands.command(name="race", description="Start a Snail Race")
     @app_commands.guild_only()
@@ -91,18 +96,18 @@ class SnailRace(commands.Cog, name="Snail Racing"):
                 ephemeral=True,
             )
             return
-        if delay > 30:
+        if delay > 30:  # type: ignore
             await interaction.response.send_message(
                 "Delay must be less than 30 seconds",
                 ephemeral=True,
             )
             return
-        running_guilds.append(interaction.guild.id)
+        running_guilds.append(interaction.guild.id)  # type: ignore
         await interaction.response.send_message(
             content=f"{interaction.user.mention} has started a race.\nRace will start in {delay} seconds.",
             view=view,
         )
-        await asyncio.sleep(delay)
+        await asyncio.sleep(delay)  # type: ignore
         await self.simulate_race(interaction)
 
     @commands.Cog.listener()
@@ -120,5 +125,5 @@ class SnailRace(commands.Cog, name="Snail Racing"):
         self.client.logger.info(f"{interaction.user} used {command}")
 
 
-async def setup(client: commands.Bot) -> None:
+async def setup(client: LhBot) -> None:
     await client.add_cog(SnailRace(client))

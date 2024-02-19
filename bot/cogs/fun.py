@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 from typing import Union, TYPE_CHECKING
 
@@ -7,6 +9,7 @@ from utils import bot_utils
 
 if TYPE_CHECKING:
     from ..bot import LhBot
+
 
 class Fun(commands.Cog, name="Fun"):
     def __init__(self, client: LhBot):
@@ -26,7 +29,9 @@ class Fun(commands.Cog, name="Fun"):
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(category="Category of Chuck Norris fact")
-    async def chucknorris(self, ctx: commands.Context, category: str = None) -> Union[Embed, None]:
+    async def chucknorris(
+        self, ctx: commands.Context, category: str = None
+    ) -> Union[Embed, None]:
         """
         Get a random Chuck Norris fact
         """
@@ -189,5 +194,5 @@ class Fun(commands.Cog, name="Fun"):
         await ctx.send(embed=embed)
 
 
-async def setup(client):
+async def setup(client: LhBot):
     await client.add_cog(Fun(client))

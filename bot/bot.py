@@ -4,9 +4,10 @@ import os
 import platform
 import time
 from functools import lru_cache
+from typing import Union
 
 import motor.motor_asyncio
-import psutil # type: ignore
+import psutil  # type: ignore
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from cogs import EXTENSIONS
@@ -38,7 +39,7 @@ class LhBot(AutoShardedBot):
     def __init__(self, *args, **options) -> None:
         super().__init__(*args, **options)
         self.session: ClientSession = None
-        self.db_client = None
+        self.db_client: motor.motor_asyncio.AsyncIOMotorClient = None
         self.start_time = None
         self.version = config.bot_version
         self.config = config
@@ -81,7 +82,7 @@ class LhBot(AutoShardedBot):
     @property
     def get_uptime(self) -> str:
         return str(
-            datetime.timedelta(seconds=int(round(time.time() - self.start_time)))
+            datetime.timedelta(seconds=int(round(time.time() - self.start_time)))  # type: ignore
         )
 
     @property
@@ -99,7 +100,7 @@ class LhBot(AutoShardedBot):
         return psutil.cpu_percent(interval=1)
 
     @property
-    def git_revision(self) -> str:
+    def git_revision(self) -> Union[str, None]:
         latest_revision = os.getenv("RAILWAY_GIT_COMMIT_SHA")
         if latest_revision is None:
             return None
@@ -128,12 +129,12 @@ async def clean_dir() -> None:
 
 
 @client.event
-async def on_ready() -> bool:
+async def on_ready() -> None:
     main_id = config.main_guild
-    client.main_guild = client.get_guild(main_id) or client.guilds[0]
-    logging.info(f"{client.user.name} started successfully")
+    client.main_guild = client.get_guild(main_id) or client.guilds[0]  # type: ignore
+    logging.info(f"{client.user.name} started successfully")  # type: ignore
     clean_dir.start()
 
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
-logging.info(f"{client.user.name} stopped successfully")
+logging.info(f"{client.user.name} stopped successfully")  # type: ignore

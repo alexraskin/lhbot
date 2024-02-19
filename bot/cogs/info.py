@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import os
 import discord
 import pkg_resources
@@ -5,16 +9,19 @@ from discord import Colour, Embed, Member, app_commands
 from discord.ext import commands
 from utils.bot_utils import date
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
-class Info(commands.Cog, name="Info"):
-    def __init__(self, client: commands.Bot) -> None:
-        self.client = client
+
+class Info(commands.Cog):
+    def __init__(self, client: LhBot) -> None:
+        self.client: LhBot = client
 
     @commands.command(
         name="uptime", aliases=["up"], description="Shows the uptime of the bot"
     )
     @commands.guild_only()
-    async def uptime(self, ctx: commands.Context):
+    async def uptime(self, ctx: commands.Context) -> None:
         embed = discord.Embed(
             title="Bot Uptime",
             description=f"Uptime: {self.client.get_uptime}",
@@ -26,7 +33,7 @@ class Info(commands.Cog, name="Info"):
 
     @commands.command(name="ping")
     @commands.guild_only()
-    async def ping(self, ctx: commands.Context):
+    async def ping(self, ctx: commands.Context) -> None:
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {self.client.get_bot_latency}ms.",
@@ -124,5 +131,5 @@ class Info(commands.Cog, name="Info"):
         await ctx.send(embed=embed)
 
 
-async def setup(client):
+async def setup(client: LhBot):
     await client.add_cog(Info(client))
