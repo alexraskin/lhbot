@@ -37,7 +37,7 @@ lazy-object-proxy==1.7.1
 MarkupSafe==2.1.1
 mccabe==0.7.0
 motor==3.1.2
-multidict==6.0.2
+multidict==6.0.5
 numpy==1.23.5
 openai==1.12.0
 openpyxl==3.0.10
