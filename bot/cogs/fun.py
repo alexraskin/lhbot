@@ -1,14 +1,16 @@
 import random
-from typing import Union
+from typing import Union, TYPE_CHECKING
 
 from discord import Colour, Embed, app_commands
 from discord.ext import commands, tasks
 from utils import bot_utils
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
 
 class Fun(commands.Cog, name="Fun"):
-    def __init__(self, client: commands.Bot):
-        self.client = client
+    def __init__(self, client: LhBot):
+        self.client: LhBot = client
         self.load_chuck_http_codes.start()
         self.headers = {"Accept": "application/json"}
 
@@ -74,7 +76,7 @@ class Fun(commands.Cog, name="Fun"):
             await ctx.send("Could not find a cat!")
             return
         else:
-            await ctx.send(f"{cat_url}/cat/{data['id']}")
+            await ctx.send(f"{cat_url}/cat/{data['_id']}")
 
     @commands.hybrid_command(
         name="dog", aliases=["dogpic", "doggo"], with_app_command=True

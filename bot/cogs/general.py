@@ -1,6 +1,8 @@
 import random
 import os
 
+from typing import TYPE_CHECKING, Union, Tuple
+
 import discord
 from discord.ext import commands, tasks
 from discord.utils import oauth_url
@@ -8,9 +10,12 @@ from sentry_sdk import capture_exception
 
 from utils import gpt
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
+
 class General(commands.Cog, name="General"):
-    def __init__(self, client: commands.Bot):
-        self.client = client
+    def __init__(self, client: LhBot):
+        self.client: LhBot = client
         self.streamer_name = "lhcloudy27"
         self.cloudflare_url = os.environ.get("CLOUDFLARE_URL")
         self.cloudflare_token = os.environ.get('CLOUDFLARE_TOKEN')
@@ -22,7 +27,7 @@ class General(commands.Cog, name="General"):
         }
         self.status_task.start()
 
-    async def check_if_live(self) -> set:
+    async def check_if_live(self) -> Union[Tuple[bool, str, str, str], Tuple[bool, None, None, None]]:
         async with self.client.session.post(
             "https://id.twitch.tv/oauth2/token", data=self.body
         ) as response:
@@ -117,21 +122,21 @@ class General(commands.Cog, name="General"):
             self.client.logger.error(error)
             capture_exception(error)
             return
-    
+
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
-        
-        if self.client.user.mentioned_in(message):
-            if message.author.nick:
-                name = message.author.nick
+
+        if self.client.user.mentioned_in(message):  # type: ignore
+            if message.author.nick:  # type: ignore
+                name = message.author.nick  # type: ignore
             else:
                 name = message.author.name
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + self.cloudflare_token,
+                "Authorization": f"Bearer {self.cloudflare_token}",
             }
             payload = {
                 "messages": [
@@ -141,11 +146,10 @@ class General(commands.Cog, name="General"):
                     },
                     {
                         "role": "user",
-                        "content": message.content.strip(f"<@!{self.client.user.id}>"),
+                        "content": message.content.strip(f"<@!{self.client.user.id}>"),  # type: ignore
                     },
                 ]
             }
-            await message.channel.typing()
             response = await self.client.session.post(
                 url=self.cloudflare_url, headers=headers, json=payload
             )
@@ -172,7 +176,6 @@ class General(commands.Cog, name="General"):
         perms.ban_members = True
         perms.kick_members = True
         perms.manage_messages = True
-        perms.manage_expressions = True
         perms.embed_links = True
         perms.speak = True
         perms.connect = True
@@ -180,16 +183,16 @@ class General(commands.Cog, name="General"):
         perms.attach_files = True
         perms.add_reactions = True
         perms.use_application_commands = True
-        await ctx.send(f"<{oauth_url(self.client_id, permissions=perms)}>")
+        await ctx.send(f"<{oauth_url(self.client_id, permissions=perms)}>")  # type: ignore
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx: commands.Context) -> None:
-        full_command_name = ctx.command.qualified_name
+        full_command_name = ctx.command.qualified_name  # type: ignore
         split = full_command_name.split(" ")
         executed_command = str(split[0])
         self.client.logger.info(
-            f"Executed {executed_command} command in {ctx.guild.name}"
-            + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
+            f"Executed {executed_command} command in {ctx.guild.name}"  # type: ignore
+            + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"  # type: ignore
         )
 
 

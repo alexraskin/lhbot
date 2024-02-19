@@ -6,7 +6,7 @@ import time
 from functools import lru_cache
 
 import motor.motor_asyncio
-import psutil
+import psutil # type: ignore
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from cogs import EXTENSIONS
@@ -37,7 +37,7 @@ class LhBot(AutoShardedBot):
 
     def __init__(self, *args, **options) -> None:
         super().__init__(*args, **options)
-        self.session = None
+        self.session: ClientSession = None
         self.db_client = None
         self.start_time = None
         self.version = config.bot_version
