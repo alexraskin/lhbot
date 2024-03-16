@@ -6,7 +6,7 @@ from discord import Embed
 from discord.ext import commands
 
 
-class Management(commands.Cog, name="Management"):
+class Management(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
 

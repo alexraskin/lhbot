@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from ..bot import LhBot
 
 
-class General(commands.Cog, name="General"):
+class General(commands.Cog):
     def __init__(self, client: LhBot):
         self.client: LhBot = client
         self.streamer_name = "lhcloudy27"

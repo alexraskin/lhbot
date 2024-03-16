@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from ..bot import LhBot
 
 
-class Fun(commands.Cog, name="Fun"):
+class Fun(commands.Cog):
     def __init__(self, client: LhBot):
         self.client: LhBot = client
         self.load_chuck_http_codes.start()
