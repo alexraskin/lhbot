@@ -17,7 +17,7 @@ class LhCloudy(commands.Cog):
         self.client: LhBot = client
 
     @commands.hybrid_group(invoke_without_command=True)
-    async def twitch(self, ctx):
+    async def twitch(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.send(
                 f"Please use `{self.client.config.bot_prefix}twitch help` to see the list of commands."

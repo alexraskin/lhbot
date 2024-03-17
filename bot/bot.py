@@ -7,7 +7,7 @@ from functools import lru_cache
 from typing import Union
 
 import motor.motor_asyncio
-import psutil  # type: ignore
+import psutil
 import sentry_sdk
 from aiohttp import ClientSession, ClientTimeout
 from cogs import EXTENSIONS
@@ -131,10 +131,10 @@ async def clean_dir() -> None:
 @client.event
 async def on_ready() -> None:
     main_id = config.main_guild
-    client.main_guild = client.get_guild(main_id) or client.guilds[0]  # type: ignore
-    logging.info(f"{client.user.name} started successfully")  # type: ignore
+    client.main_guild = client.get_guild(main_id) or client.guilds[0]
+    logging.info(f"{client.user.name} started successfully")
     clean_dir.start()
 
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
-logging.info(f"{client.user.name} stopped successfully")  # type: ignore
+logging.info(f"{client.user.name} stopped successfully")

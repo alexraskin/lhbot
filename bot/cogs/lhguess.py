@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from ..bot import LhBot
 
 
-class GuessView(ui.Modal, title="LhGuess"):
+class GuessView(ui.Modal):
     guess = ui.TextInput(
         label="Guess:",
         style=TextStyle.paragraph,

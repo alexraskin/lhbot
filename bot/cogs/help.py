@@ -82,13 +82,13 @@ class myHelpCommand(HelpCommand):
             self.spacer + f"**{command.name}** → {command.short_doc}"
             for command in filtered
         )
-        self.paginator.append((category, entries))  # type: ignore
+        self.paginator.append((category, entries))
         await self.send_pages(footer=True)
 
     async def send_command_help(self, command):
         signature = self.get_command_signature(command)
         helptext = command.help or command.description or "No help Text"
-        self.paginator.append((signature, helptext))  # type: ignores
+        self.paginator.append((signature, helptext))
         await self.send_pages()
 
     async def prepare_help_command(self, ctx, command=None):

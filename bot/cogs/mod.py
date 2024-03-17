@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from ..bot import LhBot
 
 
-class Mod(commands.Cog, name="Mod"):
+class Mod(commands.Cog):
     def __init__(self, client: LhBot) -> None:
         self.client: LhBot = client
 
