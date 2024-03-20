@@ -133,6 +133,9 @@ class General(commands.Cog):
         if message.author.bot:
             return
 
+        if message.mention_everyone:
+            return
+
         if self.client.user.mentioned_in(message):  # type: ignore
             if message.author.nick:  # type: ignore
                 name = message.author.nick  # type: ignore
