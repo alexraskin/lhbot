@@ -8,7 +8,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     docker_enabled = os.getenv("DOCKER_ENABLED", False)
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", 8080))
     bot_prefix: str = os.getenv("BOT_PREFIX")
     bot_token: str = os.getenv("BOT_TOKEN")
     application_id: str = os.getenv("APPLICATION_ID")
