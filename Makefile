@@ -2,8 +2,6 @@
 .PHONY: run
 .PHONY: install
 .PHONY: test
-.PHONY: terraform-fmt
-.PHONY: pre-commit
 
 style:
 	black .
@@ -11,12 +9,6 @@ style:
 
 run:
 	bash run.sh
-
-terraform-fmt:
-	terraform fmt -recursive
-
-pre-commit:
-	pre-commit run --all
 
 export:
 	pip3 freeze > requirements.txt
