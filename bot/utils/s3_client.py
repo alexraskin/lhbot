@@ -41,12 +41,12 @@ class S3Upload:
             return False
         return True
 
-    def get_url(self) -> Union[str, bool]:
+    def get_url(self, key: str) -> Union[str, bool]:
         try:
             object_url = self.client.generate_presigned_url(
                 "get_object",
                 ExpiresIn=0,
-                Params={"Bucket": self.s3_bucket_name, "Key": self.filename},
+                Params={"Bucket": self.s3_bucket_name, "Key": key},
             )
             return str(object_url[0 : object_url.index("?")])
         except ClientError as error:

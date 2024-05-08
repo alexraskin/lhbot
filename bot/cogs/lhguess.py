@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
 from bson.objectid import ObjectId
@@ -44,14 +45,16 @@ class LhGuess(commands.Cog):
         self.hints = lh_hints.split("\n")
         self.error_color = 0xE74C3C
         self.success_color = 0x42F56C
+        self.guess_list = []
         self.database = self.client.db_client.lhbot  # type: ignore
         self.collection = self.database.get_collection("lhbot_collection")
         self.load_collection_list.start()
 
     @tasks.loop(seconds=30)
     async def load_collection_list(self) -> list:
-        self.guess_list = []
         async for guess in self.collection.find():
+            if guess in self.guess_list:
+                continue
             data = helper(guess)
             self.guess_list.append(
                 {"guess": data["guess"], "guessedBy": data["guessedBy"]}
@@ -157,15 +160,17 @@ class LhGuess(commands.Cog):
         if ctx.guild.id != self.client.config.main_guild:
             await ctx.send("This command can only be used in Cloudy's Discord.")
             return
+        now = datetime.now()
+        file_name_friendly_date = now.strftime("%Y-%m-%d_%H-%M-%S")
         report = PdfReport(
-            filename=f"{ctx.message.author}-report.pdf", guesses=self.guess_list
+            filename=f"{ctx.message.author}_{file_name_friendly_date}_report.pdf", guesses=self.guess_list
         )
         report.generate()
-        share = S3Upload(report.filename)
+        share = S3Upload(report.file_path)
         share.upload_file()
-        embed = Embed(title="LhGuess report is ready", color=self.success_color)
-        embed.add_field(name="PDF Link:", value=share.get_url())
-        await ctx.send(embed=embed)
+        await ctx.send(
+            f"Here is your report: {share.get_url(key=report.filename)}",
+        )
 
     @commands.hybrid_command(description="Get a random hint.")
     @commands.guild_only()
