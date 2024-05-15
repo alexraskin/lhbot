@@ -46,7 +46,7 @@ class LhGuess(commands.Cog):
         self.error_color = 0xE74C3C
         self.success_color = 0x42F56C
         self.guess_list = []
-        self.database = self.client.db_client.lhbot  # type: ignore
+        self.database = self.client.db_client.lhbot
         self.collection = self.database.get_collection("lhbot_collection")
         self.load_collection_list.start()
 
@@ -204,7 +204,7 @@ class LhGuess(commands.Cog):
             embed.add_field(
                 name="Succesfully Deleted LhGuess:", value=guess_id, inline=True
             )
-            await self.collection.delete_one({"_id": ObjectId(guess_id)})  # type: ignore
+            await self.collection.delete_one({"_id": ObjectId(guess_id)})
             embed_message = await ctx.send(embed=embed)
             return
 
