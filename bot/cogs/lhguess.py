@@ -53,12 +53,10 @@ class LhGuess(commands.Cog):
     @tasks.loop(seconds=30)
     async def load_collection_list(self) -> list:
         async for guess in self.collection.find():
-            if guess in self.guess_list:
-                continue
-            data = helper(guess)
-            self.guess_list.append(
-                {"guess": data["guess"], "guessedBy": data["guessedBy"]}
-            )
+          data = helper(guess)
+          self.guess_list.append(
+              {"guess": data["guess"], "guessedBy": data["guessedBy"]}
+          )
 
     def check(self, guess: str) -> bool:
         if not str(guess).lower().startswith("l"):
