@@ -5,14 +5,13 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
 from bson.objectid import ObjectId
-from discord import Embed, app_commands, ui, TextStyle, Interaction
+from discord import Embed, app_commands, ui, TextStyle, Interaction, File
 from discord.ext import commands, tasks
 from utils import checks
 from utils.banwords import banned_words
-from utils.generate_pdf import PdfReport
+from utils.generate_csv import MongoDataProcessor
 from utils.hints import lh_hints
 from utils.return_helper import helper
-from utils.s3_client import S3Upload
 
 if TYPE_CHECKING:
     from ..bot import LhBot
@@ -53,10 +52,10 @@ class LhGuess(commands.Cog):
     @tasks.loop(seconds=30)
     async def load_collection_list(self) -> list:
         async for guess in self.collection.find():
-          data = helper(guess)
-          self.guess_list.append(
-              {"guess": data["guess"], "guessedBy": data["guessedBy"]}
-          )
+            data = helper(guess)
+            self.guess_list.append(
+                {"guess": data["guess"], "guessedBy": data["guessedBy"]}
+            )
 
     def check(self, guess: str) -> bool:
         if not str(guess).lower().startswith("l"):
@@ -148,27 +147,21 @@ class LhGuess(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.hybrid_command(description="Generate a PDF report of all the guesses.")
+    @commands.hybrid_command(description="Generate a CSV report of all the guesses.")
     @commands.guild_only()
     @app_commands.guild_only()
     async def lhreport(self, ctx: commands.Context):
         """
-        Generate a PDF report of all the guesses.
+        Generate a CSV report of all the guesses.
         """
         if ctx.guild.id != self.client.config.main_guild:
             await ctx.send("This command can only be used in Cloudy's Discord.")
             return
         now = datetime.now()
         file_name_friendly_date = now.strftime("%Y-%m-%d_%H-%M-%S")
-        report = PdfReport(
-            filename=f"{ctx.message.author}_{file_name_friendly_date}_report.pdf", guesses=self.guess_list
-        )
-        report.generate()
-        share = S3Upload(report.file_path)
-        share.upload_file()
-        await ctx.send(
-            f"Here is your report: {share.get_url(key=report.filename)}",
-        )
+        report = MongoDataProcessor(self.guess_list)
+        report.export_to_csv(f"lhguess_report_{file_name_friendly_date}.csv")
+        await ctx.send(file=File(report.file_path))
 
     @commands.hybrid_command(description="Get a random hint.")
     @commands.guild_only()
