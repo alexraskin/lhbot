@@ -210,9 +210,9 @@ class LhGuess(commands.Cog):
         """
         Get the 5 latest guesses.
         """
-        # if ctx.guild.id != self.client.config.main_guild:
-        #     await ctx.send("This command can only be used in Cloudy's Discord.")
-        #     return
+        if ctx.guild.id != self.client.config.main_guild:
+            await ctx.send("This command can only be used in Cloudy's Discord.")
+            return
         embed = Embed(title="Latest LhGuesses", color=self.success_color)
         guess_list = await self.load_collection_list()
         for guess in guess_list[-5:]:
