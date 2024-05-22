@@ -82,6 +82,21 @@ class Fun(commands.Cog):
             return
         else:
             await ctx.send(f"{cat_url}/cat/{data['_id']}")
+    
+    @commands.hybrid_command(name="catfact", with_app_command=True)
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def cat_fact(self, ctx: commands.Context):
+        """
+        Get a random cat fact from catfact.ninja
+        """
+        response = await self.client.session.get("https://catfact.ninja/fact")
+        data = await response.json()
+        if response.status != 200:
+            await ctx.send("Could not find a cat fact!")
+            return
+        else:
+            await ctx.send(data["fact"])
 
     @commands.hybrid_command(
         name="dog", aliases=["dogpic", "doggo"], with_app_command=True
