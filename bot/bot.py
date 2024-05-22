@@ -125,7 +125,7 @@ client = LhBot(
 
 @tasks.loop(minutes=60)
 async def clean_dir() -> None:
-    clean_cache("./bot/files", ".pdf")
+    clean_cache("./bot/files", ".csv")
 
 
 @client.event
