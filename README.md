@@ -20,26 +20,16 @@ If you follow LhCloudy on twitch, you will know, that he will not share what Lh 
 
 ## Deploy
 
-This bot is completely managed by terraform and is deployed on [Railway](https://railway.app/). If you are wanting to deploy this bot, you can do so by following the instructions below.
-
 A few things you will need:
 
 - Discord bot
 - Mongo database (I use atlas)
 - A Railway account
-- Amazon S3 Bucket
 
 Take a look in the [`/example-files`](https://github.com/alexraskin/lhbot/tree/main/example-files) folder for examples of the files you will need to create.
 
-## Deploying the bot to Railway via Terraform
-
-1. Clone the repository
-2. Change `dir` to `infrastructure/terraform/bot`
-3. Create a `terraform.tfvars` The bot will look for all these environment variables [in this file](hhttps://github.com/alexraskin/lhbot/blob/main/infrastructure/terraform/bot/shared-envs.tf)
-4. Run `terraform init`
-5. Run `terraform apply`
-
 ___
+
 ## Run the bot locally
 
 To run the bot locally, you will need to fill in the `.env` file all the values that are missing.

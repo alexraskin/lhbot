@@ -188,7 +188,7 @@ class LhGuess(commands.Cog):
         if ctx.guild.id != self.client.config.main_guild:
             await ctx.send("This command can only be used in Cloudy's Discord.")
             return
-        guess = await self.collection.find_one({"_id": ObjectId(guess_id)})  # type: ignore
+        guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
 
         if not guess:
             raise commands.BadArgument("Could not find a guess with that ID!")
