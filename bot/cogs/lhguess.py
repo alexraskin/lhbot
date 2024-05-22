@@ -6,7 +6,8 @@ from typing import Optional, TYPE_CHECKING
 
 from bson.objectid import ObjectId
 from discord import Embed, app_commands, ui, TextStyle, Interaction, File
-from discord.ext import commands, tasks
+from discord.ext import commands
+from async_lru import alru_cache
 from utils import checks
 from utils.banwords import banned_words
 from utils.generate_csv import MongoDataProcessor
@@ -47,15 +48,15 @@ class LhGuess(commands.Cog):
         self.guess_list = []
         self.database = self.client.db_client.lhbot
         self.collection = self.database.get_collection("lhbot_collection")
-        self.load_collection_list.start()
 
-    @tasks.loop(seconds=30)
+    @alru_cache(maxsize=32)
     async def load_collection_list(self) -> list:
         async for guess in self.collection.find():
             data = helper(guess)
             self.guess_list.append(
                 {"guess": data["guess"], "guessedBy": data["guessedBy"]}
             )
+        return self.guess_list
 
     def check(self, guess: str) -> bool:
         if not str(guess).lower().startswith("l"):
@@ -142,8 +143,9 @@ class LhGuess(commands.Cog):
         Get the current guess count.
         """
         embed = Embed(title="LhGuess Count", color=self.success_color)
+        count = await self.load_collection_list()
         embed.add_field(
-            name="Current guess Count:", value=f"{len(self.guess_list)} 🦍", inline=True
+            name="Current guess Count:", value=f"{len(count)} 🦍", inline=True
         )
         await ctx.send(embed=embed)
 
@@ -159,7 +161,7 @@ class LhGuess(commands.Cog):
             return
         now = datetime.now()
         file_name_friendly_date = now.strftime("%Y-%m-%d_%H-%M-%S")
-        report = MongoDataProcessor(self.guess_list)
+        report = MongoDataProcessor(await self.load_collection_list())
         report.export_to_csv(f"lhguess_report_{file_name_friendly_date}.csv")
         await ctx.send(file=File(report.file_path))
 
@@ -204,15 +206,16 @@ class LhGuess(commands.Cog):
     @commands.hybrid_command()
     @commands.guild_only()
     @app_commands.guild_only()
-    async def latest(self, ctx: commands.Context):
+    async def lhlatest(self, ctx: commands.Context):
         """
         Get the 5 latest guesses.
         """
-        if ctx.guild.id != self.client.config.main_guild:
-            await ctx.send("This command can only be used in Cloudy's Discord.")
-            return
+        # if ctx.guild.id != self.client.config.main_guild:
+        #     await ctx.send("This command can only be used in Cloudy's Discord.")
+        #     return
         embed = Embed(title="Latest LhGuesses", color=self.success_color)
-        for guess in self.guess_list[-5:]:
+        guess_list = await self.load_collection_list()
+        for guess in guess_list[-5:]:
             embed.add_field(
                 name=f"LhGuess: {guess['guess']}",
                 value=f"Guessed by: {guess['guessedBy']}",
