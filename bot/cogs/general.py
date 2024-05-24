@@ -5,10 +5,13 @@ import os
 
 from typing import TYPE_CHECKING, Union, Tuple
 
+import openai
 import discord
 from discord.ext import commands, tasks
+from openai import AsyncOpenAI
 from discord.utils import oauth_url
 from sentry_sdk import capture_exception
+from utils.clear_dir import clean_cache
 
 from utils import gpt
 
@@ -20,42 +23,58 @@ class General(commands.Cog):
     def __init__(self, client: LhBot):
         self.client: LhBot = client
         self.streamer_name = "lhcloudy27"
-        self.cloudflare_url = os.environ.get("CLOUDFLARE_URL")
-        self.cloudflare_token = os.environ.get("CLOUDFLARE_TOKEN")
         self.twitch_url = "https://www.twitch.tv/lhcloudy27"
         self.body = {
             "client_id": self.client.config.twitch_client_id,
             "client_secret": self.client.config.twitch_client_secret,
             "grant_type": "client_credentials",
         }
+        self.open_ai_client = AsyncOpenAI(
+            api_key=self.client.config.openai_api_key
+          )
         self.status_task.start()
+        self.clean_dir.start()
+
+    @tasks.loop(minutes=60)
+    async def clean_dir(self) -> None:
+        clean_cache("./bot/files", ".csv")
 
     async def check_if_live(
         self,
     ) -> Union[Tuple[bool, str, str, str], Tuple[bool, None, None, None]]:
-        async with self.client.session.post(
-            "https://id.twitch.tv/oauth2/token", data=self.body
-        ) as response:
-            keys = await response.json()
-            headers = {
-                "Client-ID": self.client.config.twitch_client_id,
-                "Authorization": "Bearer " + keys["access_token"],
-            }
-        async with self.client.session.get(
-            f"https://api.twitch.tv/helix/streams?user_login={self.streamer_name}",
-            headers=headers,
-        ) as response:
-            stream_data = await response.json()
-            if len(stream_data["data"]) == 1:
-                if stream_data["data"][0]["type"] == "live":
-                    return (
-                        True,
-                        stream_data["data"][0]["game_name"],
-                        stream_data["data"][0]["title"],
-                        stream_data["data"][0]["thumbnail_url"],
-                    )
-            else:
-                return False, None, None, None
+        try:
+            async with self.client.session.post(
+                "https://id.twitch.tv/oauth2/token", data=self.body
+            ) as response:
+                keys = await response.json()
+                headers = {
+                    "Client-ID": self.client.config.twitch_client_id,
+                    "Authorization": "Bearer " + keys["access_token"],
+                }
+        except Exception as e:
+            self.client.logger.error(e)
+            capture_exception(e)
+            return False, None, None, None
+        try:
+            async with self.client.session.get(
+                f"https://api.twitch.tv/helix/streams?user_login={self.streamer_name}",
+                headers=headers,
+            ) as response:
+                stream_data = await response.json()
+                if len(stream_data["data"]) == 1:
+                    if stream_data["data"][0]["type"] == "live":
+                        return (
+                            True,
+                            stream_data["data"][0]["game_name"],
+                            stream_data["data"][0]["title"],
+                            stream_data["data"][0]["thumbnail_url"],
+                        )
+                else:
+                    return False, None, None, None
+        except Exception as e:
+            self.client.logger.error(e)
+            capture_exception(e)
+            return False, None, None, None
 
     @tasks.loop(seconds=60)
     async def status_task(self) -> None:
@@ -136,41 +155,29 @@ class General(commands.Cog):
         if message.mention_everyone:
             return
 
-        if self.client.user.mentioned_in(message):  # type: ignore
-            if message.author.nick:  # type: ignore
-                name = message.author.nick  # type: ignore
+        if self.client.user.mentioned_in(message):
+            if message.author.nick:
+                name = message.author.nick
             else:
                 name = message.author.name
-            headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {self.cloudflare_token}",
-            }
-            payload = {
-                "messages": [
-                    {
-                        "role": "system",
-                        "content": gpt.context
-                        + f"when you answer someone, answer them by {name}",
-                    },
-                    {
-                        "role": "user",
-                        "content": message.content.strip(f"<@!{self.client.user.id}>"),  # type: ignore
-                    },
-                ]
-            }
-            response = await self.client.session.post(
-                url=self.cloudflare_url, headers=headers, json=payload
-            )
-            if response.status == 200:
-                json_response = await response.json()
-                await message.channel.send(json_response["result"]["response"])
-            else:
-                self.client.logger.error(
-                    f"Error while trying to send message to Cloudflare: {response.status}, {response.reason}"
-                )
-                await message.channel.send(
-                    "I couldn't respond to that, please try again later."
-                )
+                try:
+                  chat_completion = await self.open_ai_client.chat.completions.create(
+                      messages=[
+                          {"role": "system", "content": gpt.context + f"when you answer someone, answer them by {name}"},
+                          {"role": "user", "content": message.content.strip(f"<@!{self.client.user.id}>")}
+                        ],
+                        model="gpt-4o"
+                      )
+                  await message.channel.send(chat_completion.choices[0].message.content)
+                except openai.APIConnectionError as e:
+                    await message.channel.send("I am currently experiencing connection issues, please try again later.")
+                    capture_exception(e)
+                except openai.RateLimitError as e:
+                    await message.channel.send("I am currently experiencing rate limit issues, please try again later.")
+                    capture_exception(e)
+                except openai.APIStatusError as e:
+                    await message.channel.send("I am currently experiencing API status issues, please try again later.")
+                    capture_exception(e)
 
     @commands.hybrid_command("join", with_app_command=True)
     async def join(self, ctx: commands.Context):
@@ -191,16 +198,16 @@ class General(commands.Cog):
         perms.attach_files = True
         perms.add_reactions = True
         perms.use_application_commands = True
-        await ctx.send(f"<{oauth_url(self.client_id, permissions=perms)}>")  # type: ignore
+        await ctx.send(f"<{oauth_url(self.client_id, permissions=perms)}>")
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx: commands.Context) -> None:
-        full_command_name = ctx.command.qualified_name  # type: ignore
+        full_command_name = ctx.command.qualified_name
         split = full_command_name.split(" ")
         executed_command = str(split[0])
         self.client.logger.info(
-            f"Executed {executed_command} command in {ctx.guild.name}"  # type: ignore
-            + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"  # type: ignore
+            f"Executed {executed_command} command in {ctx.guild.name}"
+            + f"(ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})"
         )
 
 

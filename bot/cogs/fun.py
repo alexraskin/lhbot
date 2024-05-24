@@ -82,7 +82,7 @@ class Fun(commands.Cog):
             return
         else:
             await ctx.send(f"{cat_url}/cat/{data['_id']}")
-    
+
     @commands.hybrid_command(name="catfact", with_app_command=True)
     @commands.guild_only()
     @app_commands.guild_only()

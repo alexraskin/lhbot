@@ -13,10 +13,8 @@ from aiohttp import ClientSession, ClientTimeout
 from cogs import EXTENSIONS
 from config import Settings
 from discord import AllowedMentions, Intents, Status, User
-from discord.ext import tasks
 from discord.ext.commands import AutoShardedBot
 from sentry_sdk import capture_exception
-from utils.clear_dir import clean_cache
 
 logging.basicConfig(level=logging.INFO)
 
@@ -82,7 +80,7 @@ class LhBot(AutoShardedBot):
     @property
     def get_uptime(self) -> str:
         return str(
-            datetime.timedelta(seconds=int(round(time.time() - self.start_time)))  # type: ignore
+            datetime.timedelta(seconds=int(round(time.time() - self.start_time)))
         )
 
     @property
@@ -123,17 +121,11 @@ client = LhBot(
 )
 
 
-@tasks.loop(minutes=60)
-async def clean_dir() -> None:
-    clean_cache("./bot/files", ".csv")
-
-
 @client.event
 async def on_ready() -> None:
     main_id = config.main_guild
     client.main_guild = client.get_guild(main_id) or client.guilds[0]
     logging.info(f"{client.user.name} started successfully")
-    clean_dir.start()
 
 
 client.run(token=config.bot_token, reconnect=True, log_handler=None)
