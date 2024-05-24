@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import asyncio
 import random
-from typing import Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
-from discord import Embed, Member, app_commands, User, File, Colour
+from discord import Colour, Embed, File, Member, User, app_commands
 from discord.ext import commands
-
 from utils.generatevs import GenerateVS
 
 if TYPE_CHECKING:

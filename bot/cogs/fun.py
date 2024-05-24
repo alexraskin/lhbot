@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from discord import Colour, Embed, app_commands
 from discord.ext import commands, tasks
