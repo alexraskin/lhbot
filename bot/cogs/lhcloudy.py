@@ -104,21 +104,23 @@ class LhCloudy(commands.Cog):
         """
         birthday_str = "21.5.1999"
         birthday = datetime.datetime.strptime(birthday_str, "%d.%m.%Y").date()
-        
+
         today = datetime.date.today()
         current_year_birthday = birthday.replace(year=today.year)
         next_birthday = current_year_birthday
-        
+
         if today > current_year_birthday:
             next_birthday = birthday.replace(year=today.year + 1)
-        
+
         days_until_next_birthday = (next_birthday - today).days
 
         if days_until_next_birthday == 0:
             await ctx.send("Today is Cloudy's birthday! 🎉")
             await ctx.send("https://tenor.com/bmYbD.gif")
         else:
-            await ctx.send(f"There are {days_until_next_birthday} days until Cloudy's birthday.")
+            await ctx.send(
+                f"There are {days_until_next_birthday} days until Cloudy's birthday."
+            )
 
     @commands.hybrid_command(name="from", with_app_command=True)
     async def from_(self, ctx: commands.Context):
