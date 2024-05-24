@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import itertools
-
 from typing import TYPE_CHECKING
 
 from discord import Embed
@@ -106,11 +105,11 @@ class Help(commands.Cog):
             }
         )
 
-    async def cog_check(self, ctx):  # type: ignore
-        return self.client.user_is_admin(ctx.author)  # type: ignore
+    async def cog_check(self, ctx):
+        return self.client.user_is_admin(ctx.author)
 
-    def cog_unload(self):  # type: ignore
-        self.client.get_command("help").hidden = False  # type: ignore
+    def cog_unload(self):
+        self.client.get_command("help").hidden = False
         self.client.help_command = DefaultHelpCommand()
 
     @commands.command(aliases=["halpall"], hidden=True)
