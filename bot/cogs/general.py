@@ -1,19 +1,17 @@
 from __future__ import annotations
 
-import random
 import os
+import random
+from typing import TYPE_CHECKING, Tuple, Union
 
-from typing import TYPE_CHECKING, Union, Tuple
-
-import openai
 import discord
+import openai
 from discord.ext import commands, tasks
-from openai import AsyncOpenAI
 from discord.utils import oauth_url
+from openai import AsyncOpenAI
 from sentry_sdk import capture_exception
-from utils.clear_dir import clean_cache
-
 from utils import gpt
+from utils.clear_dir import clean_cache
 
 if TYPE_CHECKING:
     from ..bot import LhBot
@@ -29,9 +27,7 @@ class General(commands.Cog):
             "client_secret": self.client.config.twitch_client_secret,
             "grant_type": "client_credentials",
         }
-        self.open_ai_client = AsyncOpenAI(
-            api_key=self.client.config.openai_api_key
-          )
+        self.open_ai_client = AsyncOpenAI(api_key=self.client.config.openai_api_key)
         self.status_task.start()
         self.clean_dir.start()
 
@@ -161,22 +157,39 @@ class General(commands.Cog):
             else:
                 name = message.author.name
                 try:
-                  chat_completion = await self.open_ai_client.chat.completions.create(
-                      messages=[
-                          {"role": "system", "content": gpt.context + f"when you answer someone, answer them by {name}"},
-                          {"role": "user", "content": message.content.strip(f"<@!{self.client.user.id}>")}
+                    chat_completion = await self.open_ai_client.chat.completions.create(
+                        messages=[
+                            {
+                                "role": "system",
+                                "content": gpt.context
+                                + f"when you answer someone, answer them by {name}",
+                            },
+                            {
+                                "role": "user",
+                                "content": message.content.strip(
+                                    f"<@!{self.client.user.id}>"
+                                ),
+                            },
                         ],
-                        model="gpt-4o"
-                      )
-                  await message.channel.send(chat_completion.choices[0].message.content)
+                        model="gpt-4o",
+                    )
+                    await message.channel.send(
+                        chat_completion.choices[0].message.content
+                    )
                 except openai.APIConnectionError as e:
-                    await message.channel.send("I am currently experiencing connection issues, please try again later.")
+                    await message.channel.send(
+                        "I am currently experiencing connection issues, please try again later."
+                    )
                     capture_exception(e)
                 except openai.RateLimitError as e:
-                    await message.channel.send("I am currently experiencing rate limit issues, please try again later.")
+                    await message.channel.send(
+                        "I am currently experiencing rate limit issues, please try again later."
+                    )
                     capture_exception(e)
                 except openai.APIStatusError as e:
-                    await message.channel.send("I am currently experiencing API status issues, please try again later.")
+                    await message.channel.send(
+                        "I am currently experiencing API status issues, please try again later."
+                    )
                     capture_exception(e)
 
     @commands.hybrid_command("join", with_app_command=True)
