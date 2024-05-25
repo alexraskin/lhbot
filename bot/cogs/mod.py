@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from discord import Embed, Interaction, Member, TextChannel, app_commands
 from discord.ext import commands

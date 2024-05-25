@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import random
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
-from bson.objectid import ObjectId
-from discord import Embed, app_commands, ui, TextStyle, Interaction, File
-from discord.ext import commands
 from async_lru import alru_cache
+from bson.objectid import ObjectId
+from discord import Embed, File, Interaction, TextStyle, app_commands, ui
+from discord.ext import commands
 from utils import checks
 from utils.banwords import banned_words
 from utils.generate_csv import MongoDataProcessor
@@ -76,7 +76,9 @@ class LhGuess(commands.Cog):
         Take a guess at what LH means.
         """
         if ctx.guild.id != self.client.config.main_guild:
-            await ctx.send("This command can only be used in Cloudy's Discord.")
+            await ctx.reply(
+                content="This command can only be used in Cloudy's Discord."
+            )
             return
         if guess is None:
             if ctx.interaction is None:
@@ -157,7 +159,9 @@ class LhGuess(commands.Cog):
         Generate a CSV report of all the guesses.
         """
         if ctx.guild.id != self.client.config.main_guild:
-            await ctx.send("This command can only be used in Cloudy's Discord.")
+            await ctx.reply(
+                content="This command can only be used in Cloudy's Discord."
+            )
             return
         now = datetime.now()
         file_name_friendly_date = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -188,7 +192,9 @@ class LhGuess(commands.Cog):
         Delete a guess from the database.
         """
         if ctx.guild.id != self.client.config.main_guild:
-            await ctx.send("This command can only be used in Cloudy's Discord.")
+            await ctx.reply(
+                content="This command can only be used in Cloudy's Discord."
+            )
             return
         guess = await self.collection.find_one({"_id": ObjectId(guess_id)})
 
@@ -211,7 +217,9 @@ class LhGuess(commands.Cog):
         Get the 5 latest guesses.
         """
         if ctx.guild.id != self.client.config.main_guild:
-            await ctx.send("This command can only be used in Cloudy's Discord.")
+            await ctx.reply(
+                content="This command can only be used in Cloudy's Discord."
+            )
             return
         embed = Embed(title="Latest LhGuesses", color=self.success_color)
         guess_list = await self.load_collection_list()

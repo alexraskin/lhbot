@@ -1,7 +1,8 @@
-from PIL import Image
-from io import BytesIO
 import os
+from io import BytesIO
 from pathlib import Path
+
+from PIL import Image
 
 
 class GenerateVS:

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import asyncio
 import random
-from typing import Literal, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, Union
 
-from discord import Embed, Interaction, Member, User, app_commands, Colour
+from discord import Colour, Embed, Interaction, Member, User, app_commands
 from discord.ext import commands
 from utils.bot_utils import get_time_string
 from utils.reinquotes import quotes
@@ -120,7 +120,7 @@ class OverwatchAPI(commands.Cog):
     ) -> None:
         lh_cloudy_list = ["@127122091139923968", "lhcloudy", "cloudy", "lhcloudy27"]
         lh_cloudy_block_list = [
-            "Blocked.. cloudy is immune to your shatter!",
+            "Blocked.. immune to your shatter!",
             "LhCloudy is immune to your shatter!",
             "Blocked - MTD",
             "ez block... L + ratio",
