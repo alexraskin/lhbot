@@ -262,7 +262,6 @@ class OneVOne(commands.Cog):
       embed = Embed(color=Colour.gold())
       embed.timestamp = ctx.message.created_at
       embed.description = "Here are the top 5 1v1 players!"
-      embed.image = "https://i.gyazo.com/de5ef721b1e5f33c3995dbabad22026d.png"
 
 
       for user in top_users:
