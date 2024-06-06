@@ -94,7 +94,7 @@ class LhCloudy(commands.Cog):
         td = datetime.datetime.now().date()
         bd = datetime.date(1999, 5, 21)
         age_years = int((td - bd).days / 365.25)
-        await ctx.send(age_years)
+        await ctx.send(content=str(age_years))
 
     @commands.hybrid_command(name="birthday", with_app_command=True)
     async def birthday(self, ctx: commands.Context):
@@ -131,7 +131,7 @@ class LhCloudy(commands.Cog):
     @commands.hybrid_command(name="links", aliases=["urls"], with_app_command=True)
     async def links(self, ctx: commands.Context) -> None:
         """
-        Get a list of LhCloudy's links
+        List of LhCloudy's links
         """
         links = (
             "• Twitch <https://www.twitch.tv/lhcloudy27>"
@@ -144,6 +144,50 @@ class LhCloudy(commands.Cog):
         embed = Embed(title="LhCloudy Links", description=links)
         embed.colour = Colour.blurple()
         await ctx.send(embed=embed)
+
+    @commands.hybrid_command(name="fact", with_app_command=True)
+    async def fact(self, ctx: commands.Context) -> None:
+        """
+        A fact about LhCloudy
+        """
+        f = """On February 23, 2021, LhCloudy hit rank 1 tank on both the North American and European ladders, although very briefly, playing only Reinhardt. 
+            He achieved this again on February 26th for a longer, but still brief period. 
+            It’s considered an achievement because the game's meta at the time was very unfriendly towards Reinhardt. 
+            To mitigate this, he played a unique playstyle centered around clearing angles and taking high grounds.
+            """
+        await ctx.send(f)
+
+    @commands.hybrid_command(name="interview", with_app_command=True)
+    async def interview(self, ctx: commands.Context):
+        """
+        LhCloudy's interview
+        """
+        await ctx.send("https://www.youtube.com/watch?v=sM_PkcoFgM8&t=1s")
+
+    @commands.hybrid_command(name="photo", with_app_command=True)
+    async def photo(self, ctx: commands.Context):
+        """
+        LhCloudy's photo
+        """
+        await ctx.send(
+            "https://liquipedia.net/commons/images/e/e8/ENCE_LhCloudy_2024.jpg"
+        )
+
+    @commands.hybrid_command(name="about", with_app_command=True)
+    async def about(self, ctx: commands.Context):
+        """
+        About LhCloudy
+        """
+        await ctx.send(
+            "Roni 'LhCloudy' Tiihonen (born May 21, 1999) is a Finnish player who is currently playing for [ENCE](https://liquipedia.net/overwatch/ENCE)"
+        )
+
+    @commands.hybrid_command(name="satu", with_app_command=True)
+    async def satu(self, ctx: commands.Context):
+        """
+        Satu
+        """
+        await ctx.send("https://imgur.com/a/C4uAiHK")
 
 
 async def setup(client: LhBot):

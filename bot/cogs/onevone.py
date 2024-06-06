@@ -34,7 +34,7 @@ class OverwatchHero:
         self.session = session
 
     @staticmethod
-    def calculate_damage(health: float) -> int:
+    def calculate_damage(health: float) -> float:
         min_damage = 10
         max_damage = 50
 
@@ -92,6 +92,23 @@ class OneVOne(commands.Cog):
     def __init__(self, client: LhBot):
         self.client: LhBot = client
         self.roles: list = ["tank", "damage", "support"]
+        self.database = self.client.db_client.lhbot
+        self.collection = self.database.get_collection("1v1_collection")
+
+    async def update_user_score(self, username: Union[Member, User], won: bool):
+        user = await self.collection.find_one({"discord_id": username.id})
+        if user:
+            # User exists, update their score
+            new_score = user["score"] + 1 if won else user["score"] - 1
+            await self.collection.update_one(
+                {"discord_id": username.id}, {"$set": {"score": new_score}}
+            )
+        else:
+            # User doesn't exist, create a new user
+            new_score = 1 if won else -1
+            await self.collection.insert_one(
+                {"discord_id": username.id, "score": new_score}
+            )
 
     @commands.hybrid_command(
         name="1v1",
@@ -100,7 +117,7 @@ class OneVOne(commands.Cog):
     )
     @commands.guild_only()
     @app_commands.guild_only()
-    async def one_v_one(self, ctx: commands.Context, user: Union[Member, User]):
+    async def one_v_one(self, ctx: commands.Context, user: Union[Member, User] = None):
         if user is None or "":
             await ctx.send("Please target another user to 1v1")
             return
@@ -164,6 +181,8 @@ class OneVOne(commands.Cog):
             embed.set_field_at(
                 1, name=user.name, value=f"**Lost**, playing **{hero_two.name}**!"
             )
+            await self.update_user_score(ctx.author, True)
+            await self.update_user_score(user, False)
 
         else:
             embed.set_field_at(
@@ -174,6 +193,9 @@ class OneVOne(commands.Cog):
             embed.set_field_at(
                 1, name=user.name, value=f"**Won**, playing **{hero_two.name}**!"
             )
+            await self.update_user_score(user, True)
+            await self.update_user_score(ctx.author, False)
+
         embed.set_image(url="attachment://vs.png")
         await message.edit(embed=embed)
         image.delete_images()
@@ -222,6 +244,32 @@ class OneVOne(commands.Cog):
         embed.set_image(url="https://i.gyazo.com/de5ef721b1e5f33c3995dbabad22026d.png")
         embed.set_footer(text="All data is provided by https://overfast-api.tekrop.fr/")
         await ctx.send(embed=embed)
+
+    @commands.hybrid_command(name="leaderboard", description="Get the top 5 1v1 players")
+    @commands.guild_only()
+    @app_commands.guild_only()
+    async def top5(self, ctx: commands.Context):
+      """
+      Get the top 5 1v1 players
+      """
+      top_users = self.collection.find().sort('score', -1).limit(5)
+      top_users = await top_users.to_list(length=5)
+      
+      if not top_users:
+          await ctx.send("No users found.")
+          return
+
+      embed = Embed(color=Colour.gold())
+      embed.timestamp = ctx.message.created_at
+      embed.description = "Here are the top 5 1v1 players!"
+      embed.image = "https://i.gyazo.com/de5ef721b1e5f33c3995dbabad22026d.png"
+
+
+      for user in top_users:
+          user_lookup = await self.client.fetch_user(user['discord_id'])
+          embed.add_field(name=user_lookup, value=f"Score: {user['score']}", inline=False)
+
+      await ctx.send(embed=embed)
 
 
 async def setup(client: LhBot):

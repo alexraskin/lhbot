@@ -187,7 +187,7 @@ class LhGuess(commands.Cog):
     @commands.guild_only()
     @app_commands.guild_only()
     @app_commands.describe(guess_id="Delete a guess from the database")
-    async def lhdelete(self, ctx: commands.Context, guess_id: int):
+    async def lhdelete(self, ctx: commands.Context, guess_id: str):
         """
         Delete a guess from the database.
         """

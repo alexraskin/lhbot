@@ -107,7 +107,7 @@ class SnailRace(commands.Cog):
             content=f"{interaction.user.mention} has started a race.\nRace will start in {delay} seconds.",
             view=view,
         )
-        await asyncio.sleep(delay)  # type: ignore
+        await asyncio.sleep(delay)
         await self.simulate_race(interaction)
 
     @commands.Cog.listener()
