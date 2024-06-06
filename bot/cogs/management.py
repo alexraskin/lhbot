@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-import logging
+from typing import TYPE_CHECKING
 
 from discord import Embed
 from discord.ext import commands
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
+
 
 class Management(commands.Cog):
-    def __init__(self, client: commands.Bot):
+    def __init__(self, client: LhBot):
         self.client = client
 
     @commands.is_owner()
@@ -24,7 +27,7 @@ class Management(commands.Cog):
             for cog in self.client.extensions.copy():  # type: ignore
                 await self.client.unload_extension(cog)
                 await self.client.load_extension(cog)
-            self.client.logger.info(f"Reload Command Executed by {ctx.author}")  # type: ignore
+            self.client.logger.info(f"Reload Command Executed by {ctx.author}")
             embed = Embed(
                 title="Cog Reload 🔃",
                 description="I have reloaded all the cogs successfully ✅",

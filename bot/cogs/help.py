@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 class myHelpCommand(HelpCommand):
     def __init__(self, **options) -> None:
         super().__init__(**options)
-        self.paginator = None
+        self.paginator: list = []
         self.spacer = " "
 
     async def send_pages(self, header=False, footer=False):
@@ -22,7 +22,7 @@ class myHelpCommand(HelpCommand):
         embed = Embed(color=0x2ECC71, timestamp=self.context.message.created_at)
         if header:
             embed.set_author(name=self.context.bot.description)
-        for category, entries in self.paginator:  # type: ignore
+        for category, entries in self.paginator:
             embed.add_field(name=category, value=entries, inline=False)
         if footer:
             embed.set_footer(text="Use !help <command/category> for more information.")
@@ -50,7 +50,7 @@ class myHelpCommand(HelpCommand):
                     entries += " | ".join([cmd.name for cmd in cmds[0:8]])
                     cmds = cmds[8:]
                     entries += "\n" if cmds else ""
-            self.paginator.append((category, entries))  # type: ignore
+            self.paginator.append((category, entries))
         await self.send_pages(header=True, footer=True)
 
     async def send_cog_help(self, cog):
@@ -66,7 +66,7 @@ class myHelpCommand(HelpCommand):
             + f"**{command.name}** → {command.short_doc or command.description}"
             for command in filtered
         )
-        self.paginator.append((category, entries))  # type: ignore
+        self.paginator.append((category, entries))
         await self.send_pages(footer=True)
 
     async def send_group_help(self, group):

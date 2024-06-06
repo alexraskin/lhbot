@@ -39,7 +39,7 @@ class Mod(commands.Cog):
     @app_commands.guild_only()
     async def mod(self, ctx: commands.Context) -> None:
         if ctx.invoked_subcommand is None:
-            if ctx.author.guild_permissions.manage_guild:  # type: ignore
+            if ctx.author.guild_permissions.manage_guild:
                 await ctx.send_help(ctx.command)
 
     @mod.command(name="ban", description="Ban a user", hidden=True)
@@ -51,7 +51,7 @@ class Mod(commands.Cog):
         self, ctx: commands.Context, member: Member, reason: Optional[str]
     ) -> None:
         try:
-            await ctx.guild.ban(member, reason=reason)  # type: ignore
+            await ctx.guild.ban(member, reason=reason)
             await ctx.reply(f"Banned {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
@@ -67,8 +67,8 @@ class Mod(commands.Cog):
         self, ctx: commands.Context, member: Member, reason: Optional[str]
     ) -> None:
         try:
-            await ctx.guild.ban(member, reason=reason)  # type: ignore
-            await ctx.guild.unban(member, reason=reason)  # type: ignore
+            await ctx.guild.ban(member, reason=reason)
+            await ctx.guild.unban(member, reason=reason)
             await ctx.reply(f"Softbanned {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
@@ -106,7 +106,7 @@ class Mod(commands.Cog):
     ) -> None:
         unmute_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
         try:
-            await member.timeout(until=unmute_time, reason=reason)  # type: ignore
+            await member.timeout(until=unmute_time, reason=reason)
             await ctx.reply(f"Timed out {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
@@ -122,7 +122,7 @@ class Mod(commands.Cog):
     @app_commands.describe(reason="The reason for the unban")
     async def unban(self, ctx: commands.Context, member: Member, reason: str) -> None:
         try:
-            await ctx.guild.unban(member, reason=reason)  # type: ignore
+            await ctx.guild.unban(member, reason=reason)
             await ctx.reply(f"Unbanned {member.name}", ephemeral=True)
         except Exception as e:
             capture_exception(e)
@@ -181,9 +181,9 @@ class Mod(commands.Cog):
         """
         Lockdowns a specified channel.
         """
-        channel = channel or ctx.channel  # type: ignore
+        channel: TextChannel = channel or ctx.channel
         try:
-            await channel.set_permissions(ctx.guild.default_role, send_messages=False)  # type: ignore
+            await channel.set_permissions(ctx.guild.default_role, send_messages=False)
             embed = Embed(
                 title="Lockdown Notice 🔒",
                 description=f"This channel is currently under lockdown.",
@@ -222,10 +222,10 @@ class Mod(commands.Cog):
         """
         Unlocks a specified channel.
         """
-        channel = channel or ctx.channel  # type: ignore
+        channel: TextChannel = channel or ctx.channel
         try:
-            await channel.set_permissions(  # type: ignore
-                ctx.guild.default_role, send_messages=True, reason=reason  # type: ignore
+            await channel.set_permissions(
+                ctx.guild.default_role, send_messages=True, reason=reason
             )
             embed = Embed(
                 title="Lockdown Ended 🔓",

@@ -30,7 +30,7 @@ class Fun(commands.Cog):
     @app_commands.guild_only()
     @app_commands.describe(category="Category of Chuck Norris fact")
     async def chucknorris(
-        self, ctx: commands.Context, category: str = None
+        self, ctx: commands.Context, category: str = ""
     ) -> Union[Embed, None]:
         """
         Get a random Chuck Norris fact
@@ -38,7 +38,7 @@ class Fun(commands.Cog):
         if not hasattr(self, "chuck_categories"):
             await ctx.send("Hold up partner, still locating Chuck!")
             return
-        if category is None:
+        if category is "":
             category = random.choice(self.chuck_categories)
         else:
             if category not in self.chuck_categories:
@@ -156,12 +156,12 @@ class Fun(commands.Cog):
     @commands.guild_only()
     @app_commands.guild_only()
     async def random_waifu(
-        self, ctx: commands.Context, category: str = None
+        self, ctx: commands.Context, category: str | None = None
     ) -> Union[Embed, None]:
         """
         Get a random waifu from waifu.pics
         """
-        random.seed(get_time_string())
+        random.seed(bot_utils.get_time_string())
         categories = ["cuddle", "cry", "hug", "awoo", "kiss"]
         if category is None:
             category = random.choice(categories)

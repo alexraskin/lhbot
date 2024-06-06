@@ -178,7 +178,7 @@ class OverwatchAPI(commands.Cog):
         if target_user == None or target_user == "":
             return
 
-        if len(target_user) > 500:
+        if len(target_user.name) > 500:
             await ctx.send("Username is too long!")
             return
 
