@@ -8,12 +8,12 @@ import discord
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 
+if TYPE_CHECKING:
+    from ..bot import LhBot
+
 shuffled_participants: List = []
 running_guilds: List = []
 snail_positions: Dict = {}
-
-if TYPE_CHECKING:
-    from ..bot import LhBot
 
 
 class RaceButton(discord.ui.View):
