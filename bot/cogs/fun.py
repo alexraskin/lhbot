@@ -38,7 +38,7 @@ class Fun(commands.Cog):
         if not hasattr(self, "chuck_categories"):
             await ctx.send("Hold up partner, still locating Chuck!")
             return
-        if category is "":
+        if category == "":
             category = random.choice(self.chuck_categories)
         else:
             if category not in self.chuck_categories:
