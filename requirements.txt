@@ -46,7 +46,7 @@ platformdirs==2.4.1
 psutil==5.9.5
 pycparser==2.21
 pydantic==1.9.0
-pylint==2.15.3
+pylint==3.2.7
 pymongo==4.3.3
 python-dateutil==2.8.2
 python-dotenv==0.19.2
