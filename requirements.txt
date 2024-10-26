@@ -66,6 +66,6 @@ tqdm==4.64.1
 types-pytz==2022.6.0.1
 typing_extensions==4.9.0
 urllib3==1.26.19
-Werkzeug==3.0.3
+Werkzeug==3.0.6
 wrapt==1.14.1
 yarl==1.8.1
